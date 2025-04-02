@@ -74,6 +74,76 @@ impl Bitboard {
     }
 }
 
+impl Bitboard {
+    /// Returns the position of the first least significant set bit.
+    ///
+    /// In debug mode, this function asserts that the bitboard is not empty.
+    pub fn bitscan_forward(&self) -> Position {
+        debug_assert!(!self.is_empty());
+
+        // Implementation by Kim Walisch (2012)
+        //
+        // See: https://www.chessprogramming.org/BitScan#De_Bruijn_Multiplication
+
+        // TODO: fall back to this approach only if the hardware architecture doesn't provide
+        //       BitScan instructions.
+
+        #[rustfmt::skip]
+        const INDEX64: [u8; 64] = [
+            0,  47,  1, 56, 48, 27,  2, 60,
+            57, 49, 41, 37, 28, 16,  3, 61,
+            54, 58, 35, 52, 50, 42, 21, 44,
+            38, 32, 29, 23, 17, 11,  4, 62,
+            46, 55, 26, 59, 40, 36, 15, 53,
+            34, 51, 20, 43, 31, 22, 10, 45,
+            25, 39, 14, 33, 19, 30,  9, 24,
+            13, 18,  8, 12,  7,  6,  5, 63
+        ];
+        const DEBRUIJN64: u64 = 0x03f79d71b4cb0a89;
+
+        let index = INDEX64[((self.0 ^ (self.0 - 1)).wrapping_mul(DEBRUIJN64) as usize) >> 58];
+        unsafe { std::mem::transmute(index) }
+    }
+
+    /// Returns the position of the first most significant set bit.
+    ///
+    /// In debug mode, this function asserts that the bitboard is not empty.
+    pub fn bitscan_reverse(&self) -> Position {
+        debug_assert!(!self.is_empty());
+
+        // Implementation by Kim Walisch (2012) and Mark Dickinson
+        //
+        // See: https://www.chessprogramming.org/BitScan#De_Bruijn_Multiplication
+
+        // TODO: fall back to this approach only if the hardware architecture doesn't provide
+        //       BitScan instructions.
+
+        #[rustfmt::skip]
+        const INDEX64: [u8; 64] = [
+             0, 47,  1, 56, 48, 27,  2, 60,
+            57, 49, 41, 37, 28, 16,  3, 61,
+            54, 58, 35, 52, 50, 42, 21, 44,
+            38, 32, 29, 23, 17, 11,  4, 62,
+            46, 55, 26, 59, 40, 36, 15, 53,
+            34, 51, 20, 43, 31, 22, 10, 45,
+            25, 39, 14, 33, 19, 30,  9, 24,
+            13, 18,  8, 12,  7,  6,  5, 63
+        ];
+        const DEBRUIJN64: u64 = 0x03f79d71b4cb0a89;
+
+        let mut x = self.0;
+        x |= x >> 1;
+        x |= x >> 2;
+        x |= x >> 4;
+        x |= x >> 8;
+        x |= x >> 16;
+        x |= x >> 32;
+
+        let index = INDEX64[(x.wrapping_mul(DEBRUIJN64) as usize) >> 58];
+        unsafe { std::mem::transmute(index) }
+    }
+}
+
 impl Default for Bitboard {
     fn default() -> Self {
         return Bitboard(0);
@@ -240,6 +310,16 @@ mod tests {
     }
 
     #[test]
+    fn universal_bitscan_forward() {
+        assert_eq!(Position::H1, Bitboard::universal().bitscan_forward());
+    }
+
+    #[test]
+    fn universal_bitscan_reverse() {
+        assert_eq!(Position::A8, Bitboard::universal().bitscan_reverse());
+    }
+
+    #[test]
     fn empty_is_inverted_universal() {
         assert_eq!(Bitboard::empty(), !Bitboard::universal());
     }
@@ -386,6 +466,75 @@ mod tests {
         assert!(!bitboard.is_set(Position::A5));
         assert!(!bitboard.is_set(Position::A1));
         assert!(!bitboard.is_set(Position::B4));
+    }
+
+    #[test]
+    #[rustfmt::skip]
+    fn bitscan_forward() {
+        for (i, &(positions, lsb)) in [
+            (&vec![Position::H1], Position::H1),
+            (&vec![Position::A1], Position::A1),
+            (&vec![Position::G2], Position::G2),
+            (&vec![Position::F7], Position::F7),
+            (&vec![Position::A8], Position::A8),
+            (&vec![Position::A5, Position::B2], Position::B2),
+            (&vec![Position::C1, Position::D1, Position::D2], Position::D1),
+            (&vec![Position::F2, Position::B1, Position::G4], Position::B1),
+            (&vec![Position::E3, Position::E4, Position::A4], Position::E3),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let mut bitboard = Bitboard::empty();
+            for &position in positions.iter() {
+                bitboard.set(position);
+            }
+            let bitboard = bitboard;
+
+            let expected = lsb;
+            let actual = bitboard.bitscan_forward();
+
+            assert_eq!(
+                expected, actual,
+                "Test {} failed. Expected {:?}, found {:?}",
+                i, expected, actual
+            );
+        }
+    }
+
+    #[test]
+    #[rustfmt::skip]
+    fn bitscan_reverse() {
+        for (i, &(positions, msb)) in [
+            (&vec![Position::H1], Position::H1),
+            (&vec![Position::A1], Position::A1),
+            (&vec![Position::G2], Position::G2),
+            (&vec![Position::F7], Position::F7),
+            (&vec![Position::A8], Position::A8),
+            (&vec![Position::A5, Position::B2], Position::A5),
+            (&vec![Position::C1, Position::D1, Position::D2], Position::D2),
+            (&vec![Position::F2, Position::B1, Position::G4], Position::G4),
+            (&vec![Position::E3, Position::E4, Position::A4], Position::A4),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let mut bitboard = Bitboard::empty();
+            for &position in positions.iter() {
+                bitboard.set(position);
+            }
+            let bitboard = bitboard;
+
+            let expected = msb;
+            let actual = bitboard.bitscan_reverse();
+
+            assert_eq!(
+                expected, actual,
+                "Test {} failed. Expected {:?}, found {:?}",
+                i, expected, actual
+            );
+        }
+
     }
 
     #[test]
