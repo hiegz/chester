@@ -39,6 +39,11 @@ impl Bitboard {
     pub fn is_universal(&self) -> bool {
         *self == Bitboard::universal()
     }
+
+    /// Checks if the bitboard is single populated.
+    pub fn is_single(&self) -> bool {
+        self.0 != 0 && (self.0 & (self.0 - 1)) == 0
+    }
 }
 
 impl Bitboard {
@@ -214,8 +219,49 @@ mod tests {
     }
 
     #[test]
+    fn universal_is_not_single() {
+        assert!(!(Bitboard::universal().is_single()));
+    }
+
+    #[test]
     fn empty_is_inverted_universal() {
         assert_eq!(Bitboard::empty(), !Bitboard::universal());
+    }
+
+    #[test]
+    fn empty_is_not_single() {
+        assert!(!(Bitboard::empty().is_single()));
+    }
+
+    #[test]
+    fn is_single() {
+        for (i, &(positions, is_single)) in [
+            (&vec![Position::C6], true),
+            (&vec![Position::B1], true),
+            (&vec![Position::A8], true),
+            (&vec![Position::H1], true),
+            (&vec![Position::B1, Position::B2], false),
+            (&vec![Position::A2, Position::D8], false),
+            (&vec![Position::H1, Position::A8, Position::D5], false),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let mut bitboard = Bitboard::empty();
+            for &position in positions.iter() {
+                bitboard.set(position);
+            }
+            let bitboard = bitboard;
+
+            assert_eq!(
+                is_single,
+                bitboard.is_single(),
+                "Test {} failed. Expected {:?}, found {:?}",
+                i,
+                is_single,
+                bitboard.is_single()
+            );
+        }
     }
 
     #[test]
