@@ -61,6 +61,17 @@ impl Bitboard {
     pub fn is_set(&self, position: Position) -> bool {
         self.0 & (1 << position as u32) != 0
     }
+
+    /// Returns the cardinality of a bitboard (i.e., the number of set bits)
+    pub fn cardinality(&self) -> usize {
+        let mut x = self.clone();
+        let mut count = 0;
+        while x.0 != 0 {
+            count += 1;
+            x.0 &= x.0 - 1;
+        }
+        return count;
+    }
 }
 
 impl Default for Bitboard {
@@ -224,6 +235,11 @@ mod tests {
     }
 
     #[test]
+    fn universal_cardinality() {
+        assert_eq!(64, Bitboard::universal().cardinality());
+    }
+
+    #[test]
     fn empty_is_inverted_universal() {
         assert_eq!(Bitboard::empty(), !Bitboard::universal());
     }
@@ -231,6 +247,11 @@ mod tests {
     #[test]
     fn empty_is_not_single() {
         assert!(!(Bitboard::empty().is_single()));
+    }
+
+    #[test]
+    fn empty_cardinality() {
+        assert_eq!(0, Bitboard::empty().cardinality());
     }
 
     #[test]
@@ -260,6 +281,38 @@ mod tests {
                 i,
                 is_single,
                 bitboard.is_single()
+            );
+        }
+    }
+
+    #[test]
+    fn bitboard_cardinality() {
+        for (i, &(positions, cardinality)) in [
+            (&vec![], 0),
+            (&vec![Position::C6], 1),
+            (&vec![Position::B1], 1),
+            (&vec![Position::A8], 1),
+            (&vec![Position::H1], 1),
+            (&vec![Position::B1, Position::B2], 2),
+            (&vec![Position::A2, Position::D8], 2),
+            (&vec![Position::H1, Position::A8, Position::D5], 3),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let mut bitboard = Bitboard::empty();
+            for &position in positions.iter() {
+                bitboard.set(position);
+            }
+            let bitboard = bitboard;
+
+            assert_eq!(
+                cardinality,
+                bitboard.cardinality(),
+                "Test {} failed. Expected {:?}, found {:?}",
+                i,
+                cardinality,
+                bitboard.cardinality(),
             );
         }
     }
