@@ -12,6 +12,8 @@ use std::ops::ShlAssign;
 use std::ops::Shr;
 use std::ops::ShrAssign;
 
+use crate::position::Position;
+
 /// A 64-bit set used to efficiently represent piece placement
 /// and attack vectors on an 8x8 board.
 #[derive(Eq, PartialEq, Clone, Copy)]
@@ -36,6 +38,23 @@ impl Bitboard {
     /// Checks if the bitboard is universal.
     pub fn is_universal(&self) -> bool {
         *self == Bitboard::universal()
+    }
+}
+
+impl Bitboard {
+    /// Sets the bit at the given position.
+    pub fn set(&mut self, position: Position) {
+        self.0 |= 1 << position as u32;
+    }
+
+    /// Resets the bit at the given position.
+    pub fn reset(&mut self, position: Position) {
+        self.0 &= !(1 << position as u32);
+    }
+
+    /// Checks whether the bit at the given position is set.
+    pub fn is_set(&self, position: Position) -> bool {
+        self.0 & (1 << position as u32) != 0
     }
 }
 
@@ -150,6 +169,19 @@ impl std::fmt::Debug for Bitboard {
 mod tests {
     use super::*;
 
+    macro_rules! chessboard {
+        ($line0:tt $line1:tt $line2:tt $line3:tt $line4:tt $line5:tt $line6:tt $line7:tt) => {
+            ($line0 << 56)
+                | ($line1 << 48)
+                | ($line2 << 40)
+                | ($line3 << 32)
+                | ($line4 << 24)
+                | ($line5 << 16)
+                | ($line6 << 8)
+                | ($line7 << 0)
+        };
+    }
+
     #[test]
     fn empty_bitboard() {
         assert_eq!(0, u64::from(Bitboard::empty()));
@@ -184,6 +216,77 @@ mod tests {
     #[test]
     fn empty_is_inverted_universal() {
         assert_eq!(Bitboard::empty(), !Bitboard::universal());
+    }
+
+    #[test]
+    fn bitboard_set() {
+        let expected = Bitboard::from(chessboard!(
+                0b_00000000
+                0b_00000000
+                0b_00000000
+                0b_00000001
+                0b_00000000
+                0b_10000000
+                0b_00000000
+                0b_00000001));
+
+        let mut bitboard = Bitboard::empty();
+        bitboard.set(Position::H1);
+        bitboard.set(Position::H5);
+        bitboard.set(Position::A3);
+
+        assert_eq!(expected, bitboard);
+    }
+
+    #[test]
+    fn bitboard_reset() {
+        let expected = Bitboard::from(chessboard!(
+                0b_00010000
+                0b_00000000
+                0b_00000100
+                0b_00000000
+                0b_00000000
+                0b_00100000
+                0b_00000010
+                0b_00000000));
+
+        let mut bitboard = Bitboard::empty();
+
+        bitboard.set(Position::H1);
+        bitboard.set(Position::H5);
+        bitboard.set(Position::A3);
+
+        bitboard.set(Position::G2);
+        bitboard.set(Position::C3);
+        bitboard.set(Position::F6);
+        bitboard.set(Position::D8);
+
+        bitboard.reset(Position::H1);
+        bitboard.reset(Position::H5);
+        bitboard.reset(Position::A3);
+
+        assert_eq!(expected, bitboard);
+    }
+
+    #[test]
+    fn bitboard_is_set() {
+        let bitboard = Bitboard::from(chessboard!(
+                0b_00010000
+                0b_00000000
+                0b_00000100
+                0b_00000000
+                0b_00000000
+                0b_00100000
+                0b_00000010
+                0b_00000000));
+
+        assert!(bitboard.is_set(Position::G2));
+        assert!(bitboard.is_set(Position::C3));
+        assert!(bitboard.is_set(Position::F6));
+        assert!(bitboard.is_set(Position::D8));
+        assert!(!bitboard.is_set(Position::A5));
+        assert!(!bitboard.is_set(Position::A1));
+        assert!(!bitboard.is_set(Position::B4));
     }
 
     #[test]
