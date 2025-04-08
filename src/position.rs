@@ -1,3 +1,8 @@
+use std::ops::Shl;
+use std::ops::ShlAssign;
+use std::ops::Shr;
+use std::ops::ShrAssign;
+
 #[repr(u8)]
 #[rustfmt::skip]
 #[allow(unused)]
@@ -33,6 +38,34 @@ impl Position {
 impl From<u8> for Position {
     fn from(value: u8) -> Self {
         unsafe { std::mem::transmute(value) }
+    }
+}
+
+impl Shl<u8> for Position {
+    type Output = Position;
+
+    fn shl(self, rhs: u8) -> Self::Output {
+        Position::from(self as u8 + rhs)
+    }
+}
+
+impl ShlAssign<u8> for Position {
+    fn shl_assign(&mut self, rhs: u8) {
+        *self = *self << rhs;
+    }
+}
+
+impl Shr<u8> for Position {
+    type Output = Position;
+
+    fn shr(self, rhs: u8) -> Self::Output {
+        Position::from(self as u8 - rhs)
+    }
+}
+
+impl ShrAssign<u8> for Position {
+    fn shr_assign(&mut self, rhs: u8) {
+        *self = *self >> rhs;
     }
 }
 
@@ -75,6 +108,30 @@ impl std::fmt::Debug for Rank {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn shl() {
+        assert_eq!(Position::H2, Position::H1 << 8);
+    }
+
+    #[test]
+    fn shl_assign() {
+        let mut position = Position::C3;
+        position <<= 2;
+        assert_eq!(Position::A3, position);
+    }
+
+    #[test]
+    fn shr() {
+        assert_eq!(Position::D5, Position::D6 >> 8);
+    }
+
+    #[test]
+    fn shr_assign() {
+        let mut position = Position::H8;
+        position >>= 1;
+        assert_eq!(Position::A7, position);
+    }
 
     #[test]
     #[rustfmt::skip]
