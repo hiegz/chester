@@ -162,6 +162,12 @@ impl From<Bitboard> for u64 {
     }
 }
 
+impl From<Position> for Bitboard {
+    fn from(value: Position) -> Self {
+        Bitboard::empty() | (1u64 << (value as u8))
+    }
+}
+
 impl BitAnd for Bitboard {
     type Output = Bitboard;
 
