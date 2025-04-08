@@ -170,9 +170,23 @@ impl BitAnd for Bitboard {
     }
 }
 
+impl BitAnd<u64> for Bitboard {
+    type Output = Bitboard;
+
+    fn bitand(self, rhs: u64) -> Self::Output {
+        Bitboard::from(self.0.bitand(rhs))
+    }
+}
+
 impl BitAndAssign for Bitboard {
     fn bitand_assign(&mut self, rhs: Self) {
         self.0.bitand_assign(rhs.0);
+    }
+}
+
+impl BitAndAssign<u64> for Bitboard {
+    fn bitand_assign(&mut self, rhs: u64) {
+        self.0.bitand_assign(rhs);
     }
 }
 
@@ -184,9 +198,23 @@ impl BitOr for Bitboard {
     }
 }
 
+impl BitOr<u64> for Bitboard {
+    type Output = Bitboard;
+
+    fn bitor(self, rhs: u64) -> Self::Output {
+        Bitboard::from(self.0.bitor(rhs))
+    }
+}
+
 impl BitOrAssign for Bitboard {
     fn bitor_assign(&mut self, rhs: Self) {
         self.0.bitor_assign(rhs.0);
+    }
+}
+
+impl BitOrAssign<u64> for Bitboard {
+    fn bitor_assign(&mut self, rhs: u64) {
+        self.0.bitor_assign(rhs);
     }
 }
 
@@ -198,9 +226,23 @@ impl BitXor for Bitboard {
     }
 }
 
+impl BitXor<u64> for Bitboard {
+    type Output = Bitboard;
+
+    fn bitxor(self, rhs: u64) -> Self::Output {
+        Bitboard::from(self.0.bitxor(rhs))
+    }
+}
+
 impl BitXorAssign for Bitboard {
     fn bitxor_assign(&mut self, rhs: Self) {
         self.0.bitxor_assign(rhs.0);
+    }
+}
+
+impl BitXorAssign<u64> for Bitboard {
+    fn bitxor_assign(&mut self, rhs: u64) {
+        self.0.bitxor_assign(rhs);
     }
 }
 
@@ -564,9 +606,21 @@ mod tests {
     }
 
     #[test]
+    fn bitboard_bitand_u64() {
+        assert_eq!(Bitboard::from(0b10001), Bitboard::from(0b11011) & 0b10101);
+    }
+
+    #[test]
     fn bitboard_bitand_assign() {
         let mut bitboard = Bitboard::from(0b01100);
         bitboard &= Bitboard::from(0b01001);
+        assert_eq!(Bitboard::from(0b01000), bitboard);
+    }
+
+    #[test]
+    fn bitboard_bitand_assign_u64() {
+        let mut bitboard = Bitboard::from(0b01100);
+        bitboard &= 0b01001;
         assert_eq!(Bitboard::from(0b01000), bitboard);
     }
 
@@ -579,9 +633,21 @@ mod tests {
     }
 
     #[test]
+    fn bitboard_bitor_u64() {
+        assert_eq!(Bitboard::from(0b11011), Bitboard::from(0b11000) | 0b00011);
+    }
+
+    #[test]
     fn bitboard_bitor_assign() {
         let mut bitboard = Bitboard::from(0b01000);
         bitboard |= Bitboard::from(0b00100);
+        assert_eq!(Bitboard::from(0b01100), bitboard);
+    }
+
+    #[test]
+    fn bitboard_bitor_assign_u64() {
+        let mut bitboard = Bitboard::from(0b01000);
+        bitboard |= 0b00100;
         assert_eq!(Bitboard::from(0b01100), bitboard);
     }
 
@@ -594,9 +660,21 @@ mod tests {
     }
 
     #[test]
+    fn bitboard_bitxor_u64() {
+        assert_eq!(Bitboard::from(0b10001), Bitboard::from(0b10101) ^ 0b00100)
+    }
+
+    #[test]
     fn bitboard_bitxor_assign() {
         let mut bitboard = Bitboard::from(0b11011);
         bitboard ^= Bitboard::from(0b01110);
+        assert_eq!(Bitboard::from(0b10101), bitboard);
+    }
+
+    #[test]
+    fn bitboard_bitxor_assign_u64() {
+        let mut bitboard = Bitboard::from(0b11011);
+        bitboard ^= 0b01110;
         assert_eq!(Bitboard::from(0b10101), bitboard);
     }
 
