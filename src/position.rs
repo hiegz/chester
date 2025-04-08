@@ -30,6 +30,12 @@ impl Position {
     }
 }
 
+impl From<u8> for Position {
+    fn from(value: u8) -> Self {
+        unsafe { std::mem::transmute(value) }
+    }
+}
+
 #[repr(u8)]
 #[allow(unused)]
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
