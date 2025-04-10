@@ -5,7 +5,7 @@ pub type Square = u8;
 
 /// Wraps the given square to be represented by a debug formatter.
 #[derive(Eq, PartialEq)]
-pub struct SquareWrapper(Square);
+pub struct SquareWrapper(pub Square);
 
 // A file
 pub const A1: Square = 7;
