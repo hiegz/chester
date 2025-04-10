@@ -1,6 +1,8 @@
 mod bitboard;
+mod file;
 mod lookup;
-mod position;
+mod rank;
+mod square;
 
 fn main() {
     println!("Hello, world!");

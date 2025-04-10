@@ -1,5 +1,5 @@
 use crate::bitboard::Bitboard;
-use crate::position::Square;
+use crate::square::Square;
 
 macro_rules! chessboard {
     ($line0:tt $line1:tt $line2:tt $line3:tt $line4:tt $line5:tt $line6:tt $line7:tt) => {
@@ -16,8 +16,8 @@ macro_rules! chessboard {
 
 pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
     lookup: [
-        // [0] <-> Square::H1
-        Bitboard(chessboard!(
+        // [0] <-> H1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -25,9 +25,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000011
-            0b_00000010)),
-        // [1] <-> Square::G1
-        Bitboard(chessboard!(
+            0b_00000010),
+        // [1] <-> G1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -35,9 +35,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000111
-            0b_00000101)),
-        // [2] <-> Square::F1
-        Bitboard(chessboard!(
+            0b_00000101),
+        // [2] <-> F1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -45,9 +45,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00001110
-            0b_00001010)),
-        // [3] <-> Square::E1
-        Bitboard(chessboard!(
+            0b_00001010),
+        // [3] <-> E1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -55,9 +55,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00011100
-            0b_00010100)),
-        // [4] <-> Square::D1
-        Bitboard(chessboard!(
+            0b_00010100),
+        // [4] <-> D1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -65,9 +65,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00111000
-            0b_00101000)),
-        // [5] <-> Square::C1
-        Bitboard(chessboard!(
+            0b_00101000),
+        // [5] <-> C1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -75,9 +75,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_01110000
-            0b_01010000)),
-        // [6] <-> Square::B1
-        Bitboard(chessboard!(
+            0b_01010000),
+        // [6] <-> B1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -85,9 +85,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_11100000
-            0b_10100000)),
-        // [7] <-> Square::A1
-        Bitboard(chessboard!(
+            0b_10100000),
+        // [7] <-> A1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -95,9 +95,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_11000000
-            0b_01000000)),
-        // [8] <-> Square::H2
-        Bitboard(chessboard!(
+            0b_01000000),
+        // [8] <-> H2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -105,9 +105,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000011
             0b_00000010
-            0b_00000011)),
-        // [9] <-> Square::G2
-        Bitboard(chessboard!(
+            0b_00000011),
+        // [9] <-> G2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -115,9 +115,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000111
             0b_00000101
-            0b_00000111)),
-        // [10] <-> Square::F2
-        Bitboard(chessboard!(
+            0b_00000111),
+        // [10] <-> F2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -125,9 +125,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00001110
             0b_00001010
-            0b_00001110)),
-        // [11] <-> Square::E2
-        Bitboard(chessboard!(
+            0b_00001110),
+        // [11] <-> E2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -135,9 +135,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00011100
             0b_00010100
-            0b_00011100)),
-        // [12] <-> Square::D2
-        Bitboard(chessboard!(
+            0b_00011100),
+        // [12] <-> D2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -145,9 +145,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00111000
             0b_00101000
-            0b_00111000)),
-        // [13] <-> Square::C2
-        Bitboard(chessboard!(
+            0b_00111000),
+        // [13] <-> C2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -155,9 +155,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_01110000
             0b_01010000
-            0b_01110000)),
-        // [14] <-> Square::B2
-        Bitboard(chessboard!(
+            0b_01110000),
+        // [14] <-> B2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -165,9 +165,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_11100000
             0b_10100000
-            0b_11100000)),
-        // [15] <-> Square::A2
-        Bitboard(chessboard!(
+            0b_11100000),
+        // [15] <-> A2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -175,9 +175,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_11000000
             0b_01000000
-            0b_11000000)),
-        // [16] <-> Square::H3
-        Bitboard(chessboard!(
+            0b_11000000),
+        // [16] <-> H3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -185,9 +185,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000011
             0b_00000010
             0b_00000011
-            0b_00000000)),
-        // [17] <-> Square::G3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [17] <-> G3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -195,9 +195,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000111
             0b_00000101
             0b_00000111
-            0b_00000000)),
-        // [18] <-> Square::F3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [18] <-> F3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -205,9 +205,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00001110
             0b_00001010
             0b_00001110
-            0b_00000000)),
-        // [19] <-> Square::E3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [19] <-> E3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -215,9 +215,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00011100
             0b_00010100
             0b_00011100
-            0b_00000000)),
-        // [20] <-> Square::D3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [20] <-> D3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -225,9 +225,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00111000
             0b_00101000
             0b_00111000
-            0b_00000000)),
-        // [21] <-> Square::C3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [21] <-> C3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -235,9 +235,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_01110000
             0b_01010000
             0b_01110000
-            0b_00000000)),
-        // [22] <-> Square::B3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [22] <-> B3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -245,9 +245,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_11100000
             0b_10100000
             0b_11100000
-            0b_00000000)),
-        // [23] <-> Square::A3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [23] <-> A3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -255,9 +255,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_11000000
             0b_01000000
             0b_11000000
-            0b_00000000)),
-        // [24] <-> Square::H4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [24] <-> H4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -265,9 +265,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000010
             0b_00000011
             0b_00000000
-            0b_00000000)),
-        // [25] <-> Square::G4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [25] <-> G4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -275,9 +275,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000101
             0b_00000111
             0b_00000000
-            0b_00000000)),
-        // [26] <-> Square::F4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [26] <-> F4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -285,9 +285,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00001010
             0b_00001110
             0b_00000000
-            0b_00000000)),
-        // [27] <-> Square::E4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [27] <-> E4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -295,9 +295,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00010100
             0b_00011100
             0b_00000000
-            0b_00000000)),
-        // [28] <-> Square::D4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [28] <-> D4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -305,9 +305,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00101000
             0b_00111000
             0b_00000000
-            0b_00000000)),
-        // [29] <-> Square::C4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [29] <-> C4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -315,9 +315,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_01010000
             0b_01110000
             0b_00000000
-            0b_00000000)),
-        // [30] <-> Square::B4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [30] <-> B4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -325,9 +325,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_10100000
             0b_11100000
             0b_00000000
-            0b_00000000)),
-        // [31] <-> Square::A4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [31] <-> A4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -335,9 +335,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_01000000
             0b_11000000
             0b_00000000
-            0b_00000000)),
-        // [32] <-> Square::H5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [32] <-> H5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000011
@@ -345,9 +345,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000011
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [33] <-> Square::G5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [33] <-> G5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000111
@@ -355,9 +355,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000111
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [34] <-> Square::F5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [34] <-> F5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00001110
@@ -365,9 +365,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00001110
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [35] <-> Square::E5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [35] <-> E5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00011100
@@ -375,9 +375,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00011100
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [36] <-> Square::D5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [36] <-> D5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00111000
@@ -385,9 +385,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00111000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [37] <-> Square::C5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [37] <-> C5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01110000
@@ -395,9 +395,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_01110000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [38] <-> Square::B5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [38] <-> B5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_11100000
@@ -405,9 +405,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_11100000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [39] <-> Square::A5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [39] <-> A5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_11000000
@@ -415,9 +415,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_11000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [40] <-> Square::H6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [40] <-> H6
+        chessboard!(
             0b_00000000
             0b_00000011
             0b_00000010
@@ -425,9 +425,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [41] <-> Square::G6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [41] <-> G6
+        chessboard!(
             0b_00000000
             0b_00000111
             0b_00000101
@@ -435,9 +435,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [42] <-> Square::F6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [42] <-> F6
+        chessboard!(
             0b_00000000
             0b_00001110
             0b_00001010
@@ -445,9 +445,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [43] <-> Square::E6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [43] <-> E6
+        chessboard!(
             0b_00000000
             0b_00011100
             0b_00010100
@@ -455,9 +455,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [44] <-> Square::D6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [44] <-> D6
+        chessboard!(
             0b_00000000
             0b_00111000
             0b_00101000
@@ -465,9 +465,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [45] <-> Square::C6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [45] <-> C6
+        chessboard!(
             0b_00000000
             0b_01110000
             0b_01010000
@@ -475,9 +475,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [46] <-> Square::B6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [46] <-> B6
+        chessboard!(
             0b_00000000
             0b_11100000
             0b_10100000
@@ -485,9 +485,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [47] <-> Square::A6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [47] <-> A6
+        chessboard!(
             0b_00000000
             0b_11000000
             0b_01000000
@@ -495,9 +495,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [48] <-> Square::H7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [48] <-> H7
+        chessboard!(
             0b_00000011
             0b_00000010
             0b_00000011
@@ -505,9 +505,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [49] <-> Square::G7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [49] <-> G7
+        chessboard!(
             0b_00000111
             0b_00000101
             0b_00000111
@@ -515,9 +515,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [50] <-> Square::F7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [50] <-> F7
+        chessboard!(
             0b_00001110
             0b_00001010
             0b_00001110
@@ -525,9 +525,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [51] <-> Square::E7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [51] <-> E7
+        chessboard!(
             0b_00011100
             0b_00010100
             0b_00011100
@@ -535,9 +535,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [52] <-> Square::D7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [52] <-> D7
+        chessboard!(
             0b_00111000
             0b_00101000
             0b_00111000
@@ -545,9 +545,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [53] <-> Square::C7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [53] <-> C7
+        chessboard!(
             0b_01110000
             0b_01010000
             0b_01110000
@@ -555,9 +555,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [54] <-> Square::B7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [54] <-> B7
+        chessboard!(
             0b_11100000
             0b_10100000
             0b_11100000
@@ -565,9 +565,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [55] <-> Square::A7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [55] <-> A7
+        chessboard!(
             0b_11000000
             0b_01000000
             0b_11000000
@@ -575,9 +575,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [56] <-> Square::H8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [56] <-> H8
+        chessboard!(
             0b_00000010
             0b_00000011
             0b_00000000
@@ -585,9 +585,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [57] <-> Square::G8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [57] <-> G8
+        chessboard!(
             0b_00000101
             0b_00000111
             0b_00000000
@@ -595,9 +595,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [58] <-> Square::F8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [58] <-> F8
+        chessboard!(
             0b_00001010
             0b_00001110
             0b_00000000
@@ -605,9 +605,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [59] <-> Square::E8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [59] <-> E8
+        chessboard!(
             0b_00010100
             0b_00011100
             0b_00000000
@@ -615,9 +615,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [60] <-> Square::D8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [60] <-> D8
+        chessboard!(
             0b_00101000
             0b_00111000
             0b_00000000
@@ -625,9 +625,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [61] <-> Square::C8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [61] <-> C8
+        chessboard!(
             0b_01010000
             0b_01110000
             0b_00000000
@@ -635,9 +635,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [62] <-> Square::B8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [62] <-> B8
+        chessboard!(
             0b_10100000
             0b_11100000
             0b_00000000
@@ -645,9 +645,9 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [63] <-> Square::A8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [63] <-> A8
+        chessboard!(
             0b_01000000
             0b_11000000
             0b_00000000
@@ -655,7 +655,7 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
+            0b_00000000),
     ],
 };
 
@@ -671,8 +671,8 @@ impl KingAttackTable {
 
 pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
     lookup: [
-        // [0] <-> Square::H1
-        Bitboard(chessboard!(
+        // [0] <-> H1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -680,9 +680,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000010
             0b_00000100
-            0b_00000000)),
-        // [1] <-> Square::G1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [1] <-> G1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -690,9 +690,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000101
             0b_00001000
-            0b_00000000)),
-        // [2] <-> Square::F1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [2] <-> F1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -700,9 +700,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00001010
             0b_00010001
-            0b_00000000)),
-        // [3] <-> Square::E1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [3] <-> E1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -710,9 +710,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00010100
             0b_00100010
-            0b_00000000)),
-        // [4] <-> Square::D1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [4] <-> D1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -720,9 +720,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00101000
             0b_01000100
-            0b_00000000)),
-        // [5] <-> Square::C1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [5] <-> C1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -730,9 +730,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_01010000
             0b_10001000
-            0b_00000000)),
-        // [6] <-> Square::B1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [6] <-> B1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -740,9 +740,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_10100000
             0b_00010000
-            0b_00000000)),
-        // [7] <-> Square::A1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [7] <-> A1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -750,9 +750,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_01000000
             0b_00100000
-            0b_00000000)),
-        // [8] <-> Square::H2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [8] <-> H2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -760,9 +760,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000010
             0b_00000100
             0b_00000000
-            0b_00000100)),
-        // [9] <-> Square::G2
-        Bitboard(chessboard!(
+            0b_00000100),
+        // [9] <-> G2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -770,9 +770,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000101
             0b_00001000
             0b_00000000
-            0b_00001000)),
-        // [10] <-> Square::F2
-        Bitboard(chessboard!(
+            0b_00001000),
+        // [10] <-> F2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -780,9 +780,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00001010
             0b_00010001
             0b_00000000
-            0b_00010001)),
-        // [11] <-> Square::E2
-        Bitboard(chessboard!(
+            0b_00010001),
+        // [11] <-> E2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -790,9 +790,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010100
             0b_00100010
             0b_00000000
-            0b_00100010)),
-        // [12] <-> Square::D2
-        Bitboard(chessboard!(
+            0b_00100010),
+        // [12] <-> D2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -800,9 +800,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00101000
             0b_01000100
             0b_00000000
-            0b_01000100)),
-        // [13] <-> Square::C2
-        Bitboard(chessboard!(
+            0b_01000100),
+        // [13] <-> C2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -810,9 +810,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01010000
             0b_10001000
             0b_00000000
-            0b_10001000)),
-        // [14] <-> Square::B2
-        Bitboard(chessboard!(
+            0b_10001000),
+        // [14] <-> B2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -820,9 +820,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00100000
             0b_00010000
             0b_00000000
-            0b_00010000)),
-        // [15] <-> Square::A2
-        Bitboard(chessboard!(
+            0b_00010000),
+        // [15] <-> A2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -830,9 +830,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01000000
             0b_00100000
             0b_00000000
-            0b_00100000)),
-        // [16] <-> Square::H3
-        Bitboard(chessboard!(
+            0b_00100000),
+        // [16] <-> H3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -840,9 +840,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000100
             0b_00000000
             0b_00000100
-            0b_00000010)),
-        // [17] <-> Square::G3
-        Bitboard(chessboard!(
+            0b_00000010),
+        // [17] <-> G3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -850,9 +850,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00001000
             0b_00000000
             0b_00001000
-            0b_00000101)),
-        // [18] <-> Square::F3
-        Bitboard(chessboard!(
+            0b_00000101),
+        // [18] <-> F3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -860,9 +860,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010001
             0b_00000000
             0b_00010001
-            0b_00001010)),
-        // [19] <-> Square::E3
-        Bitboard(chessboard!(
+            0b_00001010),
+        // [19] <-> E3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -870,9 +870,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00100010
             0b_00000000
             0b_00100010
-            0b_00010100)),
-        // [20] <-> Square::D3
-        Bitboard(chessboard!(
+            0b_00010100),
+        // [20] <-> D3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -880,9 +880,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01000100
             0b_00000000
             0b_01000100
-            0b_00101000)),
-        // [21] <-> Square::C3
-        Bitboard(chessboard!(
+            0b_00101000),
+        // [21] <-> C3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -890,9 +890,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_10001000
             0b_00000000
             0b_10001000
-            0b_01010000)),
-        // [22] <-> Square::B3
-        Bitboard(chessboard!(
+            0b_01010000),
+        // [22] <-> B3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -900,9 +900,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010000
             0b_00000000
             0b_00010000
-            0b_10100000)),
-        // [23] <-> Square::A3
-        Bitboard(chessboard!(
+            0b_10100000),
+        // [23] <-> A3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -910,9 +910,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00100000
             0b_00000000
             0b_00100000
-            0b_01000000)),
-        // [24] <-> Square::H4
-        Bitboard(chessboard!(
+            0b_01000000),
+        // [24] <-> H4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000010
@@ -920,9 +920,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000100
             0b_00000010
-            0b_00000000)),
-        // [25] <-> Square::G4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [25] <-> G4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000101
@@ -930,9 +930,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00001000
             0b_00000101
-            0b_00000000)),
-        // [26] <-> Square::F4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [26] <-> F4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00001010
@@ -940,9 +940,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00010001
             0b_00001010
-            0b_00000000)),
-        // [27] <-> Square::E4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [27] <-> E4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00010100
@@ -950,9 +950,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00100010
             0b_00010100
-            0b_00000000)),
-        // [28] <-> Square::D4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [28] <-> D4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00101000
@@ -960,9 +960,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_01000100
             0b_00101000
-            0b_00000000)),
-        // [29] <-> Square::C4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [29] <-> C4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01010000
@@ -970,9 +970,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_10001000
             0b_01010000
-            0b_00000000)),
-        // [30] <-> Square::B4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [30] <-> B4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_10100000
@@ -980,9 +980,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00010000
             0b_10100000
-            0b_00000000)),
-        // [31] <-> Square::A4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [31] <-> A4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01000000
@@ -990,9 +990,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00100000
             0b_01000000
-            0b_00000000)),
-        // [32] <-> Square::H5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [32] <-> H5
+        chessboard!(
             0b_00000000
             0b_00000010
             0b_00000100
@@ -1000,9 +1000,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000100
             0b_00000010
             0b_00000000
-            0b_00000000)),
-        // [33] <-> Square::G5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [33] <-> G5
+        chessboard!(
             0b_00000000
             0b_00000101
             0b_00001000
@@ -1010,9 +1010,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00001000
             0b_00000101
             0b_00000000
-            0b_00000000)),
-        // [34] <-> Square::F5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [34] <-> F5
+        chessboard!(
             0b_00000000
             0b_00001010
             0b_00010001
@@ -1020,9 +1020,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010001
             0b_00001010
             0b_00000000
-            0b_00000000)),
-        // [35] <-> Square::E5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [35] <-> E5
+        chessboard!(
             0b_00000000
             0b_00010100
             0b_00100010
@@ -1030,9 +1030,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00100010
             0b_00010100
             0b_00000000
-            0b_00000000)),
-        // [36] <-> Square::D5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [36] <-> D5
+        chessboard!(
             0b_00000000
             0b_00101000
             0b_01000100
@@ -1040,9 +1040,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01000100
             0b_00101000
             0b_00000000
-            0b_00000000)),
-        // [37] <-> Square::C5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [37] <-> C5
+        chessboard!(
             0b_00000000
             0b_01010000
             0b_10001000
@@ -1050,9 +1050,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_10001000
             0b_01010000
             0b_00000000
-            0b_00000000)),
-        // [38] <-> Square::B5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [38] <-> B5
+        chessboard!(
             0b_00000000
             0b_10100000
             0b_00010000
@@ -1060,9 +1060,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010000
             0b_10100000
             0b_00000000
-            0b_00000000)),
-        // [39] <-> Square::A5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [39] <-> A5
+        chessboard!(
             0b_00000000
             0b_01000000
             0b_00100000
@@ -1070,9 +1070,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00100000
             0b_01000000
             0b_00000000
-            0b_00000000)),
-        // [40] <-> Square::H6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [40] <-> H6
+        chessboard!(
             0b_00000010
             0b_00000100
             0b_00000000
@@ -1080,9 +1080,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [41] <-> Square::G6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [41] <-> G6
+        chessboard!(
             0b_00000101
             0b_00001000
             0b_00000000
@@ -1090,9 +1090,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000101
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [42] <-> Square::F6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [42] <-> F6
+        chessboard!(
             0b_00001010
             0b_00010001
             0b_00000000
@@ -1100,9 +1100,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00001010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [43] <-> Square::E6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [43] <-> E6
+        chessboard!(
             0b_00010100
             0b_00100010
             0b_00000000
@@ -1110,9 +1110,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00010100
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [44] <-> Square::D6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [44] <-> D6
+        chessboard!(
             0b_00101000
             0b_01000100
             0b_00000000
@@ -1120,9 +1120,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00101000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [45] <-> Square::C6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [45] <-> C6
+        chessboard!(
             0b_01010000
             0b_10001000
             0b_00000000
@@ -1130,9 +1130,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01010000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [46] <-> Square::B6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [46] <-> B6
+        chessboard!(
             0b_10100000
             0b_00010000
             0b_00000000
@@ -1140,9 +1140,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_10100000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [47] <-> Square::A6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [47] <-> A6
+        chessboard!(
             0b_01000000
             0b_00100000
             0b_00000000
@@ -1150,9 +1150,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_01000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [48] <-> Square::H7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [48] <-> H7
+        chessboard!(
             0b_00000100
             0b_00000000
             0b_00000100
@@ -1160,9 +1160,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [49] <-> Square::G7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [49] <-> G7
+        chessboard!(
             0b_00001000
             0b_00000000
             0b_00001000
@@ -1170,9 +1170,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [50] <-> Square::F7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [50] <-> F7
+        chessboard!(
             0b_00010001
             0b_00000000
             0b_00010001
@@ -1180,9 +1180,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [51] <-> Square::E7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [51] <-> E7
+        chessboard!(
             0b_00100010
             0b_00000000
             0b_00100010
@@ -1190,9 +1190,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [52] <-> Square::D7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [52] <-> D7
+        chessboard!(
             0b_01000100
             0b_00000000
             0b_01000100
@@ -1200,9 +1200,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [53] <-> Square::C7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [53] <-> C7
+        chessboard!(
             0b_10001000
             0b_00000000
             0b_10001000
@@ -1210,9 +1210,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [54] <-> Square::B7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [54] <-> B7
+        chessboard!(
             0b_00010000
             0b_00000000
             0b_00010000
@@ -1220,9 +1220,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [55] <-> Square::A7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [55] <-> A7
+        chessboard!(
             0b_00100000
             0b_00000000
             0b_00100000
@@ -1230,9 +1230,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [56] <-> Square::H8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [56] <-> H8
+        chessboard!(
             0b_00000000
             0b_00000100
             0b_00000010
@@ -1240,9 +1240,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [57] <-> Square::G8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [57] <-> G8
+        chessboard!(
             0b_00000000
             0b_00001000
             0b_00000101
@@ -1250,9 +1250,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [58] <-> Square::F8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [58] <-> F8
+        chessboard!(
             0b_00000000
             0b_00010001
             0b_00001010
@@ -1260,9 +1260,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [59] <-> Square::E8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [59] <-> E8
+        chessboard!(
             0b_00000000
             0b_00100010
             0b_00010100
@@ -1270,9 +1270,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [60] <-> Square::D8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [60] <-> D8
+        chessboard!(
             0b_00000000
             0b_01000100
             0b_00101000
@@ -1280,9 +1280,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [61] <-> Square::C8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [61] <-> C8
+        chessboard!(
             0b_00000000
             0b_10001000
             0b_01010000
@@ -1290,9 +1290,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [62] <-> Square::B8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [62] <-> B8
+        chessboard!(
             0b_00000000
             0b_00010000
             0b_00100000
@@ -1300,9 +1300,9 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [63] <-> Square::A8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [63] <-> A8
+        chessboard!(
             0b_00000000
             0b_00100000
             0b_01000000
@@ -1310,7 +1310,7 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
+            0b_00000000),
     ],
 };
 
@@ -1326,8 +1326,8 @@ impl KnightAttackTable {
 
 pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
     lookup: [
-        // [8] <-> Square::H2
-        Bitboard(chessboard!(
+        // [8] <-> H2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1335,9 +1335,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000010
             0b_00000000
-            0b_00000000)),
-        // [9] <-> Square::G2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [9] <-> G2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1345,9 +1345,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000101
             0b_00000000
-            0b_00000000)),
-        // [10] <-> Square::F2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [10] <-> F2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1355,9 +1355,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00001010
             0b_00000000
-            0b_00000000)),
-        // [11] <-> Square::E2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [11] <-> E2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1365,9 +1365,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00010100
             0b_00000000
-            0b_00000000)),
-        // [12] <-> Square::D2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [12] <-> D2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1375,9 +1375,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00101000
             0b_00000000
-            0b_00000000)),
-        // [13] <-> Square::C2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [13] <-> C2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1385,9 +1385,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_01010000
             0b_00000000
-            0b_00000000)),
-        // [14] <-> Square::B2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [14] <-> B2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1395,9 +1395,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_10100000
             0b_00000000
-            0b_00000000)),
-        // [15] <-> Square::A2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [15] <-> A2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1405,9 +1405,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_01000000
             0b_00000000
-            0b_00000000)),
-        // [16] <-> Square::H3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [16] <-> H3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1415,9 +1415,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [17] <-> Square::G3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [17] <-> G3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1425,9 +1425,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000101
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [18] <-> Square::F3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [18] <-> F3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1435,9 +1435,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00001010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [19] <-> Square::E3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [19] <-> E3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1445,9 +1445,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00010100
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [20] <-> Square::D3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [20] <-> D3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1455,9 +1455,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00101000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [21] <-> Square::C3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [21] <-> C3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1465,9 +1465,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_01010000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [22] <-> Square::B3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [22] <-> B3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1475,9 +1475,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_10100000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [23] <-> Square::A3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [23] <-> A3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1485,9 +1485,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_01000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [24] <-> Square::H4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [24] <-> H4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1495,9 +1495,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [25] <-> Square::G4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [25] <-> G4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1505,9 +1505,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [26] <-> Square::F4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [26] <-> F4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1515,9 +1515,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [27] <-> Square::E4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [27] <-> E4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1525,9 +1525,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [28] <-> Square::D4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [28] <-> D4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1535,9 +1535,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [29] <-> Square::C4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [29] <-> C4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1545,9 +1545,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [30] <-> Square::B4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [30] <-> B4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1555,9 +1555,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [31] <-> Square::A4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [31] <-> A4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1565,9 +1565,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [32] <-> Square::H5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [32] <-> H5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000010
@@ -1575,9 +1575,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [33] <-> Square::G5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [33] <-> G5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000101
@@ -1585,9 +1585,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [34] <-> Square::F5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [34] <-> F5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00001010
@@ -1595,9 +1595,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [35] <-> Square::E5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [35] <-> E5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00010100
@@ -1605,9 +1605,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [36] <-> Square::D5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [36] <-> D5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00101000
@@ -1615,9 +1615,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [37] <-> Square::C5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [37] <-> C5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01010000
@@ -1625,9 +1625,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [38] <-> Square::B5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [38] <-> B5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_10100000
@@ -1635,9 +1635,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [39] <-> Square::A5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [39] <-> A5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01000000
@@ -1645,9 +1645,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [40] <-> Square::H6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [40] <-> H6
+        chessboard!(
             0b_00000000
             0b_00000010
             0b_00000000
@@ -1655,9 +1655,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [41] <-> Square::G6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [41] <-> G6
+        chessboard!(
             0b_00000000
             0b_00000101
             0b_00000000
@@ -1665,9 +1665,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [42] <-> Square::F6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [42] <-> F6
+        chessboard!(
             0b_00000000
             0b_00001010
             0b_00000000
@@ -1675,9 +1675,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [43] <-> Square::E6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [43] <-> E6
+        chessboard!(
             0b_00000000
             0b_00010100
             0b_00000000
@@ -1685,9 +1685,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [44] <-> Square::D6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [44] <-> D6
+        chessboard!(
             0b_00000000
             0b_00101000
             0b_00000000
@@ -1695,9 +1695,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [45] <-> Square::C6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [45] <-> C6
+        chessboard!(
             0b_00000000
             0b_01010000
             0b_00000000
@@ -1705,9 +1705,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [46] <-> Square::B6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [46] <-> B6
+        chessboard!(
             0b_00000000
             0b_10100000
             0b_00000000
@@ -1715,9 +1715,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [47] <-> Square::A6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [47] <-> A6
+        chessboard!(
             0b_00000000
             0b_01000000
             0b_00000000
@@ -1725,9 +1725,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [48] <-> Square::H7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [48] <-> H7
+        chessboard!(
             0b_00000010
             0b_00000000
             0b_00000000
@@ -1735,9 +1735,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [49] <-> Square::G7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [49] <-> G7
+        chessboard!(
             0b_00000101
             0b_00000000
             0b_00000000
@@ -1745,9 +1745,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [50] <-> Square::F7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [50] <-> F7
+        chessboard!(
             0b_00001010
             0b_00000000
             0b_00000000
@@ -1755,9 +1755,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [51] <-> Square::E7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [51] <-> E7
+        chessboard!(
             0b_00010100
             0b_00000000
             0b_00000000
@@ -1765,9 +1765,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [52] <-> Square::D7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [52] <-> D7
+        chessboard!(
             0b_00101000
             0b_00000000
             0b_00000000
@@ -1775,9 +1775,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [53] <-> Square::C7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [53] <-> C7
+        chessboard!(
             0b_01010000
             0b_00000000
             0b_00000000
@@ -1785,9 +1785,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [54] <-> Square::B7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [54] <-> B7
+        chessboard!(
             0b_10100000
             0b_00000000
             0b_00000000
@@ -1795,9 +1795,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [55] <-> Square::A7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [55] <-> A7
+        chessboard!(
             0b_01000000
             0b_00000000
             0b_00000000
@@ -1805,9 +1805,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [56] <-> Square::H8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [56] <-> H8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1815,9 +1815,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [57] <-> Square::G8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [57] <-> G8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1825,9 +1825,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [58] <-> Square::F8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [58] <-> F8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1835,9 +1835,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [59] <-> Square::E8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [59] <-> E8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1845,9 +1845,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [60] <-> Square::D8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [60] <-> D8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1855,9 +1855,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [61] <-> Square::C8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [61] <-> C8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1865,9 +1865,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [62] <-> Square::B8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [62] <-> B8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1875,9 +1875,9 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [63] <-> Square::A8
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [63] <-> A8
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1885,7 +1885,7 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
+            0b_00000000),
     ],
 };
 
@@ -1902,8 +1902,8 @@ impl WhitePawnAttackTable {
 
 pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
     lookup: [
-        // [0] <-> Square::H1
-        Bitboard(chessboard!(
+        // [0] <-> H1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1911,9 +1911,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [1] <-> Square::G1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [1] <-> G1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1921,9 +1921,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [2] <-> Square::F1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [2] <-> F1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1931,9 +1931,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [3] <-> Square::E1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [3] <-> E1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1941,9 +1941,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [4] <-> Square::D1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [4] <-> D1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1951,9 +1951,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [5] <-> Square::C1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [5] <-> C1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1961,9 +1961,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [6] <-> Square::B1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [6] <-> B1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1971,9 +1971,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [7] <-> Square::A1
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [7] <-> A1
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1981,9 +1981,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [8] <-> Square::H2
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [8] <-> H2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -1991,9 +1991,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000010)),
-        // [9] <-> Square::G2
-        Bitboard(chessboard!(
+            0b_00000010),
+        // [9] <-> G2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2001,9 +2001,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000101)),
-        // [10] <-> Square::F2
-        Bitboard(chessboard!(
+            0b_00000101),
+        // [10] <-> F2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2011,9 +2011,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00001010)),
-        // [11] <-> Square::E2
-        Bitboard(chessboard!(
+            0b_00001010),
+        // [11] <-> E2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2021,9 +2021,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00010100)),
-        // [12] <-> Square::D2
-        Bitboard(chessboard!(
+            0b_00010100),
+        // [12] <-> D2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2031,9 +2031,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00101000)),
-        // [13] <-> Square::C2
-        Bitboard(chessboard!(
+            0b_00101000),
+        // [13] <-> C2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2041,9 +2041,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_01010000)),
-        // [14] <-> Square::B2
-        Bitboard(chessboard!(
+            0b_01010000),
+        // [14] <-> B2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2051,9 +2051,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_10100000)),
-        // [15] <-> Square::A2
-        Bitboard(chessboard!(
+            0b_10100000),
+        // [15] <-> A2
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2061,9 +2061,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_01000000)),
-        // [16] <-> Square::H3
-        Bitboard(chessboard!(
+            0b_01000000),
+        // [16] <-> H3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2071,9 +2071,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000010
-            0b_00000000)),
-        // [17] <-> Square::G3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [17] <-> G3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2081,9 +2081,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000101
-            0b_00000000)),
-        // [18] <-> Square::F3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [18] <-> F3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2091,9 +2091,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00001010
-            0b_00000000)),
-        // [19] <-> Square::E3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [19] <-> E3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2101,9 +2101,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00010100
-            0b_00000000)),
-        // [20] <-> Square::D3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [20] <-> D3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2111,9 +2111,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00101000
-            0b_00000000)),
-        // [21] <-> Square::C3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [21] <-> C3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2121,9 +2121,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_01010000
-            0b_00000000)),
-        // [22] <-> Square::B3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [22] <-> B3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2131,9 +2131,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_10100000
-            0b_00000000)),
-        // [23] <-> Square::A3
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [23] <-> A3
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2141,9 +2141,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_01000000
-            0b_00000000)),
-        // [24] <-> Square::H4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [24] <-> H4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2151,9 +2151,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000010
             0b_00000000
-            0b_00000000)),
-        // [25] <-> Square::G4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [25] <-> G4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2161,9 +2161,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000101
             0b_00000000
-            0b_00000000)),
-        // [26] <-> Square::F4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [26] <-> F4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2171,9 +2171,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00001010
             0b_00000000
-            0b_00000000)),
-        // [27] <-> Square::E4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [27] <-> E4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2181,9 +2181,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00010100
             0b_00000000
-            0b_00000000)),
-        // [28] <-> Square::D4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [28] <-> D4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2191,9 +2191,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00101000
             0b_00000000
-            0b_00000000)),
-        // [29] <-> Square::C4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [29] <-> C4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2201,9 +2201,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_01010000
             0b_00000000
-            0b_00000000)),
-        // [30] <-> Square::B4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [30] <-> B4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2211,9 +2211,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_10100000
             0b_00000000
-            0b_00000000)),
-        // [31] <-> Square::A4
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [31] <-> A4
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2221,9 +2221,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_01000000
             0b_00000000
-            0b_00000000)),
-        // [32] <-> Square::H5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [32] <-> H5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2231,9 +2231,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [33] <-> Square::G5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [33] <-> G5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2241,9 +2241,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000101
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [34] <-> Square::F5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [34] <-> F5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2251,9 +2251,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00001010
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [35] <-> Square::E5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [35] <-> E5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2261,9 +2261,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00010100
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [36] <-> Square::D5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [36] <-> D5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2271,9 +2271,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00101000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [37] <-> Square::C5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [37] <-> C5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2281,9 +2281,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_01010000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [38] <-> Square::B5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [38] <-> B5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2291,9 +2291,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_10100000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [39] <-> Square::A5
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [39] <-> A5
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2301,9 +2301,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_01000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [40] <-> Square::H6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [40] <-> H6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2311,9 +2311,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [41] <-> Square::G6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [41] <-> G6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2321,9 +2321,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [42] <-> Square::F6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [42] <-> F6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2331,9 +2331,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [43] <-> Square::E6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [43] <-> E6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2341,9 +2341,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [44] <-> Square::D6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [44] <-> D6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2351,9 +2351,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [45] <-> Square::C6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [45] <-> C6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2361,9 +2361,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [46] <-> Square::B6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [46] <-> B6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2371,9 +2371,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [47] <-> Square::A6
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [47] <-> A6
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000000
@@ -2381,9 +2381,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [48] <-> Square::H7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [48] <-> H7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000010
@@ -2391,9 +2391,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [49] <-> Square::G7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [49] <-> G7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00000101
@@ -2401,9 +2401,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [50] <-> Square::F7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [50] <-> F7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00001010
@@ -2411,9 +2411,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [51] <-> Square::E7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [51] <-> E7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00010100
@@ -2421,9 +2421,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [52] <-> Square::D7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [52] <-> D7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_00101000
@@ -2431,9 +2431,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [53] <-> Square::C7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [53] <-> C7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01010000
@@ -2441,9 +2441,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [54] <-> Square::B7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [54] <-> B7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_10100000
@@ -2451,9 +2451,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
-        // [55] <-> Square::A7
-        Bitboard(chessboard!(
+            0b_00000000),
+        // [55] <-> A7
+        chessboard!(
             0b_00000000
             0b_00000000
             0b_01000000
@@ -2461,7 +2461,7 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
             0b_00000000
             0b_00000000
             0b_00000000
-            0b_00000000)),
+            0b_00000000),
     ],
 };
 
