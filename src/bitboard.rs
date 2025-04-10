@@ -17,7 +17,7 @@ use crate::position::Square;
 /// A 64-bit set used to efficiently represent piece placement
 /// and attack vectors on an 8x8 board.
 #[derive(Eq, PartialEq, Clone, Copy)]
-pub struct Bitboard(u64);
+pub struct Bitboard(pub u64);
 
 impl Bitboard {
     /// Returns a new bitboard with all bits set to zero.
