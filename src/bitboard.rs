@@ -12,7 +12,7 @@ use std::ops::ShlAssign;
 use std::ops::Shr;
 use std::ops::ShrAssign;
 
-use crate::position::Position;
+use crate::position::Square;
 
 /// A 64-bit set used to efficiently represent piece placement
 /// and attack vectors on an 8x8 board.
@@ -48,18 +48,18 @@ impl Bitboard {
 
 impl Bitboard {
     /// Sets the bit at the given position.
-    pub fn set(&mut self, position: Position) {
-        self.0 |= 1 << position as u32;
+    pub fn set(&mut self, square: Square) {
+        self.0 |= 1 << square as u32;
     }
 
     /// Resets the bit at the given position.
-    pub fn reset(&mut self, position: Position) {
-        self.0 &= !(1 << position as u32);
+    pub fn reset(&mut self, square: Square) {
+        self.0 &= !(1 << square as u32);
     }
 
     /// Checks whether the bit at the given position is set.
-    pub fn is_set(&self, position: Position) -> bool {
-        self.0 & (1 << position as u32) != 0
+    pub fn is_set(&self, square: Square) -> bool {
+        self.0 & (1 << square as u32) != 0
     }
 
     /// Returns the cardinality of a bitboard (i.e., the number of set bits)
@@ -78,7 +78,7 @@ impl Bitboard {
     /// Returns the position of the first least significant set bit.
     ///
     /// In debug mode, this function asserts that the bitboard is not empty.
-    pub fn bitscan_forward(&self) -> Position {
+    pub fn bitscan_forward(&self) -> Square {
         debug_assert!(!self.is_empty());
 
         // Implementation by Kim Walisch (2012)
@@ -108,7 +108,7 @@ impl Bitboard {
     /// Returns the position of the first most significant set bit.
     ///
     /// In debug mode, this function asserts that the bitboard is not empty.
-    pub fn bitscan_reverse(&self) -> Position {
+    pub fn bitscan_reverse(&self) -> Square {
         debug_assert!(!self.is_empty());
 
         // Implementation by Kim Walisch (2012) and Mark Dickinson
@@ -162,8 +162,8 @@ impl From<Bitboard> for u64 {
     }
 }
 
-impl From<Position> for Bitboard {
-    fn from(value: Position) -> Self {
+impl From<Square> for Bitboard {
+    fn from(value: Square) -> Self {
         Bitboard::empty() | (1u64 << (value as u8))
     }
 }
@@ -359,12 +359,12 @@ mod tests {
 
     #[test]
     fn universal_bitscan_forward() {
-        assert_eq!(Position::H1, Bitboard::universal().bitscan_forward());
+        assert_eq!(Square::H1, Bitboard::universal().bitscan_forward());
     }
 
     #[test]
     fn universal_bitscan_reverse() {
-        assert_eq!(Position::A8, Bitboard::universal().bitscan_reverse());
+        assert_eq!(Square::A8, Bitboard::universal().bitscan_reverse());
     }
 
     #[test]
@@ -384,21 +384,21 @@ mod tests {
 
     #[test]
     fn is_single() {
-        for (i, &(positions, is_single)) in [
-            (&vec![Position::C6], true),
-            (&vec![Position::B1], true),
-            (&vec![Position::A8], true),
-            (&vec![Position::H1], true),
-            (&vec![Position::B1, Position::B2], false),
-            (&vec![Position::A2, Position::D8], false),
-            (&vec![Position::H1, Position::A8, Position::D5], false),
+        for (i, &(squares, is_single)) in [
+            (&vec![Square::C6], true),
+            (&vec![Square::B1], true),
+            (&vec![Square::A8], true),
+            (&vec![Square::H1], true),
+            (&vec![Square::B1, Square::B2], false),
+            (&vec![Square::A2, Square::D8], false),
+            (&vec![Square::H1, Square::A8, Square::D5], false),
         ]
         .iter()
         .enumerate()
         {
             let mut bitboard = Bitboard::empty();
-            for &position in positions.iter() {
-                bitboard.set(position);
+            for &square in squares.iter() {
+                bitboard.set(square);
             }
             let bitboard = bitboard;
 
@@ -415,22 +415,22 @@ mod tests {
 
     #[test]
     fn bitboard_cardinality() {
-        for (i, &(positions, cardinality)) in [
+        for (i, &(squares, cardinality)) in [
             (&vec![], 0),
-            (&vec![Position::C6], 1),
-            (&vec![Position::B1], 1),
-            (&vec![Position::A8], 1),
-            (&vec![Position::H1], 1),
-            (&vec![Position::B1, Position::B2], 2),
-            (&vec![Position::A2, Position::D8], 2),
-            (&vec![Position::H1, Position::A8, Position::D5], 3),
+            (&vec![Square::C6], 1),
+            (&vec![Square::B1], 1),
+            (&vec![Square::A8], 1),
+            (&vec![Square::H1], 1),
+            (&vec![Square::B1, Square::B2], 2),
+            (&vec![Square::A2, Square::D8], 2),
+            (&vec![Square::H1, Square::A8, Square::D5], 3),
         ]
         .iter()
         .enumerate()
         {
             let mut bitboard = Bitboard::empty();
-            for &position in positions.iter() {
-                bitboard.set(position);
+            for &square in squares.iter() {
+                bitboard.set(square);
             }
             let bitboard = bitboard;
 
@@ -458,9 +458,9 @@ mod tests {
                 0b_00000001));
 
         let mut bitboard = Bitboard::empty();
-        bitboard.set(Position::H1);
-        bitboard.set(Position::H5);
-        bitboard.set(Position::A3);
+        bitboard.set(Square::H1);
+        bitboard.set(Square::H5);
+        bitboard.set(Square::A3);
 
         assert_eq!(expected, bitboard);
     }
@@ -479,18 +479,18 @@ mod tests {
 
         let mut bitboard = Bitboard::empty();
 
-        bitboard.set(Position::H1);
-        bitboard.set(Position::H5);
-        bitboard.set(Position::A3);
+        bitboard.set(Square::H1);
+        bitboard.set(Square::H5);
+        bitboard.set(Square::A3);
 
-        bitboard.set(Position::G2);
-        bitboard.set(Position::C3);
-        bitboard.set(Position::F6);
-        bitboard.set(Position::D8);
+        bitboard.set(Square::G2);
+        bitboard.set(Square::C3);
+        bitboard.set(Square::F6);
+        bitboard.set(Square::D8);
 
-        bitboard.reset(Position::H1);
-        bitboard.reset(Position::H5);
-        bitboard.reset(Position::A3);
+        bitboard.reset(Square::H1);
+        bitboard.reset(Square::H5);
+        bitboard.reset(Square::A3);
 
         assert_eq!(expected, bitboard);
     }
@@ -507,35 +507,35 @@ mod tests {
                 0b_00000010
                 0b_00000000));
 
-        assert!(bitboard.is_set(Position::G2));
-        assert!(bitboard.is_set(Position::C3));
-        assert!(bitboard.is_set(Position::F6));
-        assert!(bitboard.is_set(Position::D8));
-        assert!(!bitboard.is_set(Position::A5));
-        assert!(!bitboard.is_set(Position::A1));
-        assert!(!bitboard.is_set(Position::B4));
+        assert!(bitboard.is_set(Square::G2));
+        assert!(bitboard.is_set(Square::C3));
+        assert!(bitboard.is_set(Square::F6));
+        assert!(bitboard.is_set(Square::D8));
+        assert!(!bitboard.is_set(Square::A5));
+        assert!(!bitboard.is_set(Square::A1));
+        assert!(!bitboard.is_set(Square::B4));
     }
 
     #[test]
     #[rustfmt::skip]
     fn bitscan_forward() {
-        for (i, &(positions, lsb)) in [
-            (&vec![Position::H1], Position::H1),
-            (&vec![Position::A1], Position::A1),
-            (&vec![Position::G2], Position::G2),
-            (&vec![Position::F7], Position::F7),
-            (&vec![Position::A8], Position::A8),
-            (&vec![Position::A5, Position::B2], Position::B2),
-            (&vec![Position::C1, Position::D1, Position::D2], Position::D1),
-            (&vec![Position::F2, Position::B1, Position::G4], Position::B1),
-            (&vec![Position::E3, Position::E4, Position::A4], Position::E3),
+        for (i, &(squares, lsb)) in [
+            (&vec![Square::H1], Square::H1),
+            (&vec![Square::A1], Square::A1),
+            (&vec![Square::G2], Square::G2),
+            (&vec![Square::F7], Square::F7),
+            (&vec![Square::A8], Square::A8),
+            (&vec![Square::A5, Square::B2], Square::B2),
+            (&vec![Square::C1, Square::D1, Square::D2], Square::D1),
+            (&vec![Square::F2, Square::B1, Square::G4], Square::B1),
+            (&vec![Square::E3, Square::E4, Square::A4], Square::E3),
         ]
         .iter()
         .enumerate()
         {
             let mut bitboard = Bitboard::empty();
-            for &position in positions.iter() {
-                bitboard.set(position);
+            for &square in squares.iter() {
+                bitboard.set(square);
             }
             let bitboard = bitboard;
 
@@ -553,23 +553,23 @@ mod tests {
     #[test]
     #[rustfmt::skip]
     fn bitscan_reverse() {
-        for (i, &(positions, msb)) in [
-            (&vec![Position::H1], Position::H1),
-            (&vec![Position::A1], Position::A1),
-            (&vec![Position::G2], Position::G2),
-            (&vec![Position::F7], Position::F7),
-            (&vec![Position::A8], Position::A8),
-            (&vec![Position::A5, Position::B2], Position::A5),
-            (&vec![Position::C1, Position::D1, Position::D2], Position::D2),
-            (&vec![Position::F2, Position::B1, Position::G4], Position::G4),
-            (&vec![Position::E3, Position::E4, Position::A4], Position::A4),
+        for (i, &(squares, msb)) in [
+            (&vec![Square::H1], Square::H1),
+            (&vec![Square::A1], Square::A1),
+            (&vec![Square::G2], Square::G2),
+            (&vec![Square::F7], Square::F7),
+            (&vec![Square::A8], Square::A8),
+            (&vec![Square::A5, Square::B2], Square::A5),
+            (&vec![Square::C1, Square::D1, Square::D2], Square::D2),
+            (&vec![Square::F2, Square::B1, Square::G4], Square::G4),
+            (&vec![Square::E3, Square::E4, Square::A4], Square::A4),
         ]
         .iter()
         .enumerate()
         {
             let mut bitboard = Bitboard::empty();
-            for &position in positions.iter() {
-                bitboard.set(position);
+            for &square in squares.iter() {
+                bitboard.set(square);
             }
             let bitboard = bitboard;
 

@@ -7,7 +7,7 @@ use std::ops::ShrAssign;
 #[rustfmt::skip]
 #[allow(unused)]
 #[derive(Eq, PartialEq, Clone, Copy, Debug)]
-pub enum Position {
+pub enum Square {
     A1 = 7, A2 = 15, A3 = 23, A4 = 31, A5 = 39, A6 = 47, A7 = 55, A8 = 63,
     B1 = 6, B2 = 14, B3 = 22, B4 = 30, B5 = 38, B6 = 46, B7 = 54, B8 = 62,
     C1 = 5, C2 = 13, C3 = 21, C4 = 29, C5 = 37, C6 = 45, C7 = 53, C8 = 61,
@@ -18,52 +18,52 @@ pub enum Position {
     H1 = 0, H2 =  8, H3 = 16, H4 = 24, H5 = 32, H6 = 40, H7 = 48, H8 = 56,
 }
 
-impl Position {
-    /// Creates a new Position.
-    pub fn new(file: File, rank: Rank) -> Position {
+impl Square {
+    /// Creates a new square.
+    pub fn new(file: File, rank: Rank) -> Square {
         unsafe { std::mem::transmute((rank as u8 - 1) * 8 + (8 - file as u8)) }
     }
 
-    /// Extract a file from the position.
+    /// Returns the file.
     pub fn file(&self) -> File {
         unsafe { std::mem::transmute(8 - (*self as u8) % 8) }
     }
 
-    /// Extract a rank from the position.
+    /// Returns the rank.
     pub fn rank(&self) -> Rank {
         unsafe { std::mem::transmute((*self as u8) / 8 + 1) }
     }
 }
 
-impl From<u8> for Position {
+impl From<u8> for Square {
     fn from(value: u8) -> Self {
         unsafe { std::mem::transmute(value) }
     }
 }
 
-impl Shl<u8> for Position {
-    type Output = Position;
+impl Shl<u8> for Square {
+    type Output = Square;
 
     fn shl(self, rhs: u8) -> Self::Output {
-        Position::from(self as u8 + rhs)
+        Square::from(self as u8 + rhs)
     }
 }
 
-impl ShlAssign<u8> for Position {
+impl ShlAssign<u8> for Square {
     fn shl_assign(&mut self, rhs: u8) {
         *self = *self << rhs;
     }
 }
 
-impl Shr<u8> for Position {
-    type Output = Position;
+impl Shr<u8> for Square {
+    type Output = Square;
 
     fn shr(self, rhs: u8) -> Self::Output {
-        Position::from(self as u8 - rhs)
+        Square::from(self as u8 - rhs)
     }
 }
 
-impl ShrAssign<u8> for Position {
+impl ShrAssign<u8> for Square {
     fn shr_assign(&mut self, rhs: u8) {
         *self = *self >> rhs;
     }
@@ -111,94 +111,94 @@ mod tests {
 
     #[test]
     fn shl() {
-        assert_eq!(Position::H2, Position::H1 << 8);
+        assert_eq!(Square::H2, Square::H1 << 8);
     }
 
     #[test]
     fn shl_assign() {
-        let mut position = Position::C3;
-        position <<= 2;
-        assert_eq!(Position::A3, position);
+        let mut square = Square::C3;
+        square <<= 2;
+        assert_eq!(Square::A3, square);
     }
 
     #[test]
     fn shr() {
-        assert_eq!(Position::D5, Position::D6 >> 8);
+        assert_eq!(Square::D5, Square::D6 >> 8);
     }
 
     #[test]
     fn shr_assign() {
-        let mut position = Position::H8;
-        position >>= 1;
-        assert_eq!(Position::A7, position);
+        let mut square = Square::H8;
+        square >>= 1;
+        assert_eq!(Square::A7, square);
     }
 
     #[test]
     #[rustfmt::skip]
     fn new_position() {
-        for (i, &(file, rank, position)) in [
-            (File::A, Rank::One,   Position::A1),
-            (File::A, Rank::Two,   Position::A2),
-            (File::A, Rank::Three, Position::A3),
-            (File::A, Rank::Four,  Position::A4),
-            (File::A, Rank::Five,  Position::A5),
-            (File::A, Rank::Six,   Position::A6),
-            (File::A, Rank::Seven, Position::A7),
-            (File::A, Rank::Eight, Position::A8),
-            (File::B, Rank::One,   Position::B1),
-            (File::B, Rank::Two,   Position::B2),
-            (File::B, Rank::Three, Position::B3),
-            (File::B, Rank::Four,  Position::B4),
-            (File::B, Rank::Five,  Position::B5),
-            (File::B, Rank::Six,   Position::B6),
-            (File::B, Rank::Seven, Position::B7),
-            (File::B, Rank::Eight, Position::B8),
-            (File::C, Rank::One,   Position::C1),
-            (File::C, Rank::Two,   Position::C2),
-            (File::C, Rank::Three, Position::C3),
-            (File::C, Rank::Four,  Position::C4),
-            (File::C, Rank::Five,  Position::C5),
-            (File::C, Rank::Six,   Position::C6),
-            (File::C, Rank::Seven, Position::C7),
-            (File::C, Rank::Eight, Position::C8),
-            (File::D, Rank::One,   Position::D1),
-            (File::D, Rank::Two,   Position::D2),
-            (File::D, Rank::Three, Position::D3),
-            (File::D, Rank::Four,  Position::D4),
-            (File::D, Rank::Five,  Position::D5),
-            (File::D, Rank::Six,   Position::D6),
-            (File::D, Rank::Seven, Position::D7),
-            (File::D, Rank::Eight, Position::D8),
-            (File::F, Rank::One,   Position::F1),
-            (File::F, Rank::Two,   Position::F2),
-            (File::F, Rank::Three, Position::F3),
-            (File::F, Rank::Four,  Position::F4),
-            (File::F, Rank::Five,  Position::F5),
-            (File::F, Rank::Six,   Position::F6),
-            (File::F, Rank::Seven, Position::F7),
-            (File::F, Rank::Eight, Position::F8),
-            (File::G, Rank::One,   Position::G1),
-            (File::G, Rank::Two,   Position::G2),
-            (File::G, Rank::Three, Position::G3),
-            (File::G, Rank::Four,  Position::G4),
-            (File::G, Rank::Five,  Position::G5),
-            (File::G, Rank::Six,   Position::G6),
-            (File::G, Rank::Seven, Position::G7),
-            (File::G, Rank::Eight, Position::G8),
-            (File::H, Rank::One,   Position::H1),
-            (File::H, Rank::Two,   Position::H2),
-            (File::H, Rank::Three, Position::H3),
-            (File::H, Rank::Four,  Position::H4),
-            (File::H, Rank::Five,  Position::H5),
-            (File::H, Rank::Six,   Position::H6),
-            (File::H, Rank::Seven, Position::H7),
-            (File::H, Rank::Eight, Position::H8),
+        for (i, &(file, rank, square)) in [
+            (File::A, Rank::One,   Square::A1),
+            (File::A, Rank::Two,   Square::A2),
+            (File::A, Rank::Three, Square::A3),
+            (File::A, Rank::Four,  Square::A4),
+            (File::A, Rank::Five,  Square::A5),
+            (File::A, Rank::Six,   Square::A6),
+            (File::A, Rank::Seven, Square::A7),
+            (File::A, Rank::Eight, Square::A8),
+            (File::B, Rank::One,   Square::B1),
+            (File::B, Rank::Two,   Square::B2),
+            (File::B, Rank::Three, Square::B3),
+            (File::B, Rank::Four,  Square::B4),
+            (File::B, Rank::Five,  Square::B5),
+            (File::B, Rank::Six,   Square::B6),
+            (File::B, Rank::Seven, Square::B7),
+            (File::B, Rank::Eight, Square::B8),
+            (File::C, Rank::One,   Square::C1),
+            (File::C, Rank::Two,   Square::C2),
+            (File::C, Rank::Three, Square::C3),
+            (File::C, Rank::Four,  Square::C4),
+            (File::C, Rank::Five,  Square::C5),
+            (File::C, Rank::Six,   Square::C6),
+            (File::C, Rank::Seven, Square::C7),
+            (File::C, Rank::Eight, Square::C8),
+            (File::D, Rank::One,   Square::D1),
+            (File::D, Rank::Two,   Square::D2),
+            (File::D, Rank::Three, Square::D3),
+            (File::D, Rank::Four,  Square::D4),
+            (File::D, Rank::Five,  Square::D5),
+            (File::D, Rank::Six,   Square::D6),
+            (File::D, Rank::Seven, Square::D7),
+            (File::D, Rank::Eight, Square::D8),
+            (File::F, Rank::One,   Square::F1),
+            (File::F, Rank::Two,   Square::F2),
+            (File::F, Rank::Three, Square::F3),
+            (File::F, Rank::Four,  Square::F4),
+            (File::F, Rank::Five,  Square::F5),
+            (File::F, Rank::Six,   Square::F6),
+            (File::F, Rank::Seven, Square::F7),
+            (File::F, Rank::Eight, Square::F8),
+            (File::G, Rank::One,   Square::G1),
+            (File::G, Rank::Two,   Square::G2),
+            (File::G, Rank::Three, Square::G3),
+            (File::G, Rank::Four,  Square::G4),
+            (File::G, Rank::Five,  Square::G5),
+            (File::G, Rank::Six,   Square::G6),
+            (File::G, Rank::Seven, Square::G7),
+            (File::G, Rank::Eight, Square::G8),
+            (File::H, Rank::One,   Square::H1),
+            (File::H, Rank::Two,   Square::H2),
+            (File::H, Rank::Three, Square::H3),
+            (File::H, Rank::Four,  Square::H4),
+            (File::H, Rank::Five,  Square::H5),
+            (File::H, Rank::Six,   Square::H6),
+            (File::H, Rank::Seven, Square::H7),
+            (File::H, Rank::Eight, Square::H8),
         ]
         .iter()
         .enumerate()
         {
-            let expected = position;
-            let actual = Position::new(file, rank);
+            let expected = square;
+            let actual = Square::new(file, rank);
 
             assert_eq!(
                 expected, actual,
@@ -210,77 +210,77 @@ mod tests {
 
     #[test]
     fn extract_file() {
-        for (i, &(position, file)) in [
-            (Position::A1, File::A),
-            (Position::A2, File::A),
-            (Position::A3, File::A),
-            (Position::A4, File::A),
-            (Position::A5, File::A),
-            (Position::A6, File::A),
-            (Position::A7, File::A),
-            (Position::A8, File::A),
-            (Position::B1, File::B),
-            (Position::B2, File::B),
-            (Position::B3, File::B),
-            (Position::B4, File::B),
-            (Position::B5, File::B),
-            (Position::B6, File::B),
-            (Position::B7, File::B),
-            (Position::B8, File::B),
-            (Position::C1, File::C),
-            (Position::C2, File::C),
-            (Position::C3, File::C),
-            (Position::C4, File::C),
-            (Position::C5, File::C),
-            (Position::C6, File::C),
-            (Position::C7, File::C),
-            (Position::C8, File::C),
-            (Position::D1, File::D),
-            (Position::D2, File::D),
-            (Position::D3, File::D),
-            (Position::D4, File::D),
-            (Position::D5, File::D),
-            (Position::D6, File::D),
-            (Position::D7, File::D),
-            (Position::D8, File::D),
-            (Position::E1, File::E),
-            (Position::E2, File::E),
-            (Position::E3, File::E),
-            (Position::E4, File::E),
-            (Position::E5, File::E),
-            (Position::E6, File::E),
-            (Position::E7, File::E),
-            (Position::E8, File::E),
-            (Position::F1, File::F),
-            (Position::F2, File::F),
-            (Position::F3, File::F),
-            (Position::F4, File::F),
-            (Position::F5, File::F),
-            (Position::F6, File::F),
-            (Position::F7, File::F),
-            (Position::F8, File::F),
-            (Position::G1, File::G),
-            (Position::G2, File::G),
-            (Position::G3, File::G),
-            (Position::G4, File::G),
-            (Position::G5, File::G),
-            (Position::G6, File::G),
-            (Position::G7, File::G),
-            (Position::G8, File::G),
-            (Position::H1, File::H),
-            (Position::H2, File::H),
-            (Position::H3, File::H),
-            (Position::H4, File::H),
-            (Position::H5, File::H),
-            (Position::H6, File::H),
-            (Position::H7, File::H),
-            (Position::H8, File::H),
+        for (i, &(square, file)) in [
+            (Square::A1, File::A),
+            (Square::A2, File::A),
+            (Square::A3, File::A),
+            (Square::A4, File::A),
+            (Square::A5, File::A),
+            (Square::A6, File::A),
+            (Square::A7, File::A),
+            (Square::A8, File::A),
+            (Square::B1, File::B),
+            (Square::B2, File::B),
+            (Square::B3, File::B),
+            (Square::B4, File::B),
+            (Square::B5, File::B),
+            (Square::B6, File::B),
+            (Square::B7, File::B),
+            (Square::B8, File::B),
+            (Square::C1, File::C),
+            (Square::C2, File::C),
+            (Square::C3, File::C),
+            (Square::C4, File::C),
+            (Square::C5, File::C),
+            (Square::C6, File::C),
+            (Square::C7, File::C),
+            (Square::C8, File::C),
+            (Square::D1, File::D),
+            (Square::D2, File::D),
+            (Square::D3, File::D),
+            (Square::D4, File::D),
+            (Square::D5, File::D),
+            (Square::D6, File::D),
+            (Square::D7, File::D),
+            (Square::D8, File::D),
+            (Square::E1, File::E),
+            (Square::E2, File::E),
+            (Square::E3, File::E),
+            (Square::E4, File::E),
+            (Square::E5, File::E),
+            (Square::E6, File::E),
+            (Square::E7, File::E),
+            (Square::E8, File::E),
+            (Square::F1, File::F),
+            (Square::F2, File::F),
+            (Square::F3, File::F),
+            (Square::F4, File::F),
+            (Square::F5, File::F),
+            (Square::F6, File::F),
+            (Square::F7, File::F),
+            (Square::F8, File::F),
+            (Square::G1, File::G),
+            (Square::G2, File::G),
+            (Square::G3, File::G),
+            (Square::G4, File::G),
+            (Square::G5, File::G),
+            (Square::G6, File::G),
+            (Square::G7, File::G),
+            (Square::G8, File::G),
+            (Square::H1, File::H),
+            (Square::H2, File::H),
+            (Square::H3, File::H),
+            (Square::H4, File::H),
+            (Square::H5, File::H),
+            (Square::H6, File::H),
+            (Square::H7, File::H),
+            (Square::H8, File::H),
         ]
         .iter()
         .enumerate()
         {
             let expected = file;
-            let actual = position.file();
+            let actual = square.file();
 
             assert_eq!(
                 expected, actual,
@@ -292,77 +292,77 @@ mod tests {
 
     #[test]
     fn extract_rank() {
-        for (i, &(position, rank)) in [
-            (Position::A1, Rank::One),
-            (Position::A2, Rank::Two),
-            (Position::A3, Rank::Three),
-            (Position::A4, Rank::Four),
-            (Position::A5, Rank::Five),
-            (Position::A6, Rank::Six),
-            (Position::A7, Rank::Seven),
-            (Position::A8, Rank::Eight),
-            (Position::B1, Rank::One),
-            (Position::B2, Rank::Two),
-            (Position::B3, Rank::Three),
-            (Position::B4, Rank::Four),
-            (Position::B5, Rank::Five),
-            (Position::B6, Rank::Six),
-            (Position::B7, Rank::Seven),
-            (Position::B8, Rank::Eight),
-            (Position::C1, Rank::One),
-            (Position::C2, Rank::Two),
-            (Position::C3, Rank::Three),
-            (Position::C4, Rank::Four),
-            (Position::C5, Rank::Five),
-            (Position::C6, Rank::Six),
-            (Position::C7, Rank::Seven),
-            (Position::C8, Rank::Eight),
-            (Position::D1, Rank::One),
-            (Position::D2, Rank::Two),
-            (Position::D3, Rank::Three),
-            (Position::D4, Rank::Four),
-            (Position::D5, Rank::Five),
-            (Position::D6, Rank::Six),
-            (Position::D7, Rank::Seven),
-            (Position::D8, Rank::Eight),
-            (Position::E1, Rank::One),
-            (Position::E2, Rank::Two),
-            (Position::E3, Rank::Three),
-            (Position::E4, Rank::Four),
-            (Position::E5, Rank::Five),
-            (Position::E6, Rank::Six),
-            (Position::E7, Rank::Seven),
-            (Position::E8, Rank::Eight),
-            (Position::F1, Rank::One),
-            (Position::F2, Rank::Two),
-            (Position::F3, Rank::Three),
-            (Position::F4, Rank::Four),
-            (Position::F5, Rank::Five),
-            (Position::F6, Rank::Six),
-            (Position::F7, Rank::Seven),
-            (Position::F8, Rank::Eight),
-            (Position::G1, Rank::One),
-            (Position::G2, Rank::Two),
-            (Position::G3, Rank::Three),
-            (Position::G4, Rank::Four),
-            (Position::G5, Rank::Five),
-            (Position::G6, Rank::Six),
-            (Position::G7, Rank::Seven),
-            (Position::G8, Rank::Eight),
-            (Position::H1, Rank::One),
-            (Position::H2, Rank::Two),
-            (Position::H3, Rank::Three),
-            (Position::H4, Rank::Four),
-            (Position::H5, Rank::Five),
-            (Position::H6, Rank::Six),
-            (Position::H7, Rank::Seven),
-            (Position::H8, Rank::Eight),
+        for (i, &(square, rank)) in [
+            (Square::A1, Rank::One),
+            (Square::A2, Rank::Two),
+            (Square::A3, Rank::Three),
+            (Square::A4, Rank::Four),
+            (Square::A5, Rank::Five),
+            (Square::A6, Rank::Six),
+            (Square::A7, Rank::Seven),
+            (Square::A8, Rank::Eight),
+            (Square::B1, Rank::One),
+            (Square::B2, Rank::Two),
+            (Square::B3, Rank::Three),
+            (Square::B4, Rank::Four),
+            (Square::B5, Rank::Five),
+            (Square::B6, Rank::Six),
+            (Square::B7, Rank::Seven),
+            (Square::B8, Rank::Eight),
+            (Square::C1, Rank::One),
+            (Square::C2, Rank::Two),
+            (Square::C3, Rank::Three),
+            (Square::C4, Rank::Four),
+            (Square::C5, Rank::Five),
+            (Square::C6, Rank::Six),
+            (Square::C7, Rank::Seven),
+            (Square::C8, Rank::Eight),
+            (Square::D1, Rank::One),
+            (Square::D2, Rank::Two),
+            (Square::D3, Rank::Three),
+            (Square::D4, Rank::Four),
+            (Square::D5, Rank::Five),
+            (Square::D6, Rank::Six),
+            (Square::D7, Rank::Seven),
+            (Square::D8, Rank::Eight),
+            (Square::E1, Rank::One),
+            (Square::E2, Rank::Two),
+            (Square::E3, Rank::Three),
+            (Square::E4, Rank::Four),
+            (Square::E5, Rank::Five),
+            (Square::E6, Rank::Six),
+            (Square::E7, Rank::Seven),
+            (Square::E8, Rank::Eight),
+            (Square::F1, Rank::One),
+            (Square::F2, Rank::Two),
+            (Square::F3, Rank::Three),
+            (Square::F4, Rank::Four),
+            (Square::F5, Rank::Five),
+            (Square::F6, Rank::Six),
+            (Square::F7, Rank::Seven),
+            (Square::F8, Rank::Eight),
+            (Square::G1, Rank::One),
+            (Square::G2, Rank::Two),
+            (Square::G3, Rank::Three),
+            (Square::G4, Rank::Four),
+            (Square::G5, Rank::Five),
+            (Square::G6, Rank::Six),
+            (Square::G7, Rank::Seven),
+            (Square::G8, Rank::Eight),
+            (Square::H1, Rank::One),
+            (Square::H2, Rank::Two),
+            (Square::H3, Rank::Three),
+            (Square::H4, Rank::Four),
+            (Square::H5, Rank::Five),
+            (Square::H6, Rank::Six),
+            (Square::H7, Rank::Seven),
+            (Square::H8, Rank::Eight),
         ]
         .iter()
         .enumerate()
         {
             let expected = rank;
-            let actual = position.rank();
+            let actual = square.rank();
 
             assert_eq!(
                 expected, actual,
