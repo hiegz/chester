@@ -1,6 +1,7 @@
 pub type File = u8;
 
 /// Wraps the given file to be represented by a debug formatter.
+#[derive(Eq, PartialEq)]
 pub struct FileWrapper(File);
 
 pub const A: File = 0;

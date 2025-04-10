@@ -4,6 +4,7 @@ use crate::rank::Rank;
 pub type Square = u8;
 
 /// Wraps the given square to be represented by a debug formatter.
+#[derive(Eq, PartialEq)]
 pub struct SquareWrapper(Square);
 
 // A file

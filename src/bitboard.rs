@@ -5,6 +5,7 @@ use std::fmt::Write;
 pub type Bitboard = u64;
 
 /// Wraps the given bitboard to be represented by a debug formatter.
+#[derive(Eq, PartialEq)]
 pub struct BitboardWrapper(Bitboard);
 
 /// Bitboard with all bits set to zero.
