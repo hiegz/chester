@@ -1,5 +1,6 @@
 use crate::bitboard;
 use crate::bitboard::Bitboard;
+use crate::square;
 use crate::square::Square;
 
 use lazy_static::lazy_static;
@@ -2481,6 +2482,7 @@ impl BlackPawnAttackTable {
 
 lazy_static! {
     pub static ref WHITE_PAWN_PUSH_TABLE: WhitePawnPushTable = WhitePawnPushTable::new();
+    pub static ref BLACK_PAWN_PUSH_TABLE: BlackPawnPushTable = BlackPawnPushTable::new();
 }
 
 pub struct WhitePawnPushTable {
@@ -2514,6 +2516,48 @@ impl WhitePawnPushTable {
         let first_blocker = (occ.checked_shr(square as u32 + 15).unwrap_or(0)) & 0b10;
         let second_blocker = (occ.checked_shr(square as u32 + 8).unwrap_or(0)) & 0b01;
         self.lookup[square as usize - 8][(first_blocker | second_blocker) as usize]
+    }
+}
+
+pub struct BlackPawnPushTable {
+    lookup: [[Bitboard; 4]; 56],
+}
+
+impl BlackPawnPushTable {
+    pub fn new() -> BlackPawnPushTable {
+        let mut table = BlackPawnPushTable {
+            lookup: [[bitboard::EMPTY; 4]; 56],
+        };
+        for sq in 0..48u32 {
+            let sq_bit = 1u64 << sq;
+
+            table.lookup[sq as usize][0b00] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b01] = 0;
+            table.lookup[sq as usize][0b10] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b11] = 0;
+        }
+        for sq in 48..56u32 {
+            table.lookup[sq as usize][0b00] = (1 << (sq - 8)) | (1 << (sq - 16));
+            table.lookup[sq as usize][0b01] = 0;
+            table.lookup[sq as usize][0b10] = 1 << (sq - 8);
+            table.lookup[sq as usize][0b11] = 0;
+        }
+        return table;
+    }
+
+    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
+        debug_assert!(square < 56);
+        const OCC_MASK: u64 = 0x101 << square::A6;
+        let occ = occ & (OCC_MASK >> (63 - square));
+        let first_blocker = (occ
+            .checked_shr((square as u32).saturating_sub(17))
+            .unwrap_or(0))
+            & 0b10;
+        let second_blocker = (occ
+            .checked_shr((square as u32).saturating_sub(8))
+            .unwrap_or(0))
+            & 0b01;
+        self.lookup[square as usize][(first_blocker | second_blocker) as usize]
     }
 }
 
@@ -2766,6 +2810,295 @@ mod test {
             assert_eq!(
                 BitboardWrapper(pushes),
                 BitboardWrapper(lookup::WHITE_PAWN_PUSH_TABLE.lookup(square, occ)),
+                "Test case #{} failed",
+                i
+            );
+        }
+    }
+
+    #[test]
+    fn black_pawn_push_table() {
+        for (i, &(square, occ, pushes)) in [
+            (
+                square::H1,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A1,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_10000001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::C2,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10100100
+                    0b_10000001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00100000),
+            ),
+            (
+                square::D2,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10010100
+                    0b_10010001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::F3,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000101
+                    0b_10010000
+                    0b_10010001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000100
+                    0b_00000000),
+            ),
+            (
+                square::F3,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000101
+                    0b_10010100
+                    0b_10010001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::C3,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00100000
+                    0b_00000000),
+            ),
+            (
+                square::G7,
+                chessboard!(
+                    0b_10000000
+                    0b_00001011
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000010
+                    0b_00000010
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::F7,
+                chessboard!(
+                    0b_10000000
+                    0b_00001101
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000100
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::D7,
+                chessboard!(
+                    0b_10000000
+                    0b_00010101
+                    0b_00010001
+                    0b_00000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A7,
+                chessboard!(
+                    0b_10000000
+                    0b_10101101
+                    0b_10100001
+                    0b_10000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::B6,
+                chessboard!(
+                    0b_10000000
+                    0b_00001101
+                    0b_01000001
+                    0b_10000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_01000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A6,
+                chessboard!(
+                    0b_10000000
+                    0b_00001101
+                    0b_10000001
+                    0b_10000100
+                    0b_10010000
+                    0b_11100101
+                    0b_10010100
+                    0b_10110001),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+        ]
+        .iter()
+        .enumerate()
+        {
+            assert_eq!(
+                BitboardWrapper(pushes),
+                BitboardWrapper(lookup::BLACK_PAWN_PUSH_TABLE.lookup(square, occ)),
                 "Test case #{} failed",
                 i
             );
