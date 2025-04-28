@@ -1,5 +1,8 @@
+use crate::bitboard;
 use crate::bitboard::Bitboard;
 use crate::square::Square;
+
+use lazy_static::lazy_static;
 
 macro_rules! chessboard {
     ($line0:tt $line1:tt $line2:tt $line3:tt $line4:tt $line5:tt $line6:tt $line7:tt) => {
@@ -2473,5 +2476,299 @@ impl BlackPawnAttackTable {
     pub fn lookup(&self, square: Square) -> Bitboard {
         debug_assert!((square as usize) < 56);
         self.lookup[square as usize]
+    }
+}
+
+lazy_static! {
+    pub static ref WHITE_PAWN_PUSH_TABLE: WhitePawnPushTable = WhitePawnPushTable::new();
+}
+
+pub struct WhitePawnPushTable {
+    lookup: [[Bitboard; 4]; 56],
+}
+
+impl WhitePawnPushTable {
+    pub fn new() -> WhitePawnPushTable {
+        let mut table = WhitePawnPushTable {
+            lookup: [[bitboard::EMPTY; 4]; 56],
+        };
+        for sq in 8..16u32 {
+            table.lookup[sq as usize - 8][0b00] = (1 << sq + 8) | (1 << sq + 16);
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = 1 << sq + 8;
+            table.lookup[sq as usize - 8][0b11] = 0;
+        }
+        for sq in 16..64u32 {
+            table.lookup[sq as usize - 8][0b00] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+            table.lookup[sq as usize - 8][0b11] = 0;
+        }
+        return table;
+    }
+
+    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
+        debug_assert!(square >= 8);
+        const OCC_MASK: u64 = 0x10100;
+        let occ = occ & (OCC_MASK << square);
+        let first_blocker = (occ.checked_shr(square as u32 + 15).unwrap_or(0)) & 0b10;
+        let second_blocker = (occ.checked_shr(square as u32 + 8).unwrap_or(0)) & 0b01;
+        self.lookup[square as usize - 8][(first_blocker | second_blocker) as usize]
+    }
+}
+
+#[cfg(test)]
+mod test {
+    mod lookup {
+        pub use super::super::*;
+    }
+    use crate::bitboard::BitboardWrapper;
+    use crate::square;
+
+    #[test]
+    fn white_pawn_push_table() {
+        for (i, &(square, occ, pushes)) in [
+            (
+                square::A2,
+                chessboard!(
+                    0b_10000000
+                    0b_00100000
+                    0b_00000100
+                    0b_00001001
+                    0b_00010000
+                    0b_00000010
+                    0b_10000000
+                    0b_00001000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_10000000
+                    0b_10000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A2,
+                chessboard!(
+                    0b_10100000
+                    0b_00000000
+                    0b_00001000
+                    0b_10000100
+                    0b_11000000
+                    0b_01000001
+                    0b_11000000
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_10000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A2,
+                chessboard!(
+                    0b_00000000
+                    0b_00001000
+                    0b_00100000
+                    0b_00000000
+                    0b_00010000
+                    0b_11000000
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A2,
+                chessboard!(
+                    0b_00000000
+                    0b_00001000
+                    0b_00100000
+                    0b_00000000
+                    0b_10010000
+                    0b_11000000
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::H6,
+                chessboard!(
+                    0b_00000000
+                    0b_00001000
+                    0b_00100001
+                    0b_00000000
+                    0b_10010000
+                    0b_11000000
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000001
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::H6,
+                chessboard!(
+                    0b_00000001
+                    0b_00001000
+                    0b_00100001
+                    0b_00000000
+                    0b_10010000
+                    0b_11000000
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000001
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::H6,
+                chessboard!(
+                    0b_00000001
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::H6,
+                chessboard!(
+                    0b_00000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A7,
+                chessboard!(
+                    0b_00000000
+                    0b_10001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_10000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A7,
+                chessboard!(
+                    0b_10000000
+                    0b_10001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+            (
+                square::A8,
+                chessboard!(
+                    0b_10000000
+                    0b_00001001
+                    0b_00100001
+                    0b_00000100
+                    0b_10010000
+                    0b_11000001
+                    0b_10000100
+                    0b_00000000),
+                chessboard!(
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000
+                    0b_00000000),
+            ),
+        ]
+        .iter()
+        .enumerate()
+        {
+            assert_eq!(
+                BitboardWrapper(pushes),
+                BitboardWrapper(lookup::WHITE_PAWN_PUSH_TABLE.lookup(square, occ)),
+                "Test case #{} failed",
+                i
+            );
+        }
     }
 }
