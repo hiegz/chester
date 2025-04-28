@@ -18,6 +18,124 @@ macro_rules! chessboard {
     };
 }
 
+pub struct KingAttackTable {
+    lookup: [Bitboard; 64],
+}
+
+impl KingAttackTable {
+    pub fn lookup(&self, square: Square) -> Bitboard {
+        self.lookup[square as usize]
+    }
+}
+
+pub struct KnightAttackTable {
+    lookup: [Bitboard; 64],
+}
+
+impl KnightAttackTable {
+    pub fn lookup(&self, square: Square) -> Bitboard {
+        self.lookup[square as usize]
+    }
+}
+
+pub struct WhitePawnAttackTable {
+    lookup: [Bitboard; 56],
+}
+
+impl WhitePawnAttackTable {
+    pub fn lookup(&self, square: Square) -> Bitboard {
+        debug_assert!(square as usize >= 8);
+        self.lookup[square as usize - 8]
+    }
+}
+
+pub struct BlackPawnAttackTable {
+    lookup: [Bitboard; 56],
+}
+
+impl BlackPawnAttackTable {
+    pub fn lookup(&self, square: Square) -> Bitboard {
+        debug_assert!((square as usize) < 56);
+        self.lookup[square as usize]
+    }
+}
+
+pub struct WhitePawnPushTable {
+    lookup: [[Bitboard; 4]; 56],
+}
+
+impl WhitePawnPushTable {
+    pub fn new() -> WhitePawnPushTable {
+        let mut table = WhitePawnPushTable {
+            lookup: [[bitboard::EMPTY; 4]; 56],
+        };
+        for sq in 8..16u32 {
+            table.lookup[sq as usize - 8][0b00] = (1 << sq + 8) | (1 << sq + 16);
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = 1 << sq + 8;
+            table.lookup[sq as usize - 8][0b11] = 0;
+        }
+        for sq in 16..64u32 {
+            table.lookup[sq as usize - 8][0b00] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+            table.lookup[sq as usize - 8][0b11] = 0;
+        }
+        return table;
+    }
+
+    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
+        debug_assert!(square >= 8);
+        const OCC_MASK: u64 = 0x10100;
+        let occ = occ & (OCC_MASK << square);
+        let first_blocker = (occ.checked_shr(square as u32 + 15).unwrap_or(0)) & 0b10;
+        let second_blocker = (occ.checked_shr(square as u32 + 8).unwrap_or(0)) & 0b01;
+        self.lookup[square as usize - 8][(first_blocker | second_blocker) as usize]
+    }
+}
+
+pub struct BlackPawnPushTable {
+    lookup: [[Bitboard; 4]; 56],
+}
+
+impl BlackPawnPushTable {
+    pub fn new() -> BlackPawnPushTable {
+        let mut table = BlackPawnPushTable {
+            lookup: [[bitboard::EMPTY; 4]; 56],
+        };
+        for sq in 0..48u32 {
+            let sq_bit = 1u64 << sq;
+
+            table.lookup[sq as usize][0b00] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b01] = 0;
+            table.lookup[sq as usize][0b10] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b11] = 0;
+        }
+        for sq in 48..56u32 {
+            table.lookup[sq as usize][0b00] = (1 << (sq - 8)) | (1 << (sq - 16));
+            table.lookup[sq as usize][0b01] = 0;
+            table.lookup[sq as usize][0b10] = 1 << (sq - 8);
+            table.lookup[sq as usize][0b11] = 0;
+        }
+        return table;
+    }
+
+    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
+        debug_assert!(square < 56);
+        const OCC_MASK: u64 = 0x101 << square::A6;
+        let occ = occ & (OCC_MASK >> (63 - square));
+        let first_blocker = (occ
+            .checked_shr((square as u32).saturating_sub(17))
+            .unwrap_or(0))
+            & 0b10;
+        let second_blocker = (occ
+            .checked_shr((square as u32).saturating_sub(8))
+            .unwrap_or(0))
+            & 0b01;
+        self.lookup[square as usize][(first_blocker | second_blocker) as usize]
+    }
+}
+
 pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
     lookup: [
         // [0] <-> H1
@@ -662,16 +780,6 @@ pub const KING_ATTACK_TABLE: KingAttackTable = KingAttackTable {
             0b_00000000),
     ],
 };
-
-pub struct KingAttackTable {
-    lookup: [Bitboard; 64],
-}
-
-impl KingAttackTable {
-    pub fn lookup(&self, square: Square) -> Bitboard {
-        self.lookup[square as usize]
-    }
-}
 
 pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
     lookup: [
@@ -1318,16 +1426,6 @@ pub const KNIGHT_ATTACK_TABLE: KnightAttackTable = KnightAttackTable {
     ],
 };
 
-pub struct KnightAttackTable {
-    lookup: [Bitboard; 64],
-}
-
-impl KnightAttackTable {
-    pub fn lookup(&self, square: Square) -> Bitboard {
-        self.lookup[square as usize]
-    }
-}
-
 pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
     lookup: [
         // [8] <-> H2
@@ -1892,17 +1990,6 @@ pub const WHITE_PAWN_ATTACK_TABLE: WhitePawnAttackTable = WhitePawnAttackTable {
             0b_00000000),
     ],
 };
-
-pub struct WhitePawnAttackTable {
-    lookup: [Bitboard; 56],
-}
-
-impl WhitePawnAttackTable {
-    pub fn lookup(&self, square: Square) -> Bitboard {
-        debug_assert!(square as usize >= 8);
-        self.lookup[square as usize - 8]
-    }
-}
 
 pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
     lookup: [
@@ -2469,96 +2556,9 @@ pub const BLACK_PAWN_ATTACK_TABLE: BlackPawnAttackTable = BlackPawnAttackTable {
     ],
 };
 
-pub struct BlackPawnAttackTable {
-    lookup: [Bitboard; 56],
-}
-
-impl BlackPawnAttackTable {
-    pub fn lookup(&self, square: Square) -> Bitboard {
-        debug_assert!((square as usize) < 56);
-        self.lookup[square as usize]
-    }
-}
-
 lazy_static! {
     pub static ref WHITE_PAWN_PUSH_TABLE: WhitePawnPushTable = WhitePawnPushTable::new();
     pub static ref BLACK_PAWN_PUSH_TABLE: BlackPawnPushTable = BlackPawnPushTable::new();
-}
-
-pub struct WhitePawnPushTable {
-    lookup: [[Bitboard; 4]; 56],
-}
-
-impl WhitePawnPushTable {
-    pub fn new() -> WhitePawnPushTable {
-        let mut table = WhitePawnPushTable {
-            lookup: [[bitboard::EMPTY; 4]; 56],
-        };
-        for sq in 8..16u32 {
-            table.lookup[sq as usize - 8][0b00] = (1 << sq + 8) | (1 << sq + 16);
-            table.lookup[sq as usize - 8][0b01] = 0;
-            table.lookup[sq as usize - 8][0b10] = 1 << sq + 8;
-            table.lookup[sq as usize - 8][0b11] = 0;
-        }
-        for sq in 16..64u32 {
-            table.lookup[sq as usize - 8][0b00] = 1u64.checked_shl(sq + 8).unwrap_or(0);
-            table.lookup[sq as usize - 8][0b01] = 0;
-            table.lookup[sq as usize - 8][0b10] = 1u64.checked_shl(sq + 8).unwrap_or(0);
-            table.lookup[sq as usize - 8][0b11] = 0;
-        }
-        return table;
-    }
-
-    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
-        debug_assert!(square >= 8);
-        const OCC_MASK: u64 = 0x10100;
-        let occ = occ & (OCC_MASK << square);
-        let first_blocker = (occ.checked_shr(square as u32 + 15).unwrap_or(0)) & 0b10;
-        let second_blocker = (occ.checked_shr(square as u32 + 8).unwrap_or(0)) & 0b01;
-        self.lookup[square as usize - 8][(first_blocker | second_blocker) as usize]
-    }
-}
-
-pub struct BlackPawnPushTable {
-    lookup: [[Bitboard; 4]; 56],
-}
-
-impl BlackPawnPushTable {
-    pub fn new() -> BlackPawnPushTable {
-        let mut table = BlackPawnPushTable {
-            lookup: [[bitboard::EMPTY; 4]; 56],
-        };
-        for sq in 0..48u32 {
-            let sq_bit = 1u64 << sq;
-
-            table.lookup[sq as usize][0b00] = sq_bit.checked_shr(8).unwrap_or(0);
-            table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = sq_bit.checked_shr(8).unwrap_or(0);
-            table.lookup[sq as usize][0b11] = 0;
-        }
-        for sq in 48..56u32 {
-            table.lookup[sq as usize][0b00] = (1 << (sq - 8)) | (1 << (sq - 16));
-            table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = 1 << (sq - 8);
-            table.lookup[sq as usize][0b11] = 0;
-        }
-        return table;
-    }
-
-    pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
-        debug_assert!(square < 56);
-        const OCC_MASK: u64 = 0x101 << square::A6;
-        let occ = occ & (OCC_MASK >> (63 - square));
-        let first_blocker = (occ
-            .checked_shr((square as u32).saturating_sub(17))
-            .unwrap_or(0))
-            & 0b10;
-        let second_blocker = (occ
-            .checked_shr((square as u32).saturating_sub(8))
-            .unwrap_or(0))
-            & 0b01;
-        self.lookup[square as usize][(first_blocker | second_blocker) as usize]
-    }
 }
 
 #[cfg(test)]
