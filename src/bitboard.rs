@@ -147,9 +147,10 @@ pub fn mirror(mut x: Bitboard) -> Bitboard {
 
 impl std::fmt::Debug for BitboardWrapper {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let self_m = mirror(self.0);
         for i in 0..64 {
             f.write_char(if i % 8 == 0 { '\n' } else { ' ' })?;
-            let bit = (self.0 & (1 << (63 - i))) != 0;
+            let bit = (self_m & (1 << (63 - i))) != 0;
             f.write_char(if bit { '1' } else { '.' })?;
         }
         Ok(())
