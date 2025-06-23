@@ -1,5 +1,7 @@
 use crate::file::File;
+use crate::file::FileWrapper;
 use crate::rank::Rank;
+use crate::rank::RankWrapper;
 
 pub type Square = u8;
 
@@ -105,7 +107,12 @@ pub fn rank(square: Square) -> Rank {
 
 impl std::fmt::Debug for SquareWrapper {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}{}", file(self.0), rank(self.0))
+        write!(
+            f,
+            "{:?}{:?}",
+            FileWrapper(file(self.0)),
+            RankWrapper(rank(self.0))
+        )
     }
 }
 
