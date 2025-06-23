@@ -104,6 +104,47 @@ pub fn bitscan_reverse(mut bitboard: Bitboard) -> u8 {
     return INDEX64[(bitboard.wrapping_mul(DEBRUIJN64) as usize) >> 58];
 }
 
+/// Mirror a bitboard horizontally about the center files.
+///
+/// File a is mapped to file h and vice versa.
+pub fn mirror(mut x: Bitboard) -> Bitboard {
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    // . 1 . 1 . 1 . 1
+    const K1: u64 = 0x5555555555555555;
+
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    // . . 1 1 . . 1 1
+    const K2: u64 = 0x3333333333333333;
+
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    // . . . . 1 1 1 1
+    const K4: u64 = 0x0f0f0f0f0f0f0f0f;
+
+    x = ((x >> 1) & K1) | ((x & K1) << 1);
+    x = ((x >> 2) & K2) | ((x & K2) << 2);
+    x = ((x >> 4) & K4) | ((x & K4) << 4);
+
+    return x;
+}
+
 impl std::fmt::Debug for BitboardWrapper {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         for i in 0..64 {
@@ -151,12 +192,12 @@ mod tests {
 
     #[test]
     fn universal_bitscan_forward() {
-        assert_eq!(square::H1, bitboard::bitscan_forward(bitboard::UNIVERSAL));
+        assert_eq!(square::A1, bitboard::bitscan_forward(bitboard::UNIVERSAL));
     }
 
     #[test]
     fn universal_bitscan_reverse() {
-        assert_eq!(square::A8, bitboard::bitscan_reverse(bitboard::UNIVERSAL));
+        assert_eq!(square::H8, bitboard::bitscan_reverse(bitboard::UNIVERSAL));
     }
 
     #[test]
@@ -243,7 +284,7 @@ mod tests {
             (&vec![square::F7], square::F7),
             (&vec![square::A8], square::A8),
             (&vec![square::A5, square::B2], square::B2),
-            (&vec![square::C1, square::D1, square::D2], square::D1),
+            (&vec![square::C1, square::D1, square::D2], square::C1),
             (&vec![square::F2, square::B1, square::G4], square::B1),
             (&vec![square::E3, square::E4, square::A4], square::E3),
         ]
@@ -276,7 +317,7 @@ mod tests {
             (&vec![square::A5, square::B2], square::A5),
             (&vec![square::C1, square::D1, square::D2], square::D2),
             (&vec![square::F2, square::B1, square::G4], square::G4),
-            (&vec![square::E3, square::E4, square::A4], square::A4),
+            (&vec![square::E3, square::E4, square::A4], square::E4),
         ]
         .iter()
         .enumerate()
@@ -294,5 +335,23 @@ mod tests {
             );
         }
 
+    }
+
+    #[test]
+    fn mirror() {
+        use bitboard::Bitboard;
+
+        // . 1 1 1 1 . . .      . . . 1 1 1 1 .
+        // . 1 . . . 1 . .      . . 1 . . . 1 .
+        // . 1 . . . 1 . .      . . 1 . . . 1 .
+        // . 1 . . 1 . . . -->  . . . 1 . . 1 .
+        // . 1 1 1 . . . .      . . . . 1 1 1 .
+        // . 1 . 1 . . . .      . . . . 1 . 1 .
+        // . 1 . . 1 . . .      . . . 1 . . 1 .
+        // . 1 . . . 1 . .      . . 1 . . . 1 .
+        const FROM: Bitboard = 0x7844444870504844;
+        const TO: Bitboard = 0x1E2222120E0A1222;
+
+        assert_eq!(bitboard::mirror(FROM), TO);
     }
 }
