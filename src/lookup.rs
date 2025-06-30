@@ -84,13 +84,15 @@ impl WhitePawnPushTable {
         return table;
     }
 
+    #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
         debug_assert!(square >= 8);
-        const OCC_MASK: u64 = 0x10100;
-        let occ = occ & (OCC_MASK << square);
-        let first_blocker = (occ.checked_shr(square as u32 + 15).unwrap_or(0)) & 0b10;
-        let second_blocker = (occ.checked_shr(square as u32 + 8).unwrap_or(0)) & 0b01;
-        self.lookup[square as usize - 8][(first_blocker | second_blocker) as usize]
+
+        let occ    = occ >> square;
+        let first  = (occ >> 8) & 0b01;
+        let second = (occ >> 15) & 0b10;
+
+        self.lookup[square as usize - 8][(second | first) as usize]
     }
 }
 
@@ -106,33 +108,32 @@ impl BlackPawnPushTable {
         for sq in 0..48u32 {
             let sq_bit = 1u64 << sq;
 
-            table.lookup[sq as usize][0b00] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b00] = sq_bit >> 8;
             table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = sq_bit.checked_shr(8).unwrap_or(0);
+            table.lookup[sq as usize][0b10] = sq_bit >> 8;
             table.lookup[sq as usize][0b11] = 0;
         }
         for sq in 48..56u32 {
-            table.lookup[sq as usize][0b00] = (1 << (sq - 8)) | (1 << (sq - 16));
+            let sq_bit = 1u64 << sq;
+
+            table.lookup[sq as usize][0b00] = (sq_bit >> 8) | (sq_bit >> 16);
             table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = 1 << (sq - 8);
+            table.lookup[sq as usize][0b10] = sq_bit >> 8;
             table.lookup[sq as usize][0b11] = 0;
         }
         return table;
     }
 
+    #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
         debug_assert!(square < 56);
-        const OCC_MASK: u64 = 0x101 << square::H6;
-        let occ = occ & (OCC_MASK >> (63 - square));
-        let first_blocker = (occ
-            .checked_shr((square as u32).saturating_sub(17))
-            .unwrap_or(0))
-            & 0b10;
-        let second_blocker = (occ
-            .checked_shr((square as u32).saturating_sub(8))
-            .unwrap_or(0))
-            & 0b01;
-        self.lookup[square as usize][(first_blocker | second_blocker) as usize]
+
+        let occ    = occ << 16;
+        let occ    = occ >> square;
+        let first  = (occ >> 8) & 0b01;
+        let second = (occ << 1) & 0b10;
+
+        self.lookup[square as usize][(second | first) as usize]
     }
 }
 
