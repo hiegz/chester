@@ -282,27 +282,35 @@ impl BlackPawnAttackTable {
 /// Lookup table with pre-computed pawn moves for every possible occupancy
 /// and for each square on the board (white side).
 pub struct WhitePawnPushTable {
-    lookup: [[Bitboard; 4]; 56],
+    lookup: [[Bitboard; 4]; 48],
 }
 
 impl WhitePawnPushTable {
     /// Initializes a new lookup table.
     pub fn new() -> WhitePawnPushTable {
         let mut table = WhitePawnPushTable {
-            lookup: [[bitboard::EMPTY; 4]; 56],
+            lookup: [[bitboard::EMPTY; 4]; 48],
         };
+
+        // 0b00 - no blockers
+        // 0b01 - the closer  blocker
+        // 0b10 - the further blocker
+        // 0b11 - both blockers
+
         for sq in 8..16u32 {
             table.lookup[sq as usize - 8][0b00] = (1 << sq + 8) | (1 << sq + 16);
             table.lookup[sq as usize - 8][0b01] = 0;
             table.lookup[sq as usize - 8][0b10] = 1 << sq + 8;
             table.lookup[sq as usize - 8][0b11] = 0;
         }
-        for sq in 16..64u32 {
-            table.lookup[sq as usize - 8][0b00] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+
+        for sq in 16..56u32 {
+            table.lookup[sq as usize - 8][0b00] = 1u64 << sq + 8;
             table.lookup[sq as usize - 8][0b01] = 0;
-            table.lookup[sq as usize - 8][0b10] = 1u64.checked_shl(sq + 8).unwrap_or(0);
+            table.lookup[sq as usize - 8][0b10] = 1u64 << sq + 8;
             table.lookup[sq as usize - 8][0b11] = 0;
         }
+
         return table;
     }
 
@@ -311,6 +319,7 @@ impl WhitePawnPushTable {
     #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
         debug_assert!(square >= 8);
+        debug_assert!(square < 56);
 
         let occ    = occ >> square;
         let first  = (occ >> 8) & 0b01;
@@ -323,31 +332,39 @@ impl WhitePawnPushTable {
 /// Lookup table with pre-computed pawn moves for every possible occupancy
 /// and for each square on the board (black side).
 pub struct BlackPawnPushTable {
-    lookup: [[Bitboard; 4]; 56],
+    lookup: [[Bitboard; 4]; 48],
 }
 
 impl BlackPawnPushTable {
     /// Initializes a new lookup table.
     pub fn new() -> BlackPawnPushTable {
         let mut table = BlackPawnPushTable {
-            lookup: [[bitboard::EMPTY; 4]; 56],
+            lookup: [[bitboard::EMPTY; 4]; 48],
         };
-        for sq in 0..48u32 {
+
+        // 0b00 - no blockers
+        // 0b01 - the closer  blocker
+        // 0b10 - the further blocker
+        // 0b11 - both blockers
+
+        for sq in 8..48u32 {
             let sq_bit = 1u64 << sq;
 
-            table.lookup[sq as usize][0b00] = sq_bit >> 8;
-            table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = sq_bit >> 8;
-            table.lookup[sq as usize][0b11] = 0;
+            table.lookup[sq as usize - 8][0b00] = sq_bit >> 8;
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = sq_bit >> 8;
+            table.lookup[sq as usize - 8][0b11] = 0;
         }
+
         for sq in 48..56u32 {
             let sq_bit = 1u64 << sq;
 
-            table.lookup[sq as usize][0b00] = (sq_bit >> 8) | (sq_bit >> 16);
-            table.lookup[sq as usize][0b01] = 0;
-            table.lookup[sq as usize][0b10] = sq_bit >> 8;
-            table.lookup[sq as usize][0b11] = 0;
+            table.lookup[sq as usize - 8][0b00] = (sq_bit >> 8) | (sq_bit >> 16);
+            table.lookup[sq as usize - 8][0b01] = 0;
+            table.lookup[sq as usize - 8][0b10] = sq_bit >> 8;
+            table.lookup[sq as usize - 8][0b11] = 0;
         }
+
         return table;
     }
 
@@ -355,6 +372,7 @@ impl BlackPawnPushTable {
     /// on the board with the given occupancy.
     #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
+        debug_assert!(square >= 8);
         debug_assert!(square < 56);
 
         let occ    = occ << 16;
@@ -362,7 +380,7 @@ impl BlackPawnPushTable {
         let first  = (occ >> 8) & 0b01;
         let second = (occ << 1) & 0b10;
 
-        self.lookup[square as usize][(second | first) as usize]
+        self.lookup[square as usize - 8][(second | first) as usize]
     }
 }
 
@@ -2857,9 +2875,9 @@ mod test {
                     0b_00000000),
             ),
             (
-                square::H8,
+                square::A7,
                 chessboard!(
-                    0b_10000000
+                    0b_00000001
                     0b_00001001
                     0b_00100001
                     0b_00000100
@@ -3582,7 +3600,7 @@ mod test {
     fn black_pawn_push_table() {
         for (i, &(square, occ, pushes)) in [
             (
-                square::A1,
+                square::A2,
                 chessboard!(
                     0b_10000000
                     0b_00001001
@@ -3590,8 +3608,8 @@ mod test {
                     0b_00000100
                     0b_10010000
                     0b_11000001
-                    0b_10000100
-                    0b_00000001),
+                    0b_10100101
+                    0b_10000000),
                 chessboard!(
                     0b_00000000
                     0b_00000000
@@ -3600,19 +3618,19 @@ mod test {
                     0b_00000000
                     0b_00000000
                     0b_00000000
-                    0b_00000000),
+                    0b_00000001),
             ),
             (
-                square::H1,
+                square::H2,
                 chessboard!(
                     0b_10000000
                     0b_00001001
                     0b_00100001
                     0b_00000100
                     0b_10010000
-                    0b_11000001
-                    0b_10000100
-                    0b_10000001),
+                    0b_01000001
+                    0b_10100100
+                    0b_00000000),
                 chessboard!(
                     0b_00000000
                     0b_00000000
@@ -3621,7 +3639,7 @@ mod test {
                     0b_00000000
                     0b_00000000
                     0b_00000000
-                    0b_00000000),
+                    0b_10000000),
             ),
             (
                 square::F2,
