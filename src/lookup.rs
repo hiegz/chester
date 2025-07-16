@@ -5,167 +5,288 @@ use crate::rank;
 use crate::square;
 use crate::square::Square;
 
+/// Lookup table with pre-computed king attacks for each square on the board.
 pub struct KingAttackTable {
     lookup: [Bitboard; 64],
 }
 
 impl KingAttackTable {
+    /// Initializes a new lookup table.
     pub fn new() -> KingAttackTable {
         let mut table = KingAttackTable {
             lookup: [bitboard::EMPTY; 64],
         };
+
         for (sq, cell) in table.lookup.iter_mut().enumerate() {
             let sq = sq as Square;
+            let file = square::file(sq);
+            let rank = square::rank(sq);
 
-            if square::rank(sq) > rank::ONE {
-                *cell |= 1 << sq - 8;
-            }
-            if square::rank(sq) < rank::EIGHT {
+            // . x .
+            // . K .
+            // . . .
+            if rank < rank::EIGHT {
                 *cell |= 1 << sq + 8;
             }
 
-            if square::file(sq) > file::A {
-                *cell |= 1 << sq - 1;
-            }
-            if square::file(sq) > file::A && square::rank(sq) > rank::ONE {
-                *cell |= 1 << sq - 9;
-            }
-            if square::file(sq) > file::A && square::rank(sq) < rank::EIGHT {
-                *cell |= 1 << sq + 7;
-            }
-
-            if square::file(sq) < file::H {
-                *cell |= 1 << sq + 1;
-            }
-            if square::file(sq) < file::H && square::rank(sq) < rank::EIGHT {
+            // . . x
+            // . K .
+            // . . .
+            if file < file::H && rank < rank::EIGHT {
                 *cell |= 1 << sq + 9;
             }
-            if square::file(sq) < file::H && square::rank(sq) > rank::ONE {
+
+            // . . .
+            // . K x
+            // . . .
+            if file < file::H {
+                *cell |= 1 << sq + 1;
+            }
+
+            // . . .
+            // . K .
+            // . . x
+            if file < file::H && rank > rank::ONE {
                 *cell |= 1 << sq - 7;
             }
+
+            // . . .
+            // . K .
+            // . x .
+            if rank > rank::ONE {
+                *cell |= 1 << sq - 8;
+            }
+
+            // . . .
+            // . K .
+            // x . .
+            if file > file::A && rank > rank::ONE {
+                *cell |= 1 << sq - 9;
+            }
+
+            // . . .
+            // x K .
+            // . . .
+            if file > file::A {
+                *cell |= 1 << sq - 1;
+            }
+
+            // x . .
+            // . K .
+            // . . .
+            if file > file::A && rank < rank::EIGHT {
+                *cell |= 1 << sq + 7;
+            }
         }
+
         return table;
     }
 
+    /// Returns all possible king attacks for the given square.
     pub fn lookup(&self, square: Square) -> Bitboard {
         self.lookup[square as usize]
     }
 }
 
+/// Lookup table with pre-computed knight attacks for each square on the board.
 pub struct KnightAttackTable {
     lookup: [Bitboard; 64],
 }
 
 impl KnightAttackTable {
+    /// Initializes a new lookup table.
     pub fn new() -> KnightAttackTable {
         let mut table = KnightAttackTable {
             lookup: [bitboard::EMPTY; 64],
         };
+
         for (sq, cell) in table.lookup.iter_mut().enumerate() {
             let sq = sq as Square;
+            let file = square::file(sq);
+            let rank = square::rank(sq);
 
-            if square::file(sq) < file::H && square::rank(sq) <= rank::SIX {
+            // . . . x .
+            // . . . . .
+            // . . N . .
+            // . . . . .
+            // . . . . .
+            if file < file::H && rank <= rank::SIX {
                 *cell |= 1 << sq + 17;
             }
-            if square::file(sq) < file::H && square::rank(sq) >= rank::THREE {
-                *cell |= 1 << sq - 15;
-            }
-            if square::file(sq) < file::G && square::rank(sq) <= rank::SEVEN {
+
+            // . . . . .
+            // . . . . x
+            // . . N . .
+            // . . . . .
+            // . . . . .
+            if file < file::G && rank <= rank::SEVEN {
                 *cell |= 1 << sq + 10;
             }
-            if square::file(sq) < file::G && square::rank(sq) >= rank::TWO {
+
+            // . . . . .
+            // . . . . .
+            // . . N . .
+            // . . . . x
+            // . . . . .
+            if file < file::G && rank >= rank::TWO {
                 *cell |= 1 << sq - 6;
             }
-            if square::file(sq) > file::B && square::rank(sq) >= rank::TWO {
-                *cell |= 1 << sq - 10;
+
+            // . . . . .
+            // . . . . .
+            // . . N . .
+            // . . . . .
+            // . . . x .
+            if file < file::H && rank >= rank::THREE {
+                *cell |= 1 << sq - 15;
             }
-            if square::file(sq) > file::B && square::rank(sq) <= rank::SEVEN {
-                *cell |= 1 << sq + 6;
-            }
-            if square::file(sq) > file::A && square::rank(sq) >= rank::THREE {
+
+            // . . . . .
+            // . . . . .
+            // . . N . .
+            // . . . . .
+            // . x . . .
+            if file > file::A && rank >= rank::THREE {
                 *cell |= 1 << sq - 17;
             }
-            if square::file(sq) > file::A && square::rank(sq) <= rank::SIX {
+
+            // . . . . .
+            // . . . . .
+            // . . N . .
+            // x . . . .
+            // . . . . .
+            if file > file::B && rank >= rank::TWO {
+                *cell |= 1 << sq - 10;
+            }
+
+            // . . . . .
+            // x . . . .
+            // . . N . .
+            // . . . . .
+            // . . . . .
+            if file > file::B && rank <= rank::SEVEN {
+                *cell |= 1 << sq + 6;
+            }
+
+            // . x . . .
+            // . . . . .
+            // . . N . .
+            // . . . . .
+            // . . . . .
+            if file > file::A && rank <= rank::SIX {
                 *cell |= 1 << sq + 15;
             }
         }
+
         return table;
     }
 
+    /// Returns all possible knight attacks for the given square.
     pub fn lookup(&self, square: Square) -> Bitboard {
         self.lookup[square as usize]
     }
 }
 
+/// Lookup table with pre-computed pawn attacks for each square on the board (white side).
 pub struct WhitePawnAttackTable {
     lookup: [Bitboard; 56],
 }
 
 impl WhitePawnAttackTable {
+    /// Initializes a new lookup table.
     pub fn new() -> WhitePawnAttackTable {
         let mut table = WhitePawnAttackTable {
             lookup: [bitboard::EMPTY; 56],
         };
+
         for (sq, cell) in table.lookup.iter_mut().enumerate() {
             let sq = sq as Square + 8;
+            let file = square::file(sq);
+            let rank = square::rank(sq);
 
-            if square::rank(sq) == rank::EIGHT {
+            if rank == rank::EIGHT {
                 continue;
             }
 
-            if square::file(sq) > file::A {
+            // x . .
+            // . P .
+            // . . .
+            if file > file::A {
                 *cell |= 1 << sq + 7;
             }
-            if square::file(sq) < file::H {
+
+            // . . x
+            // . P .
+            // . . .
+            if file < file::H {
                 *cell |= 1 << sq + 9;
             }
         }
+
         return table;
     }
 
+    /// Returns all possible pawn attacks for the given square.
     pub fn lookup(&self, square: Square) -> Bitboard {
         debug_assert!(square as usize >= 8);
         self.lookup[square as usize - 8]
     }
 }
 
+/// Lookup table with pre-computed pawn attacks for each square on the board (black side).
 pub struct BlackPawnAttackTable {
     lookup: [Bitboard; 56],
 }
 
 impl BlackPawnAttackTable {
+    /// Initializes a new lookup table.
     pub fn new() -> BlackPawnAttackTable {
         let mut table = BlackPawnAttackTable {
             lookup: [bitboard::EMPTY; 56],
         };
+
         for (sq, cell) in table.lookup.iter_mut().enumerate() {
             let sq = sq as Square;
+            let file = square::file(sq);
+            let rank = square::rank(sq);
 
-            if square::rank(sq) == rank::ONE {
+            if rank == rank::ONE {
                 continue;
             }
 
-            if square::file(sq) > file::A {
+            // . . .
+            // . P .
+            // x . .
+            if file > file::A {
                 *cell |= 1 << sq - 9;
             }
-            if square::file(sq) < file::H {
+
+            // . . .
+            // . P .
+            // . . x
+            if file < file::H {
                 *cell |= 1 << sq - 7;
             }
         }
+
         return table;
     }
 
+    /// Returns all possible pawn attacks for the given square.
     pub fn lookup(&self, square: Square) -> Bitboard {
         debug_assert!((square as usize) < 56);
         self.lookup[square as usize]
     }
 }
 
+/// Lookup table with pre-computed pawn moves for every possible occupancy
+/// and for each square on the board (white side).
 pub struct WhitePawnPushTable {
     lookup: [[Bitboard; 4]; 56],
 }
 
 impl WhitePawnPushTable {
+    /// Initializes a new lookup table.
     pub fn new() -> WhitePawnPushTable {
         let mut table = WhitePawnPushTable {
             lookup: [[bitboard::EMPTY; 4]; 56],
@@ -185,6 +306,8 @@ impl WhitePawnPushTable {
         return table;
     }
 
+    /// Returns all possible pawn moves for the specified square
+    /// on the board with the given occupancy.
     #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
         debug_assert!(square >= 8);
@@ -197,11 +320,14 @@ impl WhitePawnPushTable {
     }
 }
 
+/// Lookup table with pre-computed pawn moves for every possible occupancy
+/// and for each square on the board (black side).
 pub struct BlackPawnPushTable {
     lookup: [[Bitboard; 4]; 56],
 }
 
 impl BlackPawnPushTable {
+    /// Initializes a new lookup table.
     pub fn new() -> BlackPawnPushTable {
         let mut table = BlackPawnPushTable {
             lookup: [[bitboard::EMPTY; 4]; 56],
@@ -225,6 +351,8 @@ impl BlackPawnPushTable {
         return table;
     }
 
+    /// Returns all possible pawn moves for the specified square
+    /// on the board with the given occupancy.
     #[rustfmt::skip]
     pub fn lookup(&self, square: Square, occ: Bitboard) -> Bitboard {
         debug_assert!(square < 56);
