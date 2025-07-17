@@ -1,3 +1,4 @@
+use crate::square::Square;
 use std::fmt::Write;
 
 /// A 64-bit set used to efficiently represent piece placement
@@ -42,66 +43,17 @@ pub fn cardinality(mut bitboard: Bitboard) -> usize {
 /// Returns the position of the first least significant set bit.
 ///
 /// In debug mode, this function asserts that the bitboard is not empty.
-pub fn bitscan_forward(bitboard: Bitboard) -> u8 {
+pub fn bitscan_forward(bitboard: Bitboard) -> Square {
     debug_assert!(!is_empty(bitboard));
-
-    // Implementation by Kim Walisch (2012)
-    //
-    // See: https://www.chessprogramming.org/BitScan#De_Bruijn_Multiplication
-
-    // TODO: fall back to this approach only if the hardware architecture doesn't provide
-    //       BitScan instructions.
-
-    #[rustfmt::skip]
-    const INDEX64: [u8; 64] = [
-        0,  47,  1, 56, 48, 27,  2, 60,
-        57, 49, 41, 37, 28, 16,  3, 61,
-        54, 58, 35, 52, 50, 42, 21, 44,
-        38, 32, 29, 23, 17, 11,  4, 62,
-        46, 55, 26, 59, 40, 36, 15, 53,
-        34, 51, 20, 43, 31, 22, 10, 45,
-        25, 39, 14, 33, 19, 30,  9, 24,
-        13, 18,  8, 12,  7,  6,  5, 63
-    ];
-    const DEBRUIJN64: u64 = 0x03f79d71b4cb0a89;
-
-    return INDEX64[((bitboard ^ (bitboard - 1)).wrapping_mul(DEBRUIJN64) as usize) >> 58];
+    return bitboard.trailing_zeros() as Square;
 }
 
 /// Returns the position of the first most significant set bit.
 ///
 /// In debug mode, this function asserts that the bitboard is not empty.
-pub fn bitscan_reverse(mut bitboard: Bitboard) -> u8 {
+pub fn bitscan_reverse(bitboard: Bitboard) -> Square {
     debug_assert!(!is_empty(bitboard));
-
-    // Implementation by Kim Walisch (2012) and Mark Dickinson
-    //
-    // See: https://www.chessprogramming.org/BitScan#De_Bruijn_Multiplication
-
-    // TODO: fall back to this approach only if the hardware architecture doesn't provide
-    //       BitScan instructions.
-
-    #[rustfmt::skip]
-        const INDEX64: [u8; 64] = [
-             0, 47,  1, 56, 48, 27,  2, 60,
-            57, 49, 41, 37, 28, 16,  3, 61,
-            54, 58, 35, 52, 50, 42, 21, 44,
-            38, 32, 29, 23, 17, 11,  4, 62,
-            46, 55, 26, 59, 40, 36, 15, 53,
-            34, 51, 20, 43, 31, 22, 10, 45,
-            25, 39, 14, 33, 19, 30,  9, 24,
-            13, 18,  8, 12,  7,  6,  5, 63
-        ];
-    const DEBRUIJN64: u64 = 0x03f79d71b4cb0a89;
-
-    bitboard |= bitboard >> 1;
-    bitboard |= bitboard >> 2;
-    bitboard |= bitboard >> 4;
-    bitboard |= bitboard >> 8;
-    bitboard |= bitboard >> 16;
-    bitboard |= bitboard >> 32;
-
-    return INDEX64[(bitboard.wrapping_mul(DEBRUIJN64) as usize) >> 58];
+    return 63 - bitboard.leading_zeros() as Square;
 }
 
 /// Mirror a bitboard horizontally about the center files.
