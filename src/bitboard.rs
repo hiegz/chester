@@ -53,12 +53,32 @@ pub fn cardinality(mut bitboard: Bitboard) -> usize {
     return count;
 }
 
+/// Removes the first least significant bit and returns its position.
+///
+/// In debug mode, this function asserts that the bitboard is not empty.
+pub fn pop_first(bitboard: &mut Bitboard) -> Square {
+    debug_assert!(!is_empty(*bitboard));
+    let index = self::bitscan_forward(*bitboard);
+    *bitboard = *bitboard ^ (1 << index);
+    return index;
+}
+
 /// Returns the position of the first least significant set bit.
 ///
 /// In debug mode, this function asserts that the bitboard is not empty.
 pub fn bitscan_forward(bitboard: Bitboard) -> Square {
     debug_assert!(!is_empty(bitboard));
     return bitboard.trailing_zeros() as Square;
+}
+
+/// Removes the first most significant bit and returns its position.
+///
+/// In debug mode, this function asserts that the bitboard is not empty.
+pub fn pop_last(bitboard: &mut Bitboard) -> Square {
+    debug_assert!(!is_empty(*bitboard));
+    let index = self::bitscan_reverse(*bitboard);
+    *bitboard = *bitboard ^ (1 << index);
+    return index;
 }
 
 /// Returns the position of the first most significant set bit.
@@ -230,6 +250,30 @@ mod tests {
     }
 
     #[test]
+    fn pop_first() {
+        for (i, &(mut before, after, index)) in [
+            (brd![square::A1], brd![], square::A1),
+            (brd![square::G8], brd![], square::G8),
+            (brd![square::H8], brd![], square::H8),
+            (brd![square::A1, square::A4], brd![square::A4], square::A1),
+            (brd![square::H4, square::A3], brd![square::H4], square::A3),
+            (brd![square::B5, square::C5], brd![square::C5], square::B5),
+            (brd![square::H7, square::H8], brd![square::H8], square::H7),
+        ]
+        .iter()
+        .enumerate()
+        {
+            assert_eq!(
+                index,
+                bitboard::pop_first(&mut before),
+                "Test case #{} failed (incorrect square index)",
+                i
+            );
+            assert_eq!(after, before, "Test case #{} failed (bitboards differ)", i);
+        }
+    }
+
+    #[test]
     #[rustfmt::skip]
     fn bitscan_forward() {
         for (i, &(bitboard, lsb)) in [
@@ -251,6 +295,30 @@ mod tests {
                 "Test case #{} failed",
                 i
             );
+        }
+    }
+
+    #[test]
+    fn pop_last() {
+        for (i, &(mut before, after, index)) in [
+            (brd![square::A1], brd![], square::A1),
+            (brd![square::G8], brd![], square::G8),
+            (brd![square::H8], brd![], square::H8),
+            (brd![square::A1, square::A4], brd![square::A1], square::A4),
+            (brd![square::H4, square::A3], brd![square::A3], square::H4),
+            (brd![square::B5, square::C5], brd![square::B5], square::C5),
+            (brd![square::H7, square::H8], brd![square::H7], square::H8),
+        ]
+        .iter()
+        .enumerate()
+        {
+            assert_eq!(
+                index,
+                bitboard::pop_last(&mut before),
+                "Test case #{} failed (incorrect square index)",
+                i
+            );
+            assert_eq!(after, before, "Test case #{} failed (bitboards differ)", i);
         }
     }
 
