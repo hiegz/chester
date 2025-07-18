@@ -89,6 +89,37 @@ pub fn bitscan_reverse(bitboard: Bitboard) -> Square {
     return 63 - bitboard.leading_zeros() as Square;
 }
 
+/// Returns a powerset of the given bitboard.
+///
+/// Example:
+///     Input: 101
+///     Output [000, 001, 100, 101]
+pub fn powerset(bitboard: Bitboard) -> Vec<Bitboard> {
+    powerset_with_cardinality(bitboard, self::cardinality(bitboard))
+}
+
+/// Variant of `bitboard::powerset` that takes the bitboard's cardinality as an argument,
+/// avoiding the need to compute it internally.
+///
+/// In debug mode, this function verifies that the provided cardinality matches the actual
+/// number of set bits in the input bitboard.
+pub fn powerset_with_cardinality(bitboard: Bitboard, cardinality: usize) -> Vec<Bitboard> {
+    debug_assert!(self::cardinality(bitboard) == cardinality);
+    let mut ret = Vec::with_capacity(cardinality);
+    for index in 0..(1 << cardinality) {
+        let mut b: Bitboard = bitboard;
+        let mut r: Bitboard = 0;
+        for i in 0..cardinality {
+            let j = self::pop_first(&mut b);
+            if index & (1 << i) != 0 {
+                r |= 1 << j;
+            }
+        }
+        ret.push(r);
+    }
+    return ret;
+}
+
 /// Mirror a bitboard horizontally about the center files.
 ///
 /// File a is mapped to file h and vice versa.
@@ -149,6 +180,8 @@ mod tests {
     }
     use crate::brd;
     use crate::square;
+
+    use std::collections::HashSet;
 
     #[test]
     fn is_empty() {
@@ -345,7 +378,35 @@ mod tests {
                 i
             );
         }
+    }
 
+    #[test]
+    fn powerset() {
+        for (i, (bitboard, powerset)) in [
+            (brd![], vec![brd![]]),
+            (brd![square::D5], vec![brd![], brd![square::D5]]),
+            (
+                brd![square::D5, square::G2],
+                vec![
+                    brd![],
+                    brd![square::D5],
+                    brd![square::G2],
+                    brd![square::D5, square::G2],
+                ],
+            ),
+        ]
+        .iter()
+        .enumerate()
+        {
+            let bitboard = *bitboard;
+            let expected = powerset;
+            let actual = bitboard::powerset(bitboard);
+
+            let set_a: HashSet<_> = expected.iter().collect();
+            let set_b: HashSet<_> = actual.iter().collect();
+
+            assert_eq!(set_a, set_b, "Test case #${} failed", i);
+        }
     }
 
     #[test]
