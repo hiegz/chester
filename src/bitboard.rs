@@ -15,6 +15,19 @@ pub const EMPTY: Bitboard = 0;
 /// Bitboard with all bits set to one.
 pub const UNIVERSAL: Bitboard = u64::max_value();
 
+/// Creates a bitboard with given squares set.
+#[macro_export]
+macro_rules! brd {
+    ( $( $bit:expr ),* $(,)? ) => {{
+        #[allow(unused_mut)]
+        let mut bitboard: u64 = 0;
+        $(
+            bitboard |= 1 << $bit;
+        )*
+        bitboard
+    }};
+}
+
 /// Checks if the bitboard is empty.
 pub fn is_empty(bitboard: Bitboard) -> bool {
     bitboard == EMPTY
@@ -114,6 +127,7 @@ mod tests {
     mod bitboard {
         pub use super::super::*;
     }
+    use crate::brd;
     use crate::square;
 
     #[test]
@@ -170,24 +184,18 @@ mod tests {
 
     #[test]
     fn is_single() {
-        for (i, &(squares, is_single)) in [
-            (&vec![square::C6], true),
-            (&vec![square::B1], true),
-            (&vec![square::A8], true),
-            (&vec![square::H1], true),
-            (&vec![square::B1, square::B2], false),
-            (&vec![square::A2, square::D8], false),
-            (&vec![square::H1, square::A8, square::D5], false),
+        for (i, &(bitboard, is_single)) in [
+            (brd![square::C6], true),
+            (brd![square::B1], true),
+            (brd![square::A8], true),
+            (brd![square::H1], true),
+            (brd![square::B1, square::B2], false),
+            (brd![square::A2, square::D8], false),
+            (brd![square::H1, square::A8, square::D5], false),
         ]
         .iter()
         .enumerate()
         {
-            let mut bitboard = bitboard::EMPTY;
-            for &square in squares.iter() {
-                bitboard |= 1 << square;
-            }
-            let bitboard = bitboard;
-
             assert_eq!(
                 is_single,
                 bitboard::is_single(bitboard),
@@ -199,25 +207,19 @@ mod tests {
 
     #[test]
     fn bitboard_cardinality() {
-        for (i, &(squares, cardinality)) in [
-            (&vec![], 0),
-            (&vec![square::C6], 1),
-            (&vec![square::B1], 1),
-            (&vec![square::A8], 1),
-            (&vec![square::H1], 1),
-            (&vec![square::B1, square::B2], 2),
-            (&vec![square::A2, square::D8], 2),
-            (&vec![square::H1, square::A8, square::D5], 3),
+        for (i, &(bitboard, cardinality)) in [
+            (brd![], 0),
+            (brd![square::C6], 1),
+            (brd![square::B1], 1),
+            (brd![square::A8], 1),
+            (brd![square::H1], 1),
+            (brd![square::B1, square::B2], 2),
+            (brd![square::A2, square::D8], 2),
+            (brd![square::H1, square::A8, square::D5], 3),
         ]
         .iter()
         .enumerate()
         {
-            let mut bitboard = bitboard::EMPTY;
-            for &square in squares.iter() {
-                bitboard |= 1 << square;
-            }
-            let bitboard = bitboard;
-
             assert_eq!(
                 cardinality,
                 bitboard::cardinality(bitboard),
@@ -230,26 +232,20 @@ mod tests {
     #[test]
     #[rustfmt::skip]
     fn bitscan_forward() {
-        for (i, &(squares, lsb)) in [
-            (&vec![square::H1], square::H1),
-            (&vec![square::A1], square::A1),
-            (&vec![square::G2], square::G2),
-            (&vec![square::F7], square::F7),
-            (&vec![square::A8], square::A8),
-            (&vec![square::A5, square::B2], square::B2),
-            (&vec![square::C1, square::D1, square::D2], square::C1),
-            (&vec![square::F2, square::B1, square::G4], square::B1),
-            (&vec![square::E3, square::E4, square::A4], square::E3),
+        for (i, &(bitboard, lsb)) in [
+            (brd![square::H1], square::H1),
+            (brd![square::A1], square::A1),
+            (brd![square::G2], square::G2),
+            (brd![square::F7], square::F7),
+            (brd![square::A8], square::A8),
+            (brd![square::A5, square::B2], square::B2),
+            (brd![square::C1, square::D1, square::D2], square::C1),
+            (brd![square::F2, square::B1, square::G4], square::B1),
+            (brd![square::E3, square::E4, square::A4], square::E3),
         ]
         .iter()
         .enumerate()
         {
-            let mut bitboard = bitboard::EMPTY;
-            for &square in squares.iter() {
-                bitboard |= 1 << square;
-            }
-            let bitboard = bitboard;
-
             assert_eq!(
                 lsb, bitboard::bitscan_forward(bitboard),
                 "Test case #{} failed",
@@ -261,26 +257,20 @@ mod tests {
     #[test]
     #[rustfmt::skip]
     fn bitscan_reverse() {
-        for (i, &(squares, msb)) in [
-            (&vec![square::H1], square::H1),
-            (&vec![square::A1], square::A1),
-            (&vec![square::G2], square::G2),
-            (&vec![square::F7], square::F7),
-            (&vec![square::A8], square::A8),
-            (&vec![square::A5, square::B2], square::A5),
-            (&vec![square::C1, square::D1, square::D2], square::D2),
-            (&vec![square::F2, square::B1, square::G4], square::G4),
-            (&vec![square::E3, square::E4, square::A4], square::E4),
+        for (i, &(bitboard, msb)) in [
+            (brd![square::H1], square::H1),
+            (brd![square::A1], square::A1),
+            (brd![square::G2], square::G2),
+            (brd![square::F7], square::F7),
+            (brd![square::A8], square::A8),
+            (brd![square::A5, square::B2], square::A5),
+            (brd![square::C1, square::D1, square::D2], square::D2),
+            (brd![square::F2, square::B1, square::G4], square::G4),
+            (brd![square::E3, square::E4, square::A4], square::E4),
         ]
         .iter()
         .enumerate()
         {
-            let mut bitboard = bitboard::EMPTY;
-            for &square in squares.iter() {
-                bitboard |= 1 << square;
-            }
-            let bitboard = bitboard;
-
             assert_eq!(
                 msb, bitboard::bitscan_reverse(bitboard),
                 "Test case #{} failed",
