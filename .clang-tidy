@@ -1,0 +1,71 @@
+Checks:
+  -*,
+  bugprone-*,
+  cppcoreguidelines-*,
+  hicpp-*,
+  misc-*,
+  modernize-*,
+  performance-*,
+  readability-*,
+  clang-analyzer-*,
+
+  linuxkernel-must-check-errs,
+
+  -bugprone-easily-swappable-parameters,
+  
+  -cppcoreguidelines-avoid-c-arrays,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -cppcoreguidelines-avoid-do-while,
+  -cppcoreguidelines-avoid-goto,
+  -cppcoreguidelines-macro-usage,
+  -cppcoreguidelines-no-malloc,
+  -cppcoreguidelines-pro-type-union-access,
+  -cppcoreguidelines-pro-type-vararg,
+  -cppcoreguidelines-non-private-member-variables-in-classes,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -cppcoreguidelines-pro-bounds-pointer-arithmetic,
+  -cppcoreguidelines-pro-bounds-array-to-pointer-decay,
+  -cppcoreguidelines-macro-to-enum,
+  -cppcoreguidelines-rvalue-reference-param-not-moved,
+  -cppcoreguidelines-owning-memory,
+  -cppcoreguidelines-avoid-reference-coroutine-parameters,
+  -cppcoreguidelines-pro-type-const-cast,
+  -cppcoreguidelines-init-variables,
+
+  -hicpp-avoid-c-arrays,
+  -hicpp-use-auto,
+  -hicpp-no-malloc,
+  -hicpp-special-member-functions,
+  -hicpp-braces-around-statements,
+  -hicpp-function-size,
+  -hicpp-vararg,
+  -hicpp-signed-bitwise,
+  -hicpp-no-array-decay,
+
+  -misc-non-private-member-variables-in-classes,
+
+  -modernize-avoid-c-arrays,
+  -modernize-macro-to-enum,
+  -modernize-return-braced-init-list,
+  -modernize-shrink-to-fit,
+  -modernize-use-auto,
+  -modernize-use-nodiscard,
+
+  -performance-no-int-to-ptr, 
+
+  -readability-braces-around-statements,
+  -readability-convert-member-functions-to-static,
+  -readability-function-cognitive-complexity,
+  -readability-function-size,
+  -readability-identifier-length,
+  -readability-magic-numbers,
+  -readability-redundant-access-specifiers,
+  -readability-static-accessed-through-instance,
+
+CheckOptions:
+  - key:   cppcoreguidelines-special-member-functions.AllowMissingMoveFunctions
+    value: true
+
+UseColor: true
+WarningsAsErrors: "*"
+FormatStyle: "file"
