@@ -37,3 +37,23 @@ target_compile_definitions(
         PROJECT_NAME="${PROJECT_NAME}"
         PROJECT_VERSION="${PROJECT_VERSION}"
         $<$<CONFIG:Debug>:DEBUG>)
+
+#
+# Tests
+#
+
+find_package(Catch2 3)
+
+if (Catch2_FOUND)
+    add_executable(
+        tests
+        tests/tests.cpp)
+
+    target_link_libraries(
+        tests
+        PRIVATE Catch2::Catch2WithMain)
+
+    target_compile_options(
+        tests
+        PRIVATE ${CXX_COMPILE_OPTIONS})
+endif()
