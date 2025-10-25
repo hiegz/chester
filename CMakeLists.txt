@@ -20,6 +20,18 @@ set(CMAKE_CXX_STANDARD 20) # C++20
 set(CXX_COMPILE_OPTIONS -Werror -Wall -Wextra -Wpedantic)
 
 #
+# Engine
+#
+
+add_library(
+    engine SHARED
+    engine/engine.cpp)
+
+target_compile_options(
+    engine
+    PRIVATE ${CXX_COMPILE_OPTIONS})
+
+#
 # Frontend
 #
 
