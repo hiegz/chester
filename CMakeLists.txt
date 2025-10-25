@@ -19,16 +19,20 @@ set(CMAKE_CXX_COMPILER ${GPP_EXE})
 set(CMAKE_CXX_STANDARD 20) # C++20
 set(CXX_COMPILE_OPTIONS -Werror -Wall -Wextra -Wpedantic)
 
+#
+# Frontend
+#
+
 add_executable(
-    ${PROJECT_NAME}
-    main.cpp)
+    frontend
+    frontend/frontend.cpp)
 
 target_compile_options(
-    ${PROJECT_NAME}
+    frontend
     PRIVATE ${CXX_COMPILE_OPTIONS})
 
 target_compile_definitions(
-    ${PROJECT_NAME}
+    frontend
     PUBLIC
         PROJECT_NAME="${PROJECT_NAME}"
         PROJECT_VERSION="${PROJECT_VERSION}"
