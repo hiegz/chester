@@ -19,6 +19,8 @@ set(CMAKE_CXX_COMPILER ${GPP_EXE})
 set(CMAKE_CXX_STANDARD 20) # C++20
 set(CXX_COMPILE_OPTIONS -Werror -Wall -Wextra -Wpedantic)
 
+include_directories(include)
+
 #
 # Engine
 #
@@ -30,6 +32,11 @@ add_library(
 target_compile_options(
     engine
     PRIVATE ${CXX_COMPILE_OPTIONS})
+
+target_compile_definitions(
+    engine
+    PUBLIC
+        $<$<CONFIG:Debug>:DEBUG>)
 
 #
 # Frontend
@@ -59,13 +66,20 @@ find_package(Catch2 3)
 if (Catch2_FOUND)
     add_executable(
         tests
+        tests/engine/bitset.cpp
         tests/tests.cpp)
 
     target_link_libraries(
         tests
-        PRIVATE Catch2::Catch2WithMain)
+        PRIVATE
+            Catch2::Catch2WithMain)
 
     target_compile_options(
         tests
         PRIVATE ${CXX_COMPILE_OPTIONS})
+
+    target_compile_definitions(
+        tests
+        PUBLIC
+            $<$<CONFIG:Debug>:DEBUG>)
 endif()
