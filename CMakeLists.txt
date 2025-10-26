@@ -30,6 +30,7 @@ add_library(
     engine/file.cpp
     engine/piece.cpp
     engine/rank.cpp
+    engine/square.cpp
     engine/engine.cpp)
 
 target_compile_options(
@@ -73,6 +74,7 @@ if (Catch2_FOUND)
         tests/engine/file.cpp
         tests/engine/piece.cpp
         tests/engine/rank.cpp
+        tests/engine/square.cpp
         tests/tests.cpp)
 
     target_link_libraries(
