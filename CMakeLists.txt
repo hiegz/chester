@@ -27,6 +27,7 @@ include_directories(include)
 
 add_library(
     engine SHARED
+    engine/file.cpp
     engine/piece.cpp
     engine/engine.cpp)
 
@@ -68,6 +69,7 @@ if (Catch2_FOUND)
     add_executable(
         tests
         tests/engine/bitset.cpp
+        tests/engine/file.cpp
         tests/engine/piece.cpp
         tests/tests.cpp)
 
