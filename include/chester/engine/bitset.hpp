@@ -28,6 +28,7 @@ auto constexpr universal() -> T;
 
 template <>
 auto constexpr universal() -> std::uint64_t {
+    // NOLINTNEXTLINE
     return 0xFFFFFFFFFFFFFFFF;
 };
 
@@ -83,7 +84,9 @@ auto constexpr scan_forward(T bitset) -> std::size_t;
 template <>
 auto constexpr scan_forward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(bitset)) chester::panic("bitset is empty");
+    if (engine::bitset::is_empty(bitset)) {
+        chester::panic("bitset is empty");
+    }
 #endif
     return std::countr_zero(bitset);
 }
@@ -99,8 +102,11 @@ auto constexpr scan_backward(T bitset) -> std::size_t;
 template <>
 auto constexpr scan_backward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(bitset)) chester::panic("bitset is empty");
+    if (engine::bitset::is_empty(bitset)) {
+        chester::panic("bitset is empty");
+    }
 #endif
+    // NOLINTNEXTLINE
     return 63 - std::countl_zero(bitset);
 }
 
@@ -115,7 +121,9 @@ auto constexpr pop_front(T bitset) -> std::size_t;
 template <>
 auto constexpr pop_front(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(*bitset)) chester::panic("bitset is empty");
+    if (engine::bitset::is_empty(*bitset)) {
+        chester::panic("bitset is empty");
+    }
 #endif
     const std::size_t index = engine::bitset::scan_forward(*bitset);
     *bitset = *bitset ^ (1UL << index);
@@ -133,7 +141,9 @@ auto constexpr pop_back(T bitset) -> std::size_t;
 template <>
 auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(*bitset)) chester::panic("bitset is empty");
+    if (engine::bitset::is_empty(*bitset)) {
+        chester::panic("bitset is empty");
+    }
 #endif
     const std::size_t index = engine::bitset::scan_backward(*bitset);
     *bitset = *bitset ^ (1UL << index);
@@ -153,11 +163,12 @@ template <>
 auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
     -> std::vector<std::uint64_t> {
 #ifdef DEBUG
-    if (cardinality != engine::bitset::cardinality(bitset))
+    if (cardinality != engine::bitset::cardinality(bitset)) {
         chester::panic("provided bitset cardinality does not match its real cardinality");
+    }
 #endif
 
-    const std::size_t          capacity = 1 << cardinality;
+    const std::size_t          capacity = 1UL << cardinality;
     std::vector<std::uint64_t> powerset(capacity);
 
     for (std::size_t index = 0; index < capacity; ++index) {

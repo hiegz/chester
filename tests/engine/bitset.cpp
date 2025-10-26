@@ -10,6 +10,7 @@
 #include <chester/engine/bitset.hpp>
 
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <limits>
 
@@ -70,7 +71,7 @@ TEST_CASE("chester::engine::bitset::is_single()", "[engine][bitset]") {
 
     WHEN("bitset is single") {
         const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << square;
+        const auto bitset = 1UL << (std::size_t)square;
         CAPTURE(bitset);
         REQUIRE(chester::engine::bitset::is_single(bitset));
     }
@@ -79,10 +80,11 @@ TEST_CASE("chester::engine::bitset::is_single()", "[engine][bitset]") {
         const auto square_i = GENERATE(range(0, 63));
         const auto square_j = GENERATE(range(0, 63));
 
-        if (square_i == square_j)
+        if (square_i == square_j) {
             return;
+        }
 
-        const auto bitset = (1UL << square_i) | (1UL << square_j);
+        const auto bitset = (1UL << square_i) | (1UL << square_j); // NOLINT
 
         CAPTURE(bitset);
 
@@ -105,7 +107,7 @@ TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
 
     WHEN("bitset is single") {
         const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << square;
+        const auto bitset = 1UL << square; // NOLINT
         CAPTURE(bitset);
         REQUIRE(1 == chester::engine::bitset::cardinality(bitset));
     }
@@ -114,10 +116,11 @@ TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
         const auto square_i = GENERATE(range(0, 63));
         const auto square_j = GENERATE(range(0, 63));
 
-        if (square_i == square_j)
+        if (square_i == square_j) {
             return;
+        }
 
-        const auto bitset = (1UL << square_i) | (1UL << square_j);
+        const auto bitset = (1UL << square_i) | (1UL << square_j); // NOLINT
 
         CAPTURE(bitset);
 
@@ -135,7 +138,7 @@ TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
     WHEN("bitset is single") {
         const auto square = GENERATE(range(0, 63));
         const auto index  = (std::uint64_t)square;
-              auto bitset = 1UL << square;
+              auto bitset = 1UL << square; // NOLINT
 
         CAPTURE(bitset);
         CAPTURE(index);
@@ -160,7 +163,7 @@ TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
     WHEN("bitset is single") {
         const auto square = GENERATE(range(0, 63));
         const auto index  = (std::uint64_t)square;
-              auto bitset = 1UL << square;
+              auto bitset = 1UL << square; // NOLINT
 
         CAPTURE(bitset);
         CAPTURE(index);
@@ -195,7 +198,7 @@ TEST_CASE("chester::engine::bitset::powerset()", "[engine][bitset]") {
 
     WHEN("bitset is single") {
         const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << square;
+        const auto bitset = 1UL << (std::size_t)square;
         const auto powerset = chester::engine::bitset::powerset(bitset);
 
         CAPTURE(bitset);
@@ -209,8 +212,8 @@ TEST_CASE("chester::engine::bitset::powerset()", "[engine][bitset]") {
     WHEN("bitset has two elements") {
         const auto square_i = GENERATE(1, 5, 50);
         const auto square_j = GENERATE(29, 7, 31);
-        const auto bitset_i = 1UL << square_i;
-        const auto bitset_j = 1UL << square_j;
+        const auto bitset_i = 1UL << (std::size_t)square_i;
+        const auto bitset_j = 1UL << (std::size_t)square_j;
         const auto bitset   = bitset_i | bitset_j;
         const auto powerset  = chester::engine::bitset::powerset(bitset);
 

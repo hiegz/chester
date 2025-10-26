@@ -17,6 +17,7 @@ namespace chester {
 template <class... Args>
 struct panic_format {
     template <class T>
+    // cppcheck-suppress noExplicitConstructor
     consteval panic_format(const T &s, std::source_location loc = std::source_location::current()) noexcept // NOLINT
         : fmt{s}, loc{loc} {}
 
