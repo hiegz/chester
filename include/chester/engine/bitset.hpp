@@ -134,7 +134,7 @@ auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
     if (engine::bitset::is_empty(*bitset)) chester::panic("bitset is empty");
 #endif
-    std::size_t index = engine::bitset::scan_backward(*bitset);
+    const std::size_t index = engine::bitset::scan_backward(*bitset);
     *bitset = *bitset ^ (1UL << index);
     return index;
 }
@@ -164,7 +164,7 @@ auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
         std::uint64_t candidate = 0;
 
         for (std::size_t i = 0; i < cardinality; ++i) {
-            std::size_t j = engine::bitset::pop_front(&mask);
+            const std::size_t j = engine::bitset::pop_front(&mask);
             if ((index & (1UL << i)) != 0) {
                 candidate |= 1UL << j;
             }
