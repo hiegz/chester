@@ -21,6 +21,8 @@ Checks:
   -readability-identifier-length,
   -readability-function-cognitive-complexity,
 
+  -misc-non-private-member-variables-in-classes,
+
 UseColor: true
 WarningsAsErrors: "*"
 FormatStyle: "file"
