@@ -12,7 +12,7 @@ Checks:
   linuxkernel-must-check-errs,
 
   -bugprone-easily-swappable-parameters,
-  
+
   -cppcoreguidelines-avoid-c-arrays,
   -cppcoreguidelines-avoid-magic-numbers,
   -cppcoreguidelines-avoid-do-while,
@@ -51,7 +51,7 @@ Checks:
   -modernize-use-auto,
   -modernize-use-nodiscard,
 
-  -performance-no-int-to-ptr, 
+  -performance-no-int-to-ptr,
 
   -readability-braces-around-statements,
   -readability-convert-member-functions-to-static,
