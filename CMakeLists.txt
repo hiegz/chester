@@ -29,6 +29,7 @@ add_library(
     engine SHARED
     engine/file.cpp
     engine/piece.cpp
+    engine/rank.cpp
     engine/engine.cpp)
 
 target_compile_options(
@@ -71,6 +72,7 @@ if (Catch2_FOUND)
         tests/engine/bitset.cpp
         tests/engine/file.cpp
         tests/engine/piece.cpp
+        tests/engine/rank.cpp
         tests/tests.cpp)
 
     target_link_libraries(
