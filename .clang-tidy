@@ -69,3 +69,4 @@ CheckOptions:
 UseColor: true
 WarningsAsErrors: "*"
 FormatStyle: "file"
+HeaderFilterRegex: "chester"
