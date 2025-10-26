@@ -7,7 +7,9 @@
 #include <cstdint>
 #include <vector>
 
+#ifdef DEBUG
 #include <chester/panic/panic.hpp>
+#endif
 
 namespace chester::engine::bitset {
 
