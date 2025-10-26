@@ -27,6 +27,7 @@ include_directories(include)
 
 add_library(
     engine SHARED
+    engine/piece.cpp
     engine/engine.cpp)
 
 target_compile_options(
@@ -67,11 +68,13 @@ if (Catch2_FOUND)
     add_executable(
         tests
         tests/engine/bitset.cpp
+        tests/engine/piece.cpp
         tests/tests.cpp)
 
     target_link_libraries(
         tests
         PRIVATE
+            engine
             Catch2::Catch2WithMain)
 
     target_compile_options(
