@@ -25,10 +25,7 @@ struct panic_format {
 };
 
 template <class... Args>
-[[noreturn]] void panic(
-        panic_format<std::type_identity_t<Args>...> fmt,
-        Args &&...args) noexcept
-{
+[[noreturn]] void panic(panic_format<std::type_identity_t<Args>...> fmt, Args &&...args) {
     auto msg =
         std::format(
                 "{}:{} panic: {}\n",
