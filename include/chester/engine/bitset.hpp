@@ -152,7 +152,7 @@ template <>
 auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
     -> std::vector<std::uint64_t> {
 #ifdef DEBUG
-    if (cardinality == engine::bitset::cardinality(bitset))
+    if (cardinality != engine::bitset::cardinality(bitset))
         chester::panic("provided bitset cardinality does not match its real cardinality");
 #endif
 
