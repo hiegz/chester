@@ -38,7 +38,7 @@ auto constexpr is_empty(T bitset) -> bool;
 
 template <>
 auto constexpr is_empty(std::uint64_t bitset) -> bool {
-    return bitset == engine::bitset::empty<std::uint64_t>();
+    return bitset == chester::engine::bitset::empty<std::uint64_t>();
 };
 
 /** Checks if a bitset is universal */
@@ -47,7 +47,7 @@ auto constexpr is_universal(T bitset) -> bool;
 
 template <>
 auto constexpr is_universal(std::uint64_t bitset) -> bool {
-    return bitset == engine::bitset::universal<std::uint64_t>();
+    return bitset == chester::engine::bitset::universal<std::uint64_t>();
 }
 
 /** Checks if a bitset is single populated */
@@ -84,7 +84,7 @@ auto constexpr scan_forward(T bitset) -> std::size_t;
 template <>
 auto constexpr scan_forward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(bitset)) {
+    if (chester::engine::bitset::is_empty(bitset)) {
         chester::panic("bitset is empty");
     }
 #endif
@@ -102,7 +102,7 @@ auto constexpr scan_backward(T bitset) -> std::size_t;
 template <>
 auto constexpr scan_backward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(bitset)) {
+    if (chester::engine::bitset::is_empty(bitset)) {
         chester::panic("bitset is empty");
     }
 #endif
@@ -121,11 +121,11 @@ auto constexpr pop_front(T bitset) -> std::size_t;
 template <>
 auto constexpr pop_front(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(*bitset)) {
+    if (chester::engine::bitset::is_empty(*bitset)) {
         chester::panic("bitset is empty");
     }
 #endif
-    const std::size_t index = engine::bitset::scan_forward(*bitset);
+    const std::size_t index = chester::engine::bitset::scan_forward(*bitset);
     *bitset = *bitset ^ (1UL << index);
     return index;
 }
@@ -141,11 +141,11 @@ auto constexpr pop_back(T bitset) -> std::size_t;
 template <>
 auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
-    if (engine::bitset::is_empty(*bitset)) {
+    if (chester::engine::bitset::is_empty(*bitset)) {
         chester::panic("bitset is empty");
     }
 #endif
-    const std::size_t index = engine::bitset::scan_backward(*bitset);
+    const std::size_t index = chester::engine::bitset::scan_backward(*bitset);
     *bitset = *bitset ^ (1UL << index);
     return index;
 }
@@ -163,7 +163,7 @@ template <>
 auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
     -> std::vector<std::uint64_t> {
 #ifdef DEBUG
-    if (cardinality != engine::bitset::cardinality(bitset)) {
+    if (cardinality != chester::engine::bitset::cardinality(bitset)) {
         chester::panic("provided bitset cardinality does not match its real cardinality");
     }
 #endif
@@ -176,7 +176,7 @@ auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
         std::uint64_t candidate = 0;
 
         for (std::size_t i = 0; i < cardinality; ++i) {
-            const std::size_t j = engine::bitset::pop_front(&mask);
+            const std::size_t j = chester::engine::bitset::pop_front(&mask);
             if ((index & (1UL << i)) != 0) {
                 candidate |= 1UL << j;
             }
@@ -194,7 +194,7 @@ auto constexpr powerset(T bitset) -> std::vector<T>;
 
 template <>
 auto constexpr powerset(std::uint64_t bitset) -> std::vector<std::uint64_t> {
-    return engine::bitset::powerset(bitset, engine::bitset::cardinality(bitset));
+    return chester::engine::bitset::powerset(bitset, chester::engine::bitset::cardinality(bitset));
 }
 
 } // namespace chester::engine::bitset
