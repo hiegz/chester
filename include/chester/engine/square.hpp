@@ -7,6 +7,10 @@
 #include <ostream>
 #include <string>
 
+#ifdef DEBUG
+#include <stdexcept>
+#endif // DEBUG
+
 #include <chester/engine/file.hpp>
 #include <chester/engine/rank.hpp>
 
@@ -71,6 +75,30 @@ constexpr auto operator==(square lhs, square rhs) {
 
 constexpr auto operator!=(square lhs, square rhs) {
     return lhs.value != rhs.value;
+}
+
+constexpr auto operator<<(enum square::value lhs, int rhs) -> enum square::value {
+#ifdef DEBUG
+    if (lhs - rhs < 0)
+        throw std::runtime_error("left shift resulted in an invalid square");
+#endif
+    return (enum square::value)(lhs - rhs);
+}
+
+constexpr auto operator>>(enum square::value lhs, int rhs) -> enum square::value {
+#ifdef DEBUG
+    if (lhs + rhs > 63)
+        throw std::runtime_error("left shift resulted in an invalid square");
+#endif
+    return (enum square::value)(lhs + rhs);
+}
+
+constexpr auto operator<<(square lhs, int rhs) -> square {
+    return square(lhs.value << rhs);
+}
+
+constexpr auto operator>>(square lhs, int rhs) -> square {
+    return square(lhs.value >> rhs);
 }
 
 auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;

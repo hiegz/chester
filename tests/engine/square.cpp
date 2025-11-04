@@ -1,12 +1,19 @@
 // clang-format off
 
 #include <string>
+#include <tuple>
+
+#ifdef DEBUG
+#include <stdexcept>
+#endif // DEBUG
 
 #include <chester/engine/square.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/file.hpp>
 
 #include <catch2/catch_test_macros.hpp>
+#include <catch2/catch_message.hpp>
+#include <catch2/generators/catch_generators.hpp>
 
 using chester::engine::square;
 using chester::engine::file;
@@ -158,4 +165,101 @@ TEST_CASE("chester::engine::square formatter", "[engine][square][fmt]") {
     REQUIRE("h6" == std::to_string(square::h6));
     REQUIRE("h7" == std::to_string(square::h7));
     REQUIRE("h8" == std::to_string(square::h8));
+}
+
+TEST_CASE("chester::engine::square left shift", "[engine][square][shift]") {
+    SECTION("valid") {
+        square expected;
+        square lhs;
+        int    rhs = 0;
+
+        std::tie(lhs, rhs, expected) =
+            GENERATE(table<square, int, square>({
+                std::make_tuple(square::b1, 1, square::a1),
+                std::make_tuple(square::a2, 8, square::a1),
+                std::make_tuple(square::h8, 8, square::h7),
+                std::make_tuple(square::h8, 7, square::a8),
+                std::make_tuple(square::h8, 9, square::g7),
+            }));
+
+        CAPTURE(lhs);
+        CAPTURE(rhs);
+        CAPTURE(expected);
+
+        REQUIRE((lhs << rhs) == expected);
+    }
+
+#ifdef DEBUG
+    SECTION("invalid") {
+        square lhs;
+        int    rhs = 0;
+
+        std::tie(lhs, rhs) =
+            GENERATE(table<square, int>({
+                std::make_tuple(square::a1, 1),
+                std::make_tuple(square::a1, 2),
+                std::make_tuple(square::a1, 3),
+                std::make_tuple(square::b1, 2),
+                std::make_tuple(square::b1, 8),
+                std::make_tuple(square::a2, 9),
+                std::make_tuple(square::a2, 10),
+                std::make_tuple(square::h8, 64),
+            }));
+
+        CAPTURE(lhs);
+        CAPTURE(rhs);
+
+        REQUIRE_THROWS_AS(lhs << rhs, std::runtime_error);
+    }
+#endif // DEBUG
+}
+
+TEST_CASE("chester::engine::square right shift", "[engine][square][shift]") {
+    SECTION("valid") {
+        square expected;
+        square lhs;
+        int    rhs = 0;
+
+        std::tie(lhs, rhs, expected) =
+            GENERATE(table<square, int, square>({
+                std::make_tuple(square::a1, 1, square::b1),
+                std::make_tuple(square::a1, 8, square::a2),
+                std::make_tuple(square::f5, 8, square::f6),
+                std::make_tuple(square::f5, 9, square::g6),
+                std::make_tuple(square::f5, 7, square::e6),
+                std::make_tuple(square::f5, 26, square::h8),
+            }));
+
+        CAPTURE(lhs);
+        CAPTURE(rhs);
+        CAPTURE(expected);
+
+        REQUIRE((lhs >> rhs) == expected);
+
+    }
+
+#ifdef DEBUG
+    SECTION("invalid") {
+        square lhs;
+        int    rhs = 0;
+
+        std::tie(lhs, rhs) =
+            GENERATE(table<square, int>({
+                std::make_tuple(square::a1, 64),
+                std::make_tuple(square::a1, 65),
+                std::make_tuple(square::a1, 66),
+                std::make_tuple(square::b1, 63),
+                std::make_tuple(square::a2, 56),
+                std::make_tuple(square::a2, 57),
+                std::make_tuple(square::h8, 1),
+                std::make_tuple(square::h8, 2),
+                std::make_tuple(square::h8, 3),
+            }));
+
+        CAPTURE(lhs);
+        CAPTURE(rhs);
+
+        REQUIRE_THROWS_AS(lhs >> rhs, std::runtime_error);
+    }
+#endif // DEBUG
 }
