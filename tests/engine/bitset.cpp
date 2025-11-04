@@ -205,8 +205,8 @@ TEST_CASE("chester::engine::bitset::powerset()", "[engine][bitset]") {
         CAPTURE(powerset);
 
         REQUIRE(2 == powerset.size());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return entry == bitset; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return chester::engine::bitset::is_empty(entry); }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset; }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return chester::engine::bitset::is_empty(entry); }) != powerset.end());
     }
 
     WHEN("bitset has two elements") {
@@ -226,9 +226,9 @@ TEST_CASE("chester::engine::bitset::powerset()", "[engine][bitset]") {
         CAPTURE(powerset);
 
         REQUIRE(4 == powerset.size());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return entry == bitset; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return entry == bitset_i; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return entry == bitset_j; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry){ return chester::engine::bitset::is_empty(entry); }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset; }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset_i; }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset_j; }) != powerset.end());
+        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return chester::engine::bitset::is_empty(entry); }) != powerset.end());
     }
 }
