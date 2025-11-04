@@ -30,43 +30,51 @@ class square {
     constexpr square(chester::engine::file file, chester::engine::rank rank)
         : value((enum square::value)((rank.value * 8) + file.value)) {}
 
-    constexpr auto operator==(square other) const { return value == other.value; }
-    constexpr auto operator!=(square other) const { return value != other.value; }
-
     [[nodiscard]]
     constexpr auto file() const -> chester::engine::file {
+        return square::file(value);
+    }
+
+    [[nodiscard]]
+    constexpr static auto file(square::value value) -> chester::engine::file {
         return (enum chester::engine::file::value)(value % 8);
     }
 
     [[nodiscard]]
+    constexpr static auto file(square square) -> chester::engine::file {
+        return file(square.value);
+    }
+
+    [[nodiscard]]
     constexpr auto rank() const -> chester::engine::rank {
+        return square::rank(value);
+    }
+
+    [[nodiscard]]
+    constexpr static auto rank(square::value value) -> chester::engine::rank {
         return (enum chester::engine::rank::value)(value / 8);
+    }
+
+    [[nodiscard]]
+    constexpr static auto rank(square square) -> chester::engine::rank {
+        return rank(square.value);
     }
 
     enum square::value value;
 };
 
+constexpr auto operator==(square lhs, square rhs) {
+    return lhs.value == rhs.value;
+}
+
+constexpr auto operator!=(square lhs, square rhs) {
+    return lhs.value != rhs.value;
+}
+
 auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;
 auto operator<<(std::ostream &os,      chester::engine::square        const &square) -> std::ostream &;
 
 } // namespace chester::engine
-
-
-constexpr auto operator==(chester::engine::square lhs, enum chester::engine::square::value rhs) {
-    return lhs.value == rhs;
-}
-
-constexpr auto operator==(enum chester::engine::square::value lhs, chester::engine::square rhs) {
-    return lhs == rhs.value;
-}
-
-constexpr auto operator!=(chester::engine::square lhs, enum chester::engine::square::value rhs) {
-    return lhs.value != rhs;
-}
-
-constexpr auto operator!=(enum chester::engine::square::value lhs, chester::engine::square rhs) {
-    return lhs != rhs.value;
-}
 
 namespace std {
 auto to_string(     chester::engine::square        square) -> std::string;
