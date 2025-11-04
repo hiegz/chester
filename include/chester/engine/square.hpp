@@ -4,8 +4,8 @@
 #pragma once
 
 #include <cstdint>
-#include <format>
 #include <ostream>
+#include <string>
 
 #include <chester/engine/file.hpp>
 #include <chester/engine/rank.hpp>
@@ -46,6 +46,9 @@ class square {
     enum square::value value;
 };
 
+auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;
+auto operator<<(std::ostream &os,      chester::engine::square        const &square) -> std::ostream &;
+
 } // namespace chester::engine
 
 
@@ -65,26 +68,9 @@ constexpr auto operator!=(enum chester::engine::square::value lhs, chester::engi
     return lhs != rhs.value;
 }
 
-template<>
-struct std::formatter<chester::engine::square> {
-    // cppcheck-suppress[unusedFunction,unmatchedSuppression]
-    static constexpr auto parse(std::format_parse_context &ctx) {
-        return ctx.begin();
-    }
-
-    static auto format(const chester::engine::square &square, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}{}", square.file(), square.rank());
-    }
-};
-
-template<>
-struct std::formatter<enum chester::engine::square::value> : std::formatter<chester::engine::square> {
-    static auto format(const enum chester::engine::square::value &square, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", chester::engine::square(square));
-    }
-};
-
-auto operator<<(std::ostream &os, enum chester::engine::square::value const &value) -> std::ostream &;
-auto operator<<(std::ostream &os,      chester::engine::square        const &value) -> std::ostream &;
+namespace std {
+auto to_string(     chester::engine::square        square) -> std::string;
+auto to_string(enum chester::engine::square::value value)  -> std::string;
+}
 
 // NOLINTEND

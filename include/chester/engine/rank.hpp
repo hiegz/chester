@@ -4,9 +4,8 @@
 #pragma once
 
 #include <cstdint>
-#include <format>
 #include <ostream>
-#include <stdexcept>
+#include <string>
 
 namespace chester::engine {
 
@@ -31,39 +30,14 @@ class rank {
     enum rank::value value;
 };
 
+auto operator<<(std::ostream &os, enum chester::engine::rank::value const &value) -> std::ostream &;
+auto operator<<(std::ostream &os,      chester::engine::rank        const &rank)  -> std::ostream &;
+
 }
 
-template <>
-struct std::formatter<enum chester::engine::rank::value> {
-    // cppcheck-suppress[unusedFunction,unmatchedSuppression]
-    static constexpr auto parse(std::format_parse_context &ctx) {
-        return ctx.begin();
-    }
-
-    static auto format(const enum chester::engine::rank::value &rank, std::format_context &ctx) {
-        switch (rank) {
-            case chester::engine::rank::one:   return std::format_to(ctx.out(), "1");
-            case chester::engine::rank::two:   return std::format_to(ctx.out(), "2");
-            case chester::engine::rank::three: return std::format_to(ctx.out(), "3");
-            case chester::engine::rank::four:  return std::format_to(ctx.out(), "4");
-            case chester::engine::rank::five:  return std::format_to(ctx.out(), "5");
-            case chester::engine::rank::six:   return std::format_to(ctx.out(), "6");
-            case chester::engine::rank::seven: return std::format_to(ctx.out(), "7");
-            case chester::engine::rank::eight: return std::format_to(ctx.out(), "8");
-        }
-
-        throw std::runtime_error("unknown rank");
-    }
-};
-
-template <>
-struct std::formatter<chester::engine::rank> : std::formatter<enum chester::engine::rank::value> {
-    static auto format(const chester::engine::rank &rank, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", rank.value);
-    }
-};
-
-auto operator<<(std::ostream &os, enum chester::engine::rank::value const &value) -> std::ostream &;
-auto operator<<(std::ostream &os,      chester::engine::rank        const &value) -> std::ostream &;
+namespace std {
+auto to_string(     chester::engine::rank        rank)  -> std::string;
+auto to_string(enum chester::engine::rank::value value) -> std::string;
+}
 
 // NOLINTEND

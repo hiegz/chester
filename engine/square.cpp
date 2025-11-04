@@ -2,17 +2,27 @@
 
 #include <chester/engine/square.hpp>
 
-#include <format>
 #include <ostream>
+#include <string>
+#include <sstream>
 
-auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)
+auto chester::engine::operator<<(std::ostream &os, enum chester::engine::square::value const &value)
     -> std::ostream & {
-    os << std::format("{}", value);
+    os << chester::engine::square(value);
     return os;
 }
 
-auto operator<<(std::ostream &os, chester::engine::square const &value)
+auto chester::engine::operator<<(std::ostream &os, chester::engine::square const &square)
     -> std::ostream & {
-    os << std::format("{}", value);
-    return os;
+    return os << square.file() << square.rank();
+}
+
+auto std::to_string(chester::engine::square square) -> std::string {
+    std::ostringstream ss;
+    ss << square;
+    return ss.str();
+}
+
+auto std::to_string(enum chester::engine::square::value value) -> std::string {
+    return std::to_string(chester::engine::square(value));
 }

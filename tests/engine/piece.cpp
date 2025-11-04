@@ -10,15 +10,6 @@
 
 using chester::engine::piece;
 
-TEST_CASE("chester::engine::piece::value formatter", "[engine][piece::value][fmt]") {
-    REQUIRE("king"   == std::format("{}", piece::king));
-    REQUIRE("queen"  == std::format("{}", piece::queen));
-    REQUIRE("rook"   == std::format("{}", piece::rook));
-    REQUIRE("bishop" == std::format("{}", piece::bishop));
-    REQUIRE("knight" == std::format("{}", piece::knight));
-    REQUIRE("pawn"   == std::format("{}", piece::pawn));
-}
-
 TEST_CASE("chester::engine::piece::value operator << overload for std::ostream", "[engine][piece::value][fmt]") {
     std::ostringstream ostr;
 
@@ -63,15 +54,6 @@ TEST_CASE("chester::engine::piece::value operator << overload for std::ostream",
         ostr << piece;
         REQUIRE("pawn" == ostr.str());
     }
-}
-
-TEST_CASE("chester::engine::piece formatter", "[engine][piece][fmt]") {
-    REQUIRE("king"   == std::format("{}", (piece)piece::king));
-    REQUIRE("queen"  == std::format("{}", (piece)piece::queen));
-    REQUIRE("rook"   == std::format("{}", (piece)piece::rook));
-    REQUIRE("bishop" == std::format("{}", (piece)piece::bishop));
-    REQUIRE("knight" == std::format("{}", (piece)piece::knight));
-    REQUIRE("pawn"   == std::format("{}", (piece)piece::pawn));
 }
 
 TEST_CASE("chester::engine::piece operator << overload for std::ostream", "[engine][piece][fmt]") {

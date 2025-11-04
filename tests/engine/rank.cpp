@@ -10,17 +10,6 @@
 
 using chester::engine::rank;
 
-TEST_CASE("chester::engine::rank::value formatter", "[engine][rank::value][fmt]") {
-    REQUIRE("1" == std::format("{}", rank::one));
-    REQUIRE("2" == std::format("{}", rank::two));
-    REQUIRE("3" == std::format("{}", rank::three));
-    REQUIRE("4" == std::format("{}", rank::four));
-    REQUIRE("5" == std::format("{}", rank::five));
-    REQUIRE("6" == std::format("{}", rank::six));
-    REQUIRE("7" == std::format("{}", rank::seven));
-    REQUIRE("8" == std::format("{}", rank::eight));
-}
-
 TEST_CASE("chester::engine::rank::value operator << overload for std::ostream", "[engine][rank::value][fmt]") {
     std::ostringstream ostr;
 
@@ -79,17 +68,6 @@ TEST_CASE("chester::engine::rank::value operator << overload for std::ostream", 
         ostr << rank;
         REQUIRE("8" == ostr.str());
     }
-}
-
-TEST_CASE("chester::engine::rank formatter", "[engine][rank][fmt]") {
-    REQUIRE("1" == std::format("{}", (rank)rank::one));
-    REQUIRE("2" == std::format("{}", (rank)rank::two));
-    REQUIRE("3" == std::format("{}", (rank)rank::three));
-    REQUIRE("4" == std::format("{}", (rank)rank::four));
-    REQUIRE("5" == std::format("{}", (rank)rank::five));
-    REQUIRE("6" == std::format("{}", (rank)rank::six));
-    REQUIRE("7" == std::format("{}", (rank)rank::seven));
-    REQUIRE("8" == std::format("{}", (rank)rank::eight));
 }
 
 TEST_CASE("chester::engine::rank operator << overload for std::ostream", "[engine][rank][fmt]") {

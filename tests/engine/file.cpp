@@ -10,17 +10,6 @@
 
 using chester::engine::file;
 
-TEST_CASE("chester::engine::file::value formatter", "[engine][file::value][fmt]") {
-    REQUIRE("a" == std::format("{}", file::a));
-    REQUIRE("b" == std::format("{}", file::b));
-    REQUIRE("c" == std::format("{}", file::c));
-    REQUIRE("d" == std::format("{}", file::d));
-    REQUIRE("e" == std::format("{}", file::e));
-    REQUIRE("f" == std::format("{}", file::f));
-    REQUIRE("g" == std::format("{}", file::g));
-    REQUIRE("h" == std::format("{}", file::h));
-}
-
 TEST_CASE("chester::engine::file::value operator << overload for std::ostream", "[engine][file::value][fmt]") {
     std::ostringstream ostr;
 
@@ -79,17 +68,6 @@ TEST_CASE("chester::engine::file::value operator << overload for std::ostream", 
         ostr << file;
         REQUIRE("h" == ostr.str());
     }
-}
-
-TEST_CASE("chester::engine::file formatter", "[engine][file][fmt]") {
-    REQUIRE("a" == std::format("{}", (file)file::a));
-    REQUIRE("b" == std::format("{}", (file)file::b));
-    REQUIRE("c" == std::format("{}", (file)file::c));
-    REQUIRE("d" == std::format("{}", (file)file::d));
-    REQUIRE("e" == std::format("{}", (file)file::e));
-    REQUIRE("f" == std::format("{}", (file)file::f));
-    REQUIRE("g" == std::format("{}", (file)file::g));
-    REQUIRE("h" == std::format("{}", (file)file::h));
 }
 
 TEST_CASE("chester::engine::file operator << overload for std::ostream", "[engine][file][fmt]") {

@@ -2,17 +2,38 @@
 
 #include <chester/engine/file.hpp>
 
-#include <format>
 #include <ostream>
+#include <string>
+#include <sstream>
+#include <stdexcept>
 
-auto operator<<(std::ostream &os, enum chester::engine::file::value const &value)
+auto chester::engine::operator<<(std::ostream &os, enum chester::engine::file::value const &value)
     -> std::ostream & {
-    os << std::format("{}", value);
-    return os;
+    switch (value) {
+        case file::a: return os << "a";
+        case file::b: return os << "b";
+        case file::c: return os << "c";
+        case file::d: return os << "d";
+        case file::e: return os << "e";
+        case file::f: return os << "f";
+        case file::g: return os << "g";
+        case file::h: return os << "h";
+    }
+
+    throw std::runtime_error("what the hell are you trying to do?");
 }
 
-auto operator<<(std::ostream &os, chester::engine::file const &value)
+auto chester::engine::operator<<(std::ostream &os, chester::engine::file const &file)
     -> std::ostream & {
-    os << std::format("{}", value);
-    return os;
+    return os << file.value;
+}
+
+auto std::to_string(chester::engine::file file) -> std::string {
+    std::ostringstream ss;
+    ss << file;
+    return ss.str();
+}
+
+auto std::to_string(enum chester::engine::file::value value) -> std::string {
+    return std::to_string(chester::engine::file(value));
 }
