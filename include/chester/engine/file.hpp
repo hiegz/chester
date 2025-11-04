@@ -25,12 +25,9 @@ class file {
 
     // cppcheck-suppress noExplicitConstructor
     constexpr file(file::value value) : value(value) {}
-    constexpr operator file::value() const { return value; }
-    constexpr explicit operator std::uint8_t() const { return value; }
     constexpr auto operator==(file other) const { return value == other.value; }
     constexpr auto operator!=(file other) const { return value != other.value; }
 
-  private:
     enum file::value value;
 };
 
@@ -63,7 +60,7 @@ struct std::formatter<enum chester::engine::file::value> {
 template <>
 struct std::formatter<chester::engine::file> : std::formatter<enum chester::engine::file::value> {
     static auto format(const chester::engine::file &file, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", (enum chester::engine::file::value)file);
+        return std::format_to(ctx.out(), "{}", file.value);
     }
 };
 

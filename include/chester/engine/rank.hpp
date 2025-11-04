@@ -25,12 +25,9 @@ class rank {
 
     // cppcheck-suppress noExplicitConstructor
     constexpr rank(rank::value value) : value(value) {}
-    constexpr operator rank::value() const { return value; }
-    constexpr explicit operator std::uint8_t() const { return value; }
     constexpr auto operator==(rank other) const { return value == other.value; }
     constexpr auto operator!=(rank other) const { return value != other.value; }
 
-  private:
     enum rank::value value;
 };
 
@@ -62,7 +59,7 @@ struct std::formatter<enum chester::engine::rank::value> {
 template <>
 struct std::formatter<chester::engine::rank> : std::formatter<enum chester::engine::rank::value> {
     static auto format(const chester::engine::rank &rank, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", (enum chester::engine::rank::value)rank);
+        return std::format_to(ctx.out(), "{}", rank.value);
     }
 };
 

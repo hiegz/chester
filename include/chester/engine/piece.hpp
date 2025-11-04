@@ -23,12 +23,9 @@ class piece {
 
     // cppcheck-suppress noExplicitConstructor
     constexpr piece(piece::value value) : value(value) {}
-    constexpr operator piece::value() const { return value; }
-    constexpr explicit operator std::uint8_t() const { return value; }
     constexpr auto operator==(piece other) const { return value == other.value; }
     constexpr auto operator!=(piece other) const { return value != other.value; }
 
-  private:
     enum piece::value value;
 };
 
@@ -59,7 +56,7 @@ struct std::formatter<enum chester::engine::piece::value> {
 template <>
 struct std::formatter<chester::engine::piece> : std::formatter<enum chester::engine::piece::value> {
     static auto format(const chester::engine::piece &piece, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", (enum chester::engine::piece::value)piece);
+        return std::format_to(ctx.out(), "{}", piece.value);
     }
 };
 

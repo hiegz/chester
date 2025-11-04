@@ -28,12 +28,10 @@ class square {
     // cppcheck-suppress noExplicitConstructor
     constexpr square(square::value value) : value(value) {}
     constexpr square(chester::engine::file file, chester::engine::rank rank)
-        : value((enum square::value)((rank * 8) + file)) {}
+        : value((enum square::value)((rank.value * 8) + file.value)) {}
 
     constexpr auto operator==(square other) const { return value == other.value; }
     constexpr auto operator!=(square other) const { return value != other.value; }
-    constexpr explicit operator std::uint8_t() const { return value; }
-    constexpr explicit operator square::value() const { return value; }
 
     [[nodiscard]]
     constexpr auto file() const -> chester::engine::file {
@@ -45,7 +43,6 @@ class square {
         return (enum chester::engine::rank::value)(value / 8);
     }
 
-  private:
     enum square::value value;
 };
 
@@ -53,19 +50,19 @@ class square {
 
 
 constexpr auto operator==(chester::engine::square lhs, enum chester::engine::square::value rhs) {
-    return (enum chester::engine::square::value)lhs == rhs;
+    return lhs.value == rhs;
 }
 
 constexpr auto operator==(enum chester::engine::square::value lhs, chester::engine::square rhs) {
-    return lhs == (enum chester::engine::square::value)rhs;
+    return lhs == rhs.value;
 }
 
 constexpr auto operator!=(chester::engine::square lhs, enum chester::engine::square::value rhs) {
-    return (enum chester::engine::square::value)lhs != rhs;
+    return lhs.value != rhs;
 }
 
 constexpr auto operator!=(enum chester::engine::square::value lhs, chester::engine::square rhs) {
-    return lhs != (enum chester::engine::square::value)rhs;
+    return lhs != rhs.value;
 }
 
 template<>
@@ -83,7 +80,7 @@ struct std::formatter<chester::engine::square> {
 template<>
 struct std::formatter<enum chester::engine::square::value> : std::formatter<chester::engine::square> {
     static auto format(const enum chester::engine::square::value &square, std::format_context &ctx) {
-        return std::format_to(ctx.out(), "{}", (chester::engine::square)square);
+        return std::format_to(ctx.out(), "{}", chester::engine::square(square));
     }
 };
 
