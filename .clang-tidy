@@ -23,6 +23,8 @@ Checks:
 
   -misc-non-private-member-variables-in-classes,
 
+  -bugprone-easily-swappable-parameters
+
 UseColor: true
 WarningsAsErrors: "*"
 FormatStyle: "file"
