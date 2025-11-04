@@ -1,6 +1,5 @@
 // clang-format off
 
-#include <format>
 #include <sstream>
 
 #include <chester/engine/piece.hpp>
