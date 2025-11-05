@@ -26,6 +26,10 @@ class rank {
     constexpr rank(rank::value value) : value(value) {}
     constexpr auto operator==(rank other) const { return value == other.value; }
     constexpr auto operator!=(rank other) const { return value != other.value; }
+    constexpr auto operator< (rank other) const { return value <  other.value; }
+    constexpr auto operator<=(rank other) const { return value <= other.value; }
+    constexpr auto operator> (rank other) const { return value >  other.value; }
+    constexpr auto operator>=(rank other) const { return value >= other.value; }
 
     enum rank::value value;
 };

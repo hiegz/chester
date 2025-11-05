@@ -26,6 +26,10 @@ class file {
     constexpr file(file::value value) : value(value) {}
     constexpr auto operator==(file other) const { return value == other.value; }
     constexpr auto operator!=(file other) const { return value != other.value; }
+    constexpr auto operator< (file other) const { return value <  other.value; }
+    constexpr auto operator<=(file other) const { return value <= other.value; }
+    constexpr auto operator> (file other) const { return value >  other.value; }
+    constexpr auto operator>=(file other) const { return value >= other.value; }
 
     enum file::value value;
 };

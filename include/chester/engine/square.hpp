@@ -71,13 +71,12 @@ class square {
     enum square::value value;
 };
 
-constexpr auto operator==(square lhs, square rhs) {
-    return lhs.value == rhs.value;
-}
-
-constexpr auto operator!=(square lhs, square rhs) {
-    return lhs.value != rhs.value;
-}
+constexpr auto operator==(square lhs, square rhs) { return lhs.value == rhs.value; }
+constexpr auto operator!=(square lhs, square rhs) { return lhs.value != rhs.value; }
+constexpr auto operator< (square lhs, square rhs) { return lhs.value <  rhs.value; }
+constexpr auto operator<=(square lhs, square rhs) { return lhs.value <= rhs.value; }
+constexpr auto operator> (square lhs, square rhs) { return lhs.value >  rhs.value; }
+constexpr auto operator>=(square lhs, square rhs) { return lhs.value >= rhs.value; }
 
 constexpr auto operator<<(enum square::value lhs, int rhs) -> enum square::value {
 #ifdef DEBUG
