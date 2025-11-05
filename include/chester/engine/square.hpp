@@ -85,6 +85,10 @@ constexpr auto operator<<(enum square::value lhs, int rhs) -> enum square::value
     return (enum square::value)(lhs - rhs);
 }
 
+constexpr auto operator<<=(enum square::value &lhs, int rhs) {
+    lhs = lhs << rhs;
+}
+
 constexpr auto operator>>(enum square::value lhs, int rhs) -> enum square::value {
 #ifdef DEBUG
     if (lhs + rhs > 63)
@@ -93,12 +97,24 @@ constexpr auto operator>>(enum square::value lhs, int rhs) -> enum square::value
     return (enum square::value)(lhs + rhs);
 }
 
+constexpr auto operator>>=(enum square::value &lhs, int rhs) {
+    lhs = lhs >> rhs;
+}
+
 constexpr auto operator<<(square lhs, int rhs) -> square {
     return square(lhs.value << rhs);
 }
 
+constexpr auto operator<<=(square &lhs, int rhs) {
+    lhs = lhs << rhs;
+}
+
 constexpr auto operator>>(square lhs, int rhs) -> square {
     return square(lhs.value >> rhs);
+}
+
+constexpr auto operator>>=(square &lhs, int rhs) {
+    lhs = lhs >> rhs;
 }
 
 auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;
