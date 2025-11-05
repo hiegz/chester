@@ -27,6 +27,7 @@ include_directories(include)
 
 add_library(
     engine SHARED
+    engine/bitboard.cpp
     engine/file.cpp
     engine/piece.cpp
     engine/rank.cpp
@@ -70,6 +71,7 @@ find_package(Catch2 3)
 if (Catch2_FOUND)
     add_executable(
         tests
+        tests/engine/bitboard.cpp
         tests/engine/bitset.cpp
         tests/engine/file.cpp
         tests/engine/piece.cpp

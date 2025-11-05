@@ -16,6 +16,8 @@
 
 namespace chester::engine {
 
+class bitboard;
+
 class square {
   public:
     enum value : std::uint8_t {
@@ -116,6 +118,15 @@ constexpr auto operator>>(square lhs, int rhs) -> square {
 constexpr auto operator>>=(square &lhs, int rhs) {
     lhs = lhs >> rhs;
 }
+
+constexpr auto operator&(     square        lhs,      square        rhs) -> bitboard;
+constexpr auto operator|(     square        lhs,      square        rhs) -> bitboard;
+constexpr auto operator^(     square        lhs,      square        rhs) -> bitboard;
+constexpr auto operator~(     square        lhs)                         -> bitboard;
+constexpr auto operator&(enum square::value lhs, enum square::value rhs) -> bitboard;
+constexpr auto operator|(enum square::value lhs, enum square::value rhs) -> bitboard;
+constexpr auto operator^(enum square::value lhs, enum square::value rhs) -> bitboard;
+constexpr auto operator~(enum square::value lhs)                         -> bitboard;
 
 auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;
 auto operator<<(std::ostream &os,      chester::engine::square        const &square) -> std::ostream &;
