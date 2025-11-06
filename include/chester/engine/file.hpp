@@ -25,6 +25,7 @@ class file {
         hi = 8,
     };
 
+    constexpr file() : value(value::a) {}
     // cppcheck-suppress noExplicitConstructor
     constexpr file(file::value value) : value(value) {}
     constexpr auto operator==(file other) const         { return value == other.value; }
