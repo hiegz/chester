@@ -25,6 +25,7 @@ class rank {
         hi = 8,
     };
 
+    constexpr rank() : value(value::one) {}
     // cppcheck-suppress noExplicitConstructor
     constexpr rank(rank::value value) : value(value) {}
     constexpr auto operator==(rank other) const         { return value == other.value; }
