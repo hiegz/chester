@@ -5,7 +5,6 @@
 #include <ostream>
 #include <string>
 #include <sstream>
-#include <stdexcept>
 
 auto chester::engine::operator<<(std::ostream &os, enum chester::engine::rank::value const &value)
     -> std::ostream & {
@@ -18,9 +17,9 @@ auto chester::engine::operator<<(std::ostream &os, enum chester::engine::rank::v
         case rank::six:   return os << "6";
         case rank::seven: return os << "7";
         case rank::eight: return os << "8";
-    }
 
-    throw std::runtime_error("what the hell are you trying to do?");
+        default:          return os << "?";
+    }
 }
 
 auto chester::engine::operator<<(std::ostream &os, chester::engine::rank const &rank)

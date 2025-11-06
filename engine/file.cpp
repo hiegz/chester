@@ -5,7 +5,6 @@
 #include <ostream>
 #include <string>
 #include <sstream>
-#include <stdexcept>
 
 auto chester::engine::operator<<(std::ostream &os, enum chester::engine::file::value const &value)
     -> std::ostream & {
@@ -18,9 +17,9 @@ auto chester::engine::operator<<(std::ostream &os, enum chester::engine::file::v
         case file::f: return os << "f";
         case file::g: return os << "g";
         case file::h: return os << "h";
-    }
 
-    throw std::runtime_error("what the hell are you trying to do?");
+        default:      return os << "?";
+    }
 }
 
 auto chester::engine::operator<<(std::ostream &os, chester::engine::file const &file)

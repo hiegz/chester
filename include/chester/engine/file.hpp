@@ -20,18 +20,55 @@ class file {
         f = 5,
         g = 6,
         h = 7,
+
+        lo = 255,
+        hi = 8,
     };
 
     // cppcheck-suppress noExplicitConstructor
     constexpr file(file::value value) : value(value) {}
-    constexpr auto operator==(file other) const { return value == other.value; }
-    constexpr auto operator!=(file other) const { return value != other.value; }
-    constexpr auto operator< (file other) const { return value <  other.value; }
-    constexpr auto operator<=(file other) const { return value <= other.value; }
-    constexpr auto operator> (file other) const { return value >  other.value; }
-    constexpr auto operator>=(file other) const { return value >= other.value; }
+    constexpr auto operator==(file other) const         { return value == other.value; }
+    constexpr auto operator!=(file other) const         { return value != other.value; }
+    constexpr auto operator< (file other) const         { return value <  other.value; }
+    constexpr auto operator<=(file other) const         { return value <= other.value; }
+    constexpr auto operator> (file other) const         { return value >  other.value; }
+    constexpr auto operator>=(file other) const         { return value >= other.value; }
+    constexpr auto operator+ (int  other) const -> file { return value +  other;       }
+    constexpr auto operator- (int  other) const -> file { return value -  other;       }
+    constexpr auto operator+=(int  other)               { *this = *this + other;       }
+    constexpr auto operator-=(int  other)               { *this = *this - other;       }
+
+    // ++file
+    constexpr auto operator++() -> file& {
+        *this += 1;
+        return *this;
+    }
+
+    // file++
+    constexpr auto operator++(int) -> file {
+        const file prev = *this;
+        *this += 1;
+        return prev;
+    }
+
+    // --file
+    constexpr auto operator--() -> file& {
+        *this -= 1;
+        return *this;
+    }
+
+    // file--
+    constexpr auto operator--(int) -> file {
+        const file prev = *this;
+        *this -= 1;
+        return prev;
+    }
 
     enum file::value value;
+
+  private:
+    constexpr file(std::uint8_t value)
+        : value((enum file::value)value) {}
 };
 
 auto operator<<(std::ostream &os, enum chester::engine::file::value const &value) -> std::ostream &;
