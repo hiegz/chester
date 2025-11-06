@@ -55,6 +55,7 @@ class bitboard {
     constexpr auto pop_front() -> square { return (enum square::value)bitset::pop_front(&value); }
     constexpr auto pop_back() -> square { return (enum square::value)bitset::pop_back(&value); }
     constexpr auto powerset() const -> std::vector<bitboard> {
+        // cppcheck-suppress shadowFunction
         const std::size_t     cardinality = this->cardinality();
         const std::size_t     capacity    = 1UL << cardinality;
         std::vector<bitboard> result(capacity);
