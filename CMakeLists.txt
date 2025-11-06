@@ -27,8 +27,7 @@ include_directories(include)
 
 add_library(
     engine SHARED
-    engine/lookup/king.cpp
-    engine/lookup/knight.cpp
+    engine/lookup/leaping.cpp
     engine/bitboard.cpp
     engine/file.cpp
     engine/piece.cpp
