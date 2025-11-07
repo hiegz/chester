@@ -54,17 +54,18 @@ class bitboard {
     constexpr auto scan_backward() const { return bitset::scan_backward(value); }
     constexpr auto pop_front() -> square { return (enum square::value)bitset::pop_front(&value); }
     constexpr auto pop_back() -> square { return (enum square::value)bitset::pop_back(&value); }
-    constexpr auto powerset() const -> std::vector<bitboard> {
-        // cppcheck-suppress shadowFunction
-        const std::size_t     cardinality = this->cardinality();
-        const std::size_t     capacity    = 1UL << cardinality;
-        std::vector<bitboard> result(capacity);
 
-        for (std::size_t index = 0; index < capacity; ++index) {
-            result[index] = chester::engine::bitset::powerset(this->value, cardinality, index);
-        }
-
-        return result;
+    /**
+     * Returns the n-th subset of the given bitboard.
+     *
+     * For performance, the bitboard's cardinality is provided by the caller so
+     * it is not recomputed for every subset. It goes without saying that providing
+     * an incorrect cardinality results in undefined behavior.
+     *
+     * The `index` specifies which subset to return and must be within the range [0, 1 << cardinality).
+     */
+    constexpr static auto subset(class bitboard bitboard, std::size_t cardinality, std::size_t index) -> class bitboard {
+        return bitset::subset(bitboard.value, cardinality, index);
     }
 
     /**

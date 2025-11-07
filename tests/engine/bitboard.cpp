@@ -1,6 +1,5 @@
 // clang-format off
 
-#include <vector>
 #include <sstream>
 
 #include <chester/engine/square.hpp>
@@ -396,44 +395,5 @@ TEST_CASE("chester::engine::bitboard::pop_back()", "[engine][bitboard]") {
 
         REQUIRE(expected_bitboard == actual_bitboard);
         REQUIRE(expected_square   == actual_square);
-    }
-}
-
-TEST_CASE("chester::engine::bitboard::powerset", "[engine][bitboard]") {
-    WHEN("bitboard is empty") {
-        const auto bitboard = bitboard::empty();
-        const auto expected = std::vector<class bitboard>{bitboard::empty()};
-        const auto actual   = bitboard.powerset();
-
-        INFO("bitboard\n" << bitboard << "\n\n");
-        INFO("expected bitboards\n");
-        for (const auto item : expected) {
-            INFO(item);
-        }
-        INFO("\n\n");
-
-        INFO("actual bitboards\n");
-        for (const auto item : actual) {
-            INFO(item);
-        }
-        INFO("\n\n");
-
-        REQUIRE(expected == actual);
-    }
-
-    WHEN("bitboard is single") {
-        const auto bitboard = bitboard::empty() | square::d2;
-        const auto expected = std::vector<class bitboard>{bitboard::empty(), square::d2};
-        const auto actual   = bitboard.powerset();
-
-        REQUIRE(expected == actual);
-    }
-
-    WHEN("bitboard has two elements") {
-        const auto bitboard = bitboard::empty() | square::d2 | square::h8;
-        const auto expected = std::vector<class bitboard>{bitboard::empty(), square::d2, square::h8, square::d2 | square::h8};
-        const auto actual   = bitboard.powerset();
-
-        REQUIRE(expected == actual);
     }
 }

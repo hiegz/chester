@@ -9,7 +9,6 @@
 
 #include <chester/engine/bitset.hpp>
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <limits>
@@ -181,54 +180,5 @@ TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
 
         REQUIRE(index == chester::engine::bitset::pop_back(&bitset));
         REQUIRE(63    == chester::engine::bitset::cardinality(bitset));
-    }
-}
-
-TEST_CASE("chester::engine::bitset::powerset()", "[engine][bitset]") {
-    WHEN("bitset is empty") {
-        const auto bitset = chester::engine::bitset::empty<std::uint64_t>();
-        const auto powerset = chester::engine::bitset::powerset(bitset);
-
-        CAPTURE(bitset);
-        CAPTURE(powerset);
-
-        REQUIRE(1 == powerset.size());
-        REQUIRE(chester::engine::bitset::is_empty(powerset[0]));
-    }
-
-    WHEN("bitset is single") {
-        const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << (std::size_t)square;
-        const auto powerset = chester::engine::bitset::powerset(bitset);
-
-        CAPTURE(bitset);
-        CAPTURE(powerset);
-
-        REQUIRE(2 == powerset.size());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return chester::engine::bitset::is_empty(entry); }) != powerset.end());
-    }
-
-    WHEN("bitset has two elements") {
-        const auto square_i = GENERATE(1, 5, 50);
-        const auto square_j = GENERATE(29, 7, 31);
-        const auto bitset_i = 1UL << (std::size_t)square_i;
-        const auto bitset_j = 1UL << (std::size_t)square_j;
-        const auto bitset   = bitset_i | bitset_j;
-        const auto powerset  = chester::engine::bitset::powerset(bitset);
-
-        CAPTURE(square_i);
-        CAPTURE(bitset_i);
-        CAPTURE(square_j);
-        CAPTURE(bitset_j);
-
-        CAPTURE(bitset);
-        CAPTURE(powerset);
-
-        REQUIRE(4 == powerset.size());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset_i; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return entry == bitset_j; }) != powerset.end());
-        REQUIRE(std::ranges::find_if(powerset, [&](auto entry) -> auto { return chester::engine::bitset::is_empty(entry); }) != powerset.end());
     }
 }

@@ -5,7 +5,7 @@
 #include <bit>
 #include <cstddef>
 #include <cstdint>
-#include <vector>
+#include <stdexcept>
 
 #ifdef DEBUG
 #include <chester/panic.hpp>
@@ -151,19 +151,26 @@ auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
 }
 
 /**
- * Returns the n-th powerset of a given bitset with its cardinality already known.
+ * Returns the n-th subset of the given bitset.
  *
- * In debug mode, this function verifies that the provided cardinality matches
- * the real cardinality of the bitset.
+ * For performance, the bitset's cardinality is provided by the caller so
+ * it is not recomputed for every subset. It goes without saying that providing
+ * an incorrect cardinality results in undefined behavior.
+ *
+ * The `index` specifies which subset to return and must be within the range [0, 1 << cardinality).
  */
 template <typename T>
-auto constexpr powerset(T bitset, std::size_t cardinality, std::size_t index) -> T;
+auto constexpr subset(T bitset, std::size_t cardinality, std::size_t index) -> T;
 
 template<>
-auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality, std::size_t index) -> std::uint64_t {
+auto constexpr subset(std::uint64_t bitset, std::size_t cardinality, std::size_t index) -> std::uint64_t {
 #ifdef DEBUG
     if (cardinality != chester::engine::bitset::cardinality(bitset)) {
         chester::panic("provided bitset cardinality does not match its real cardinality");
+    }
+
+    if (index >= (1UL << cardinality)) {
+        throw std::runtime_error("index is out of bounds");
     }
 #endif
 
@@ -178,43 +185,6 @@ auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality, std::size
     }
 
     return result;
-}
-
-/**
- * Returns a powerset of a given bitset with its cardinality already known.
- *
- * In debug mode, this function verifies that the provided cardinality matches
- * the real cardinality of the bitset.
- */
-template <typename T>
-auto constexpr powerset(T bitset, std::size_t cardinality) -> std::vector<T>;
-
-template <>
-auto constexpr powerset(std::uint64_t bitset, std::size_t cardinality)
-    -> std::vector<std::uint64_t> {
-#ifdef DEBUG
-    if (cardinality != chester::engine::bitset::cardinality(bitset)) {
-        chester::panic("provided bitset cardinality does not match its real cardinality");
-    }
-#endif
-
-    const std::size_t          capacity = 1UL << cardinality;
-    std::vector<std::uint64_t> powerset(capacity);
-
-    for (std::size_t index = 0; index < capacity; ++index) {
-        powerset[index] = chester::engine::bitset::powerset(bitset, cardinality, index);
-    }
-
-    return powerset;
-}
-
-/** Returns a powerset of a given bitset */
-template <typename T>
-auto constexpr powerset(T bitset) -> std::vector<T>;
-
-template <>
-auto constexpr powerset(std::uint64_t bitset) -> std::vector<std::uint64_t> {
-    return chester::engine::bitset::powerset(bitset, chester::engine::bitset::cardinality(bitset));
 }
 
 } // namespace chester::engine::bitset
