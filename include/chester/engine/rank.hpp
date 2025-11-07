@@ -21,49 +21,13 @@ class rank {
         seven = 6,
         eight = 7,
 
-        lo = 255,
-        hi = 8,
+        low  = 255, // (-1)
+        high = 8,
     };
 
     constexpr rank() : value(value::one) {}
     // cppcheck-suppress noExplicitConstructor
     constexpr rank(rank::value value) : value(value) {}
-    constexpr auto operator==(rank other) const         { return value == other.value; }
-    constexpr auto operator!=(rank other) const         { return value != other.value; }
-    constexpr auto operator< (rank other) const         { return value <  other.value; }
-    constexpr auto operator<=(rank other) const         { return value <= other.value; }
-    constexpr auto operator> (rank other) const         { return value >  other.value; }
-    constexpr auto operator>=(rank other) const         { return value >= other.value; }
-    constexpr auto operator+ (int  other) const -> rank { return value +  other;       }
-    constexpr auto operator- (int  other) const -> rank { return value -  other;       }
-    constexpr auto operator+=(int  other)               { *this = *this + other;       }
-    constexpr auto operator-=(int  other)               { *this = *this - other;       }
-
-    // ++rank
-    constexpr auto operator++() -> rank& {
-        *this += 1;
-        return *this;
-    }
-
-    // rank++
-    constexpr auto operator++(int) -> rank {
-        const rank prev = *this;
-        *this += 1;
-        return prev;
-    }
-
-    // --rank
-    constexpr auto operator--() -> rank& {
-        *this -= 1;
-        return *this;
-    }
-
-    // rank--
-    constexpr auto operator--(int) -> rank {
-        const rank prev = *this;
-        *this -= 1;
-        return prev;
-    }
 
     enum rank::value value;
 
@@ -71,6 +35,138 @@ class rank {
     constexpr rank(std::uint8_t value)
         : value((enum rank::value)value) {}
 };
+
+constexpr auto operator==(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs == (std::int8_t)rhs;
+}
+
+constexpr auto operator!=(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs != (std::int8_t)rhs;
+}
+
+constexpr auto operator<(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs < (std::int8_t)rhs;
+}
+
+constexpr auto operator<=(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs <= (std::int8_t)rhs;
+}
+
+constexpr auto operator>(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs > (std::int8_t)rhs;
+}
+
+constexpr auto operator>=(enum rank::value lhs, enum rank::value rhs) {
+    return (std::int8_t)lhs >= (std::int8_t)rhs;
+}
+
+constexpr auto operator+(enum rank::value lhs, int rhs) -> enum rank::value {
+    return (enum rank::value)((std::int8_t)lhs + rhs);
+}
+
+constexpr auto operator-(enum rank::value lhs, int rhs) -> enum rank::value {
+    return (enum rank::value)((std::int8_t)lhs - rhs);
+}
+
+constexpr auto operator+=(enum rank::value &lhs, int rhs) {
+    lhs = lhs + rhs;
+}
+
+constexpr auto operator-=(enum rank::value &lhs, int rhs) {
+    lhs = lhs - rhs;
+}
+
+// ++lhs
+constexpr auto operator++(enum rank::value &lhs) -> enum rank::value & {
+    lhs += 1;
+    return lhs;
+}
+
+// lhs++
+constexpr auto operator++(enum rank::value &lhs, int) -> enum rank::value {
+    const enum rank::value prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --lhs
+constexpr auto operator--(enum rank::value &lhs) -> enum rank::value & {
+    lhs -= 1;
+    return lhs;
+}
+
+// lhs--
+constexpr auto operator--(enum rank::value &lhs, int) -> enum rank::value {
+    const enum rank::value prev = lhs;
+    --lhs;
+    return prev;
+}
+
+constexpr auto operator==(rank lhs, rank rhs) {
+    return lhs.value == rhs.value;
+}
+
+constexpr auto operator!=(rank lhs, rank rhs) {
+    return lhs.value != rhs.value;
+}
+
+constexpr auto operator<(rank lhs, rank rhs) {
+    return lhs.value < rhs.value;
+}
+
+constexpr auto operator<=(rank lhs, rank rhs) {
+    return lhs.value <= rhs.value;
+}
+
+constexpr auto operator>(rank lhs, rank rhs) {
+    return lhs.value > rhs.value;
+}
+
+constexpr auto operator>=(rank lhs, rank rhs) {
+    return lhs.value >= rhs.value;
+}
+
+constexpr auto operator+(rank lhs, int rhs) -> rank {
+    return lhs.value + rhs;
+}
+
+constexpr auto operator-(rank lhs, int rhs) -> rank {
+    return lhs.value - rhs;
+}
+
+constexpr auto operator+=(rank &lhs, int rhs) {
+    lhs.value += rhs;
+}
+
+constexpr auto operator-=(rank &lhs, int rhs) {
+    lhs.value -= rhs;
+}
+
+// ++rank
+constexpr auto operator++(rank &lhs) -> rank& {
+    ++lhs.value;
+    return lhs;
+}
+
+// rank++
+constexpr auto operator++(rank &lhs, int) -> rank {
+    const rank prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --rank
+constexpr auto operator--(rank &lhs) -> rank& {
+    --lhs.value;
+    return lhs;
+}
+
+// rank--
+constexpr auto operator--(rank &lhs, int) -> rank {
+    const rank prev = lhs;
+    --lhs;
+    return prev;
+}
 
 auto operator<<(std::ostream &os, enum chester::engine::rank::value const &value) -> std::ostream &;
 auto operator<<(std::ostream &os,      chester::engine::rank        const &rank)  -> std::ostream &;

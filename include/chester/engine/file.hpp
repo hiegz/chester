@@ -21,49 +21,13 @@ class file {
         g = 6,
         h = 7,
 
-        lo = 255,
-        hi = 8,
+        low  = 255, // (-1)
+        high = 8,
     };
 
     constexpr file() : value(value::a) {}
     // cppcheck-suppress noExplicitConstructor
     constexpr file(file::value value) : value(value) {}
-    constexpr auto operator==(file other) const         { return value == other.value; }
-    constexpr auto operator!=(file other) const         { return value != other.value; }
-    constexpr auto operator< (file other) const         { return value <  other.value; }
-    constexpr auto operator<=(file other) const         { return value <= other.value; }
-    constexpr auto operator> (file other) const         { return value >  other.value; }
-    constexpr auto operator>=(file other) const         { return value >= other.value; }
-    constexpr auto operator+ (int  other) const -> file { return value +  other;       }
-    constexpr auto operator- (int  other) const -> file { return value -  other;       }
-    constexpr auto operator+=(int  other)               { *this = *this + other;       }
-    constexpr auto operator-=(int  other)               { *this = *this - other;       }
-
-    // ++file
-    constexpr auto operator++() -> file& {
-        *this += 1;
-        return *this;
-    }
-
-    // file++
-    constexpr auto operator++(int) -> file {
-        const file prev = *this;
-        *this += 1;
-        return prev;
-    }
-
-    // --file
-    constexpr auto operator--() -> file& {
-        *this -= 1;
-        return *this;
-    }
-
-    // file--
-    constexpr auto operator--(int) -> file {
-        const file prev = *this;
-        *this -= 1;
-        return prev;
-    }
 
     enum file::value value;
 
@@ -71,6 +35,138 @@ class file {
     constexpr file(std::uint8_t value)
         : value((enum file::value)value) {}
 };
+
+constexpr auto operator==(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs == (std::int8_t)rhs;
+}
+
+constexpr auto operator!=(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs != (std::int8_t)rhs;
+}
+
+constexpr auto operator<(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs < (std::int8_t)rhs;
+}
+
+constexpr auto operator<=(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs <= (std::int8_t)rhs;
+}
+
+constexpr auto operator>(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs > (std::int8_t)rhs;
+}
+
+constexpr auto operator>=(enum file::value lhs, enum file::value rhs) {
+    return (std::int8_t)lhs >= (std::int8_t)rhs;
+}
+
+constexpr auto operator+(enum file::value lhs, int rhs) -> enum file::value {
+    return (enum file::value)((std::int8_t)lhs + rhs);
+}
+
+constexpr auto operator-(enum file::value lhs, int rhs) -> enum file::value {
+    return (enum file::value)((std::int8_t)lhs - rhs);
+}
+
+constexpr auto operator+=(enum file::value &lhs, int rhs) {
+    lhs = lhs + rhs;
+}
+
+constexpr auto operator-=(enum file::value &lhs, int rhs) {
+    lhs = lhs - rhs;
+}
+
+// ++lhs
+constexpr auto operator++(enum file::value &lhs) -> enum file::value & {
+    lhs += 1;
+    return lhs;
+}
+
+// lhs++
+constexpr auto operator++(enum file::value &lhs, int) -> enum file::value {
+    const enum file::value prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --lhs
+constexpr auto operator--(enum file::value &lhs) -> enum file::value & {
+    lhs -= 1;
+    return lhs;
+}
+
+// lhs--
+constexpr auto operator--(enum file::value &lhs, int) -> enum file::value {
+    const enum file::value prev = lhs;
+    --lhs;
+    return prev;
+}
+
+constexpr auto operator==(file lhs, file rhs) {
+    return lhs.value == rhs.value;
+}
+
+constexpr auto operator!=(file lhs, file rhs) {
+    return lhs.value != rhs.value;
+}
+
+constexpr auto operator<(file lhs, file rhs) {
+    return lhs.value < rhs.value;
+}
+
+constexpr auto operator<=(file lhs, file rhs) {
+    return lhs.value <= rhs.value;
+}
+
+constexpr auto operator>(file lhs, file rhs) {
+    return lhs.value > rhs.value;
+}
+
+constexpr auto operator>=(file lhs, file rhs) {
+    return lhs.value >= rhs.value;
+}
+
+constexpr auto operator+(file lhs, int rhs) -> file {
+    return lhs.value + rhs;
+}
+
+constexpr auto operator-(file lhs, int rhs) -> file {
+    return lhs.value - rhs;
+}
+
+constexpr auto operator+=(file &lhs, int rhs) {
+    lhs.value += rhs;
+}
+
+constexpr auto operator-=(file &lhs, int rhs) {
+    lhs.value -= rhs;
+}
+
+// ++file
+constexpr auto operator++(file &lhs) -> file& {
+    ++lhs.value;
+    return lhs;
+}
+
+// file++
+constexpr auto operator++(file &lhs, int) -> file {
+    const file prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --file
+constexpr auto operator--(file &lhs) -> file& {
+    --lhs.value;
+    return lhs;
+}
+
+// file--
+constexpr auto operator--(file &lhs, int) -> file {
+    const file prev = lhs;
+    --lhs;
+    return prev;
+}
 
 auto operator<<(std::ostream &os, enum chester::engine::file::value const &value) -> std::ostream &;
 auto operator<<(std::ostream &os,      chester::engine::file        const &file)  -> std::ostream &;

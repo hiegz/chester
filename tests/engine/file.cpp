@@ -128,3 +128,31 @@ TEST_CASE("chester::engine::file operator << overload for std::ostream", "[engin
         REQUIRE("h" == ostr.str());
     }
 }
+
+// cppcheck-suppress-begin knownConditionTrueFalse
+
+TEST_CASE("chester::engine::file::low bound", "[engine][file]") {
+    REQUIRE(file::a      >  file::low);
+    REQUIRE(file::a - 1  == file::low);
+    REQUIRE(file::a - 2  <  file::low);
+    REQUIRE(file::a - 10 <  file::low);
+
+    REQUIRE((file)file::a      >  (file)file::low);
+    REQUIRE((file)file::a - 1  == (file)file::low);
+    REQUIRE((file)file::a - 2  <  (file)file::low);
+    REQUIRE((file)file::a - 10 <  (file)file::low);
+}
+
+TEST_CASE("chester::engine::file::high bound", "[engine][file]") {
+    REQUIRE(file::h      <  file::high);
+    REQUIRE(file::h + 1  == file::high);
+    REQUIRE(file::h + 2  >  file::high);
+    REQUIRE(file::h + 10 >  file::high);
+
+    REQUIRE((file)file::h      <  (file)file::high);
+    REQUIRE((file)file::h + 1  == (file)file::high);
+    REQUIRE((file)file::h + 2  >  (file)file::high);
+    REQUIRE((file)file::h + 10 >  (file)file::high);
+}
+
+// cppcheck-suppress-end knownConditionTrueFalse

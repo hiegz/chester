@@ -128,3 +128,31 @@ TEST_CASE("chester::engine::rank operator << overload for std::ostream", "[engin
         REQUIRE("8" == ostr.str());
     }
 }
+
+// cppcheck-suppress-begin knownConditionTrueFalse
+
+TEST_CASE("chester::engine::rank::low bound", "[engine][rank]") {
+    REQUIRE(rank::one      >  rank::low);
+    REQUIRE(rank::one - 1  == rank::low);
+    REQUIRE(rank::one - 2  <  rank::low);
+    REQUIRE(rank::one - 10 <  rank::low);
+
+    REQUIRE((rank)rank::one      >  (rank)rank::low);
+    REQUIRE((rank)rank::one - 1  == (rank)rank::low);
+    REQUIRE((rank)rank::one - 2  <  (rank)rank::low);
+    REQUIRE((rank)rank::one - 10 <  (rank)rank::low);
+}
+
+TEST_CASE("chester::engine::rank::high bound", "[engine][rank]") {
+    REQUIRE(rank::eight      <  rank::high);
+    REQUIRE(rank::eight + 1  == rank::high);
+    REQUIRE(rank::eight + 2  >  rank::high);
+    REQUIRE(rank::eight + 10 >  rank::high);
+
+    REQUIRE((rank)rank::eight      <  (rank)rank::high);
+    REQUIRE((rank)rank::eight + 1  == (rank)rank::high);
+    REQUIRE((rank)rank::eight + 2  >  (rank)rank::high);
+    REQUIRE((rank)rank::eight + 10 >  (rank)rank::high);
+}
+
+// cppcheck-suppress-end knownConditionTrueFalse
