@@ -15,7 +15,7 @@ using chester::engine::bitboard;
 using chester::engine::piece;
 using chester::engine::square;
 
-TEST_CASE("chester::engine::lookup<piece::rook>()", "[engine][lookup][rook]") {
+TEST_CASE("chester::engine::lookup<piece::rook>()", "[.][engine][lookup][rook]") {
     square   square;
     bitboard blockers;
     bitboard expected;

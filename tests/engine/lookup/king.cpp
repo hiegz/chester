@@ -16,7 +16,7 @@ using chester::engine::square;
 using chester::engine::piece;
 
 TEST_CASE("chester::engine::lookup<chester::engine::piece::king>()",
-          "[engine][lookup][king]") {
+          "[.][engine][lookup][king]") {
     square   square;
     bitboard expected;
 
