@@ -312,3 +312,8 @@ auto chester::engine::lookup<piece::rook>(square square, bitboard blockers) -> b
 
     return table.lookup(square, blockers);
 }
+
+template <>
+auto chester::engine::lookup<piece::queen>(square square, bitboard blockers) -> bitboard {
+    return lookup<piece::bishop>(square, blockers) | lookup<piece::rook>(square, blockers);
+}
