@@ -18,6 +18,8 @@ Checks:
   readability-*,
   clang-analyzer-*,
 
+  -cppcoreguidelines-pro-bounds-constant-array-index
+
   -readability-identifier-length,
   -readability-function-cognitive-complexity,
 
