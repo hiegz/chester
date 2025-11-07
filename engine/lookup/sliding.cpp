@@ -34,6 +34,10 @@ namespace bishop {
 class table;
 }
 
+namespace rook {
+class table;
+}
+
 constexpr std::size_t TRIALS = 1024UL * 1024UL;
 constexpr std::size_t SQUARES = 64;
 
@@ -126,6 +130,7 @@ class table {
     }
 
     friend ::bishop::table;
+    friend   ::rook::table;
 };
 
 namespace bishop {
@@ -209,11 +214,101 @@ class table : public ::table<::bishop::table, N> {
 };
 
 } // namespace bishop
+
+namespace rook {
+
+constexpr std::size_t N = 4096;
+
+/** lookup table for pseudo-legal moves of a rook */
+class table : public ::table<::rook::table, N> {
+  public:
+    table() = default;
+
+    static auto mask(square square) -> bitboard {
+        const rank rk = square.rank();
+        const file fl = square.file();
+
+        auto result = bitboard::empty();
+        rank r;
+        file f;
+
+        for (r = rk + 1, f = fl; r < rank::eight; ++r) {
+            result |= chester::engine::square(f, r);
+        }
+
+        for (r = rk - 1, f = fl; r > rank::one; --r) {
+            result |= chester::engine::square(f, r);
+        }
+
+        for (f = fl + 1, r = rk; f < file::h; ++f) {
+            result |= chester::engine::square(f, r);
+        }
+
+        for (f = fl - 1, r = rk; f > file::a; --f) {
+            result |= chester::engine::square(f, r);
+        }
+
+        return result;
+    }
+
+    static constexpr auto moves(square square, bitboard blockers) -> bitboard {
+        const rank rk = square.rank();
+        const file fl = square.file();
+
+        auto result = bitboard::empty();
+        rank r;
+        file f;
+
+        for (r = rk + 1, f = fl; r < rank::high; ++r) {
+            auto sq = chester::engine::square(f, r);
+            result |= sq;
+            if ((blockers & sq) != bitboard::empty()) {
+                break;
+            }
+        }
+
+        for (r = rk - 1, f = fl; r > rank::low; --r) {
+            auto sq = chester::engine::square(f, r);
+            result |= sq;
+            if ((blockers & sq) != bitboard::empty()) {
+                break;
+            }
+        }
+
+        for (f = fl + 1, r = rk; f < file::high; ++f) {
+            auto sq = chester::engine::square(f, r);
+            result |= sq;
+            if ((blockers & sq) != bitboard::empty()) {
+                break;
+            }
+        }
+
+        for (f = fl - 1, r = rk; f > file::low; --f) {
+            auto sq = chester::engine::square(f, r);
+            result |= sq;
+            if ((blockers & sq) != bitboard::empty()) {
+                break;
+            }
+        }
+
+        return result;
+    }
+};
+
+} // namespace rook
+
 } // namespace
 
 template <>
 auto chester::engine::lookup<piece::bishop>(square square, bitboard blockers) -> bitboard {
     static ::bishop::table table;
+
+    return table.lookup(square, blockers);
+}
+
+template <>
+auto chester::engine::lookup<piece::rook>(square square, bitboard blockers) -> bitboard {
+    static ::rook::table table;
 
     return table.lookup(square, blockers);
 }

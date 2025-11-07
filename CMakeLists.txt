@@ -76,6 +76,7 @@ if (Catch2_FOUND)
         tests/engine/lookup/bishop.cpp
         tests/engine/lookup/king.cpp
         tests/engine/lookup/knight.cpp
+        tests/engine/lookup/rook.cpp
         tests/engine/bitboard.cpp
         tests/engine/bitset.cpp
         tests/engine/file.cpp
