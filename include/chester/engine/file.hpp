@@ -32,6 +32,7 @@ class file {
     enum file::value value;
 
   private:
+    // cppcheck-suppress noExplicitConstructor
     constexpr file(std::uint8_t value)
         : value((enum file::value)value) {}
 };

@@ -32,6 +32,7 @@ class rank {
     enum rank::value value;
 
   private:
+    // cppcheck-suppress noExplicitConstructor
     constexpr rank(std::uint8_t value)
         : value((enum rank::value)value) {}
 };
