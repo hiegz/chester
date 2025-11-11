@@ -5,8 +5,8 @@
 namespace chester::engine {
 
 enum class side : std::uint8_t {
-    white,
-    black,
+    white = 0,
+    black = 1,
 };
 
 }
