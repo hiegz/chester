@@ -5,10 +5,9 @@
 #include <bit>
 #include <cstddef>
 #include <cstdint>
-#include <stdexcept>
 
 #ifdef DEBUG
-#include <chester/panic.hpp>
+#include <stdexcept>
 #endif
 
 namespace chester::engine::bitset {
@@ -85,7 +84,7 @@ template <>
 auto constexpr scan_forward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
     if (chester::engine::bitset::is_empty(bitset)) {
-        chester::panic("bitset is empty");
+        throw std::runtime_error("bitset is empty");
     }
 #endif
     return std::countr_zero(bitset);
@@ -103,7 +102,7 @@ template <>
 auto constexpr scan_backward(std::uint64_t bitset) -> std::size_t {
 #ifdef DEBUG
     if (chester::engine::bitset::is_empty(bitset)) {
-        chester::panic("bitset is empty");
+        throw std::runtime_error("bitset is empty");
     }
 #endif
     // NOLINTNEXTLINE
@@ -122,7 +121,7 @@ template <>
 auto constexpr pop_front(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
     if (chester::engine::bitset::is_empty(*bitset)) {
-        chester::panic("bitset is empty");
+        throw std::runtime_error("bitset is empty");
     }
 #endif
     const std::size_t index = chester::engine::bitset::scan_forward(*bitset);
@@ -142,7 +141,7 @@ template <>
 auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
 #ifdef DEBUG
     if (chester::engine::bitset::is_empty(*bitset)) {
-        chester::panic("bitset is empty");
+        throw std::runtime_error("bitset is empty");
     }
 #endif
     const std::size_t index = chester::engine::bitset::scan_backward(*bitset);
@@ -166,7 +165,7 @@ template<>
 auto constexpr subset(std::uint64_t bitset, std::size_t cardinality, std::size_t index) -> std::uint64_t {
 #ifdef DEBUG
     if (cardinality != chester::engine::bitset::cardinality(bitset)) {
-        chester::panic("provided bitset cardinality does not match its real cardinality");
+        throw std::runtime_error("provided bitset cardinality does not match its real cardinality");
     }
 
     if (index >= (1UL << cardinality)) {
