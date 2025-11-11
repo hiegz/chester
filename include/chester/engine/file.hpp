@@ -25,7 +25,7 @@ class file {
         high = 8,
     };
 
-    constexpr file() : value(value::a) {}
+    constexpr file() {}
     // cppcheck-suppress noExplicitConstructor
     constexpr file(file::value value) : value(value) {}
 

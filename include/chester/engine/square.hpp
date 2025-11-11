@@ -31,7 +31,7 @@ class square {
         h1 = 7, h2 = 15, h3 = 23, h4 = 31, h5 = 39, h6 = 47, h7 = 55, h8 = 63,
     };
 
-    constexpr square() : value(square::a1) {}
+    constexpr square() {}
 
     // cppcheck-suppress noExplicitConstructor
     constexpr square(square::value value) : value(value) {}

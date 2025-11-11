@@ -24,7 +24,7 @@ class bitboard {
   public:
     uint64_t value;
 
-    constexpr bitboard() : value(0) {};
+    constexpr bitboard() {};
     // cppcheck-suppress noExplicitConstructor
     constexpr bitboard(chester::engine::square square)
         : value(1UL << square.value) {}

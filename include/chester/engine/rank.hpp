@@ -25,7 +25,7 @@ class rank {
         high = 8,
     };
 
-    constexpr rank() : value(value::one) {}
+    constexpr rank() {}
     // cppcheck-suppress noExplicitConstructor
     constexpr rank(rank::value value) : value(value) {}
 
