@@ -7,7 +7,6 @@
 #include <cstdint>
 #include <ostream>
 #include <string>
-#include <vector>
 
 #include <chester/engine/square.hpp>
 #include <chester/engine/bitset.hpp>
