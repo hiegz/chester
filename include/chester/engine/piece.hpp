@@ -10,12 +10,12 @@
 namespace chester::engine {
 
 enum class piece : std::uint8_t {
-    king,
-    queen,
-    rook,
-    bishop,
-    knight,
-    pawn,
+    king   = 0,
+    queen  = 1,
+    rook   = 2,
+    bishop = 3,
+    knight = 4,
+    pawn   = 5,
 };
 
 auto operator<<(std::ostream &os, enum chester::engine::piece piece) -> std::ostream &;
