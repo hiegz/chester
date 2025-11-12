@@ -34,6 +34,7 @@ add_library(
     engine/file.cpp
     engine/piece.cpp
     engine/rank.cpp
+    engine/side.cpp
     engine/square.cpp
     engine/engine.cpp)
 
