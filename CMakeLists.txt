@@ -16,7 +16,7 @@ project(
     LANGUAGES CXX)
 
 set(CMAKE_CXX_COMPILER ${GPP_EXE})
-set(CMAKE_CXX_STANDARD 20) # C++20
+set(CMAKE_CXX_STANDARD 23) # C++23
 set(CXX_COMPILE_OPTIONS -Werror -Wall -Wextra -Wpedantic)
 
 include_directories(include)
