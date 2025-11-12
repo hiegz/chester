@@ -11,6 +11,7 @@ cppcheck:
 		--enable=all \
 		--suppress=missingIncludeSystem \
 		--suppress=uninitMemberVar \
+		--suppress=noExplicitConstructor \
 		--inline-suppr \
 		engine tests frontend
 
