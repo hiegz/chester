@@ -49,8 +49,8 @@ class bitboard {
     constexpr auto is_universal() const { return bitset::is_universal(value); }
     constexpr auto is_single() const { return bitset::is_single(value); }
     constexpr auto cardinality() const { return bitset::cardinality(value); }
-    constexpr auto scan_forward() const { return bitset::scan_forward(value); }
-    constexpr auto scan_backward() const { return bitset::scan_backward(value); }
+    constexpr auto scan_forward() const -> square { return (enum square::value)bitset::scan_forward(value); }
+    constexpr auto scan_backward() const -> square { return (enum square::value)bitset::scan_backward(value); }
     constexpr auto pop_front() -> square { return (enum square::value)bitset::pop_front(&value); }
     constexpr auto pop_back() -> square { return (enum square::value)bitset::pop_back(&value); }
 
