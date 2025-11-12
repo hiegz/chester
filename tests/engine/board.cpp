@@ -39,8 +39,8 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
             ([]() -> auto {
                 auto board = board::empty();
 
-                board.get(side::white, piece::king) |= square::e1;
-                board.get(side::black, piece::king) |= square::e8;
+                board[side::white + piece::king] |= square::e1;
+                board[side::black + piece::king] |= square::e8;
 
                 return std::make_tuple(
                     board,
@@ -58,8 +58,8 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
             ([]() -> auto {
                 auto board = board::empty();
 
-                board.get(side::white, piece::queen) |= square::d1;
-                board.get(side::black, piece::queen) |= square::d8;
+                board[side::white + piece::queen] |= square::d1;
+                board[side::black + piece::queen] |= square::d8;
 
                 return std::make_tuple(
                     board,
@@ -77,9 +77,9 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
             ([]() -> auto {
                 auto board = board::empty();
 
-                board.get(side::white, piece::rook) |= square::f7;
-                board.get(side::black, piece::pawn) |= square::a1;
-                board.get(side::black, piece::bishop) |= square::b5;
+                board[side::white + piece::rook]   |= square::f7;
+                board[side::black + piece::pawn]   |= square::a1;
+                board[side::black + piece::bishop] |= square::b5;
 
                 return std::make_tuple(
                     board,
@@ -97,9 +97,9 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
             ([]() -> auto {
                 auto board = board::empty();
 
-                board.get(side::white, piece::pawn) |= square::e4;
-                board.get(side::white, piece::knight) |= square::b1;
-                board.get(side::black, piece::rook) |= square::c6;
+                board[side::white + piece::pawn]   |= square::e4;
+                board[side::white + piece::knight] |= square::b1;
+                board[side::black + piece::rook]   |= square::c6;
 
                 return std::make_tuple(
                     board,

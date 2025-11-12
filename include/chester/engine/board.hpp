@@ -22,18 +22,12 @@ class board {
         return b;
     }
 
-    [[nodiscard]]
-    constexpr auto get(enum chester::engine::side  side,
-                       enum chester::engine::piece piece) const -> bitboard const & {
-        // NOLINTNEXTLINE
-        return pieces[6 * static_cast<int>(side) + static_cast<int>(piece)];
+    constexpr auto operator[](chester::engine::piece const &piece) const -> bitboard const & {
+        return pieces[(6 * static_cast<unsigned int>(piece.side)) + static_cast<unsigned int>(piece.type)];
     }
 
-    [[nodiscard]]
-    constexpr auto get(enum chester::engine::side  side,
-                       enum chester::engine::piece piece) -> bitboard & {
-        // NOLINTNEXTLINE
-        return pieces[6 * static_cast<unsigned int>(side) + static_cast<unsigned int>(piece)];
+    constexpr auto operator[](chester::engine::piece const &piece) -> bitboard & {
+        return pieces[(6 * static_cast<unsigned int>(piece.side)) + static_cast<unsigned int>(piece.type)];
     }
 
     // auto operator==(board const &other) const {

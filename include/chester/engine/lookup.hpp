@@ -9,13 +9,13 @@ namespace chester::engine {
 /**
  * TODO
  */
-template <chester::engine::piece>
+template <enum chester::engine::piece::type>
 auto lookup(chester::engine::square square) -> chester::engine::bitboard;
 
 /**
  * TODO
  */
-template <chester::engine::piece>
+template <enum chester::engine::piece::type>
 auto lookup(chester::engine::square square, chester::engine::bitboard blockers)
     -> chester::engine::bitboard;
 
