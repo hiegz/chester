@@ -22,6 +22,8 @@ class board {
         return b;
     }
 
+    static auto traditional() -> board;
+
     constexpr auto operator[](chester::engine::piece const &piece) const -> bitboard const & {
         return pieces[(6 * static_cast<unsigned int>(piece.side)) + static_cast<unsigned int>(piece.type)];
     }
