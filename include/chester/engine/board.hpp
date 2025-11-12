@@ -1,5 +1,6 @@
 #pragma once
 
+#include <algorithm>
 #include <array>
 #include <ostream>
 #include <string>
@@ -16,9 +17,7 @@ class board {
   public:
     constexpr static auto empty() -> board {
         board b;
-        for (auto &piece : b.pieces) {
-            piece = bitboard::empty();
-        }
+        std::ranges::fill(b.pieces, bitboard::empty());
         return b;
     }
 
