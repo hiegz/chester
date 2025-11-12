@@ -20,6 +20,7 @@ Checks:
 
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-init-variables,
+  -cppcoreguidelines-pro-type-member-init,
 
   -readability-identifier-length,
   -readability-function-cognitive-complexity,
