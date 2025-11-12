@@ -34,6 +34,7 @@ add_library(
     engine/castling.cpp
     engine/file.cpp
     engine/piece.cpp
+    engine/position.cpp
     engine/rank.cpp
     engine/side.cpp
     engine/square.cpp
@@ -86,6 +87,7 @@ if (Catch2_FOUND)
         tests/engine/castling.cpp
         tests/engine/file.cpp
         tests/engine/piece.cpp
+        tests/engine/position.cpp
         tests/engine/rank.cpp
         tests/engine/square.cpp
         tests/tests.cpp)
