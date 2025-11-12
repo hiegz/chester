@@ -31,6 +31,7 @@ add_library(
     engine/lookup/sliding.cpp
     engine/bitboard.cpp
     engine/board.cpp
+    engine/castling.cpp
     engine/file.cpp
     engine/piece.cpp
     engine/rank.cpp
@@ -82,6 +83,7 @@ if (Catch2_FOUND)
         tests/engine/bitboard.cpp
         tests/engine/bitset.cpp
         tests/engine/board.cpp
+        tests/engine/castling.cpp
         tests/engine/file.cpp
         tests/engine/piece.cpp
         tests/engine/rank.cpp
