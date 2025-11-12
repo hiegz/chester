@@ -19,6 +19,7 @@ Checks:
   clang-analyzer-*,
 
   -hicpp-member-init,
+  -hicpp-explicit-conversions,
 
   -cppcoreguidelines-pro-bounds-constant-array-index,
   -cppcoreguidelines-init-variables,
