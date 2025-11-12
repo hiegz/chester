@@ -44,14 +44,14 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
 
                 return std::make_tuple(
                     board,
-                    ". . . . K . . .\n"
+                    ". . . . k . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
-                    ". . . . k . . ."
+                    ". . . . K . . ."
                 );
             })(),
 
@@ -63,14 +63,14 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
 
                 return std::make_tuple(
                     board,
-                    ". . . Q . . . .\n"
+                    ". . . q . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
-                    ". . . q . . . ."
+                    ". . . Q . . . ."
                 );
             })(),
 
@@ -84,13 +84,13 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
                 return std::make_tuple(
                     board,
                     ". . . . . . . .\n"
-                    ". . . . . r . .\n"
+                    ". . . . . R . .\n"
                     ". . . . . . . .\n"
-                    ". B . . . . . .\n"
+                    ". b . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
-                    "P . . . . . . ."
+                    "p . . . . . . ."
                 );
             })(),
 
@@ -105,12 +105,12 @@ TEST_CASE("chester::engine::board << operator overload for std::ostream",
                     board,
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
-                    ". . R . . . . .\n"
+                    ". . r . . . . .\n"
                     ". . . . . . . .\n"
-                    ". . . . p . . .\n"
+                    ". . . . P . . .\n"
                     ". . . . . . . .\n"
                     ". . . . . . . .\n"
-                    ". n . . . . . ."
+                    ". N . . . . . ."
                 );
             })(),
         }));

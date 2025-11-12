@@ -24,7 +24,7 @@ using chester::engine::square;
 namespace {
 
 constexpr auto format(side s, char ch) -> char {
-    return (s == side::white) ? ch : static_cast<char>(std::toupper(static_cast<unsigned char>(ch)));
+    return (s == side::white) ? static_cast<char>(std::toupper(static_cast<unsigned char>(ch))) : ch;
 }
 
 constexpr auto format(side s, piece p) -> char {
