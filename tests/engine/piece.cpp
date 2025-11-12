@@ -5,7 +5,6 @@
 #include <chester/engine/piece.hpp>
 #include <chester/engine/side.hpp>
 
-#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 
 using chester::engine::piece;
