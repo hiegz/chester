@@ -29,8 +29,8 @@ auto board::traditional() -> board {
     board[side::white + piece::rook]   |= (square::a1 | square::h1);
     board[side::white + piece::knight] |= (square::b1 | square::g1);
     board[side::white + piece::bishop] |= (square::c1 | square::f1);
-    board[side::white + piece::king]   |=  square::d1;
-    board[side::white + piece::queen]  |=  square::e1;
+    board[side::white + piece::king]   |=  square::e1;
+    board[side::white + piece::queen]  |=  square::d1;
 
     for (file f = file::a; f < file::high; ++f) {
         board[side::white + piece::pawn] |= square(f, rank::two);
@@ -41,8 +41,8 @@ auto board::traditional() -> board {
     board[side::black + piece::rook]   |= (square::a8 | square::h8);
     board[side::black + piece::knight] |= (square::b8 | square::g8);
     board[side::black + piece::bishop] |= (square::c8 | square::f8);
-    board[side::black + piece::king]   |=  square::d8;
-    board[side::black + piece::queen]  |=  square::e8;
+    board[side::black + piece::king]   |=  square::e8;
+    board[side::black + piece::queen]  |=  square::d8;
 
     for (file f = file::a; f < file::high; ++f) {
         board[side::black + piece::pawn] |= square(f, rank::seven);
