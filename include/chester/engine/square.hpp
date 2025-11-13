@@ -29,6 +29,9 @@ class square {
         f1 = 5, f2 = 13, f3 = 21, f4 = 29, f5 = 37, f6 = 45, f7 = 53, f8 = 61,
         g1 = 6, g2 = 14, g3 = 22, g4 = 30, g5 = 38, g6 = 46, g7 = 54, g8 = 62,
         h1 = 7, h2 = 15, h3 = 23, h4 = 31, h5 = 39, h6 = 47, h7 = 55, h8 = 63,
+
+        low = 255,
+        high = 64,
     };
 
     constexpr square() {}
@@ -71,19 +74,140 @@ class square {
     enum square::value value;
 };
 
-constexpr auto operator==(square lhs, square rhs) { return lhs.value == rhs.value; }
-constexpr auto operator!=(square lhs, square rhs) { return lhs.value != rhs.value; }
-constexpr auto operator< (square lhs, square rhs) { return lhs.value <  rhs.value; }
-constexpr auto operator<=(square lhs, square rhs) { return lhs.value <= rhs.value; }
-constexpr auto operator> (square lhs, square rhs) { return lhs.value >  rhs.value; }
-constexpr auto operator>=(square lhs, square rhs) { return lhs.value >= rhs.value; }
+constexpr auto operator==(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs == (std::int8_t)rhs;
+}
+
+constexpr auto operator!=(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs != (std::int8_t)rhs;
+}
+
+constexpr auto operator<(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs < (std::int8_t)rhs;
+}
+
+constexpr auto operator<=(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs <= (std::int8_t)rhs;
+}
+
+constexpr auto operator>(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs > (std::int8_t)rhs;
+}
+
+constexpr auto operator>=(enum square::value lhs, enum square::value rhs) {
+    return (std::int8_t)lhs >= (std::int8_t)rhs;
+}
+
+constexpr auto operator+(enum square::value lhs, int rhs) -> enum square::value {
+    return (enum square::value)((std::int8_t)lhs + rhs);
+}
+
+constexpr auto operator-(enum square::value lhs, int rhs) -> enum square::value {
+    return (enum square::value)((std::int8_t)lhs - rhs);
+}
+
+constexpr auto operator+=(enum square::value &lhs, int rhs) {
+    lhs = lhs + rhs;
+}
+
+constexpr auto operator-=(enum square::value &lhs, int rhs) {
+    lhs = lhs - rhs;
+}
+
+// ++lhs
+constexpr auto operator++(enum square::value &lhs) -> enum square::value & {
+    lhs += 1;
+    return lhs;
+}
+
+// lhs++
+constexpr auto operator++(enum square::value &lhs, int) -> enum square::value {
+    const enum square::value prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --lhs
+constexpr auto operator--(enum square::value &lhs) -> enum square::value & {
+    lhs -= 1;
+    return lhs;
+}
+
+// lhs--
+constexpr auto operator--(enum square::value &lhs, int) -> enum square::value {
+    const enum square::value prev = lhs;
+    --lhs;
+    return prev;
+}
+
+constexpr auto operator==(square lhs, square rhs) {
+    return lhs.value == rhs.value;
+}
+
+constexpr auto operator!=(square lhs, square rhs) {
+    return lhs.value != rhs.value;
+}
+
+constexpr auto operator<(square lhs, square rhs) {
+    return lhs.value < rhs.value;
+}
+
+constexpr auto operator<=(square lhs, square rhs) {
+    return lhs.value <= rhs.value;
+}
+
+constexpr auto operator>(square lhs, square rhs) {
+    return lhs.value > rhs.value;
+}
+
+constexpr auto operator>=(square lhs, square rhs) {
+    return lhs.value >= rhs.value;
+}
+
+constexpr auto operator+(square lhs, int rhs) -> square {
+    return lhs.value + rhs;
+}
+
+constexpr auto operator-(square lhs, int rhs) -> square {
+    return lhs.value - rhs;
+}
+
+constexpr auto operator+=(square &lhs, int rhs) {
+    lhs.value += rhs;
+}
+
+constexpr auto operator-=(square &lhs, int rhs) {
+    lhs.value -= rhs;
+}
+
+// ++square
+constexpr auto operator++(square &lhs) -> square& {
+    ++lhs.value;
+    return lhs;
+}
+
+// square++
+constexpr auto operator++(square &lhs, int) -> square {
+    const square prev = lhs;
+    ++lhs;
+    return prev;
+}
+
+// --square
+constexpr auto operator--(square &lhs) -> square& {
+    --lhs.value;
+    return lhs;
+}
+
+// square--
+constexpr auto operator--(square &lhs, int) -> square {
+    const square prev = lhs;
+    --lhs;
+    return prev;
+}
 
 constexpr auto operator<<(enum square::value lhs, int rhs) -> enum square::value {
-#ifdef DEBUG
-    if (lhs - rhs < 0)
-        throw std::runtime_error("left shift resulted in an invalid square");
-#endif
-    return (enum square::value)(lhs - rhs);
+    return lhs - rhs;
 }
 
 constexpr auto operator<<=(enum square::value &lhs, int rhs) {
@@ -91,11 +215,7 @@ constexpr auto operator<<=(enum square::value &lhs, int rhs) {
 }
 
 constexpr auto operator>>(enum square::value lhs, int rhs) -> enum square::value {
-#ifdef DEBUG
-    if (lhs + rhs > 63)
-        throw std::runtime_error("left shift resulted in an invalid square");
-#endif
-    return (enum square::value)(lhs + rhs);
+    return lhs + rhs;
 }
 
 constexpr auto operator>>=(enum square::value &lhs, int rhs) {

@@ -3,10 +3,6 @@
 #include <string>
 #include <tuple>
 
-#ifdef DEBUG
-#include <stdexcept>
-#endif // DEBUG
-
 #include <chester/engine/square.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/file.hpp>
@@ -209,7 +205,7 @@ TEST_CASE("chester::engine::square left shift", "[engine][square][shift]") {
         CAPTURE(lhs);
         CAPTURE(rhs);
 
-        REQUIRE_THROWS_AS(lhs << rhs, std::runtime_error);
+        REQUIRE((lhs << rhs) <= square::low);
     }
 #endif // DEBUG
 }
@@ -235,7 +231,6 @@ TEST_CASE("chester::engine::square right shift", "[engine][square][shift]") {
         CAPTURE(expected);
 
         REQUIRE((lhs >> rhs) == expected);
-
     }
 
 #ifdef DEBUG
@@ -259,7 +254,35 @@ TEST_CASE("chester::engine::square right shift", "[engine][square][shift]") {
         CAPTURE(lhs);
         CAPTURE(rhs);
 
-        REQUIRE_THROWS_AS(lhs >> rhs, std::runtime_error);
+        REQUIRE((lhs >> rhs) >= square::high);
     }
 #endif // DEBUG
 }
+
+// cppcheck-suppress-begin knownConditionTrueFalse
+
+TEST_CASE("chester::engine::square::low bound", "[engine][square]") {
+    REQUIRE(square::a1      >  square::low);
+    REQUIRE(square::a1 - 1  == square::low);
+    REQUIRE(square::a1 - 2  <  square::low);
+    REQUIRE(square::a1 - 10 <  square::low);
+
+    REQUIRE((square)square::a1      >  (square)square::low);
+    REQUIRE((square)square::a1 - 1  == (square)square::low);
+    REQUIRE((square)square::a1 - 2  <  (square)square::low);
+    REQUIRE((square)square::a1 - 10 <  (square)square::low);
+}
+
+TEST_CASE("chester::engine::square::high bound", "[engine][square]") {
+    REQUIRE(square::h8      <  square::high);
+    REQUIRE(square::h8 + 1  == square::high);
+    REQUIRE(square::h8 + 2  >  square::high);
+    REQUIRE(square::h8 + 10 >  square::high);
+
+    REQUIRE((square)square::h8      <  (square)square::high);
+    REQUIRE((square)square::h8 + 1  == (square)square::high);
+    REQUIRE((square)square::h8 + 2  >  (square)square::high);
+    REQUIRE((square)square::h8 + 10 >  (square)square::high);
+}
+
+// cppcheck-suppress-end knownConditionTrueFalse
