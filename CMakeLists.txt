@@ -32,6 +32,7 @@ add_library(
     engine/bitboard.cpp
     engine/board.cpp
     engine/castling.cpp
+    engine/fen.cpp
     engine/file.cpp
     engine/piece.cpp
     engine/position.cpp
@@ -85,6 +86,7 @@ if (Catch2_FOUND)
         tests/engine/bitset.cpp
         tests/engine/board.cpp
         tests/engine/castling.cpp
+        tests/engine/fen.cpp
         tests/engine/file.cpp
         tests/engine/piece.cpp
         tests/engine/position.cpp
