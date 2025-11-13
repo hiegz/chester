@@ -300,20 +300,20 @@ class table : public ::table<::rook::table, N> {
 } // namespace
 
 template <>
-auto chester::engine::lookup<piece::bishop>(square square, bitboard blockers) -> bitboard {
+auto chester::engine::lookup::moves<piece::bishop>(square square, bitboard blockers) -> bitboard {
     static ::bishop::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup<piece::rook>(square square, bitboard blockers) -> bitboard {
+auto chester::engine::lookup::moves<piece::rook>(square square, bitboard blockers) -> bitboard {
     static ::rook::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup<piece::queen>(square square, bitboard blockers) -> bitboard {
-    return lookup<piece::bishop>(square, blockers) | lookup<piece::rook>(square, blockers);
+auto chester::engine::lookup::moves<piece::queen>(square square, bitboard blockers) -> bitboard {
+    return lookup::moves<piece::bishop>(square, blockers) | lookup::moves<piece::rook>(square, blockers);
 }

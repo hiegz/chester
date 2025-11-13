@@ -4,19 +4,19 @@
 #include <chester/engine/piece.hpp>
 #include <chester/engine/square.hpp>
 
-namespace chester::engine {
+namespace chester::engine::lookup {
 
 /**
  * TODO
  */
 template <enum chester::engine::piece::type>
-auto lookup(chester::engine::square square) -> chester::engine::bitboard;
+auto moves(chester::engine::square square) -> chester::engine::bitboard;
 
 /**
  * TODO
  */
 template <enum chester::engine::piece::type>
-auto lookup(chester::engine::square square, chester::engine::bitboard blockers)
+auto moves(chester::engine::square square, chester::engine::bitboard blockers)
     -> chester::engine::bitboard;
 
-} // namespace chester::engine
+} // namespace chester::engine::lookup

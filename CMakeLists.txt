@@ -27,8 +27,8 @@ include_directories(include)
 
 add_library(
     engine SHARED
-    engine/lookup/leaping.cpp
-    engine/lookup/sliding.cpp
+    engine/lookup/moves/leaping.cpp
+    engine/lookup/moves/sliding.cpp
     engine/bitboard.cpp
     engine/board.cpp
     engine/castling.cpp
@@ -78,10 +78,10 @@ find_package(Catch2 3)
 if (Catch2_FOUND)
     add_executable(
         tests
-        tests/engine/lookup/bishop.cpp
-        tests/engine/lookup/king.cpp
-        tests/engine/lookup/knight.cpp
-        tests/engine/lookup/rook.cpp
+        tests/engine/lookup/moves/bishop.cpp
+        tests/engine/lookup/moves/king.cpp
+        tests/engine/lookup/moves/knight.cpp
+        tests/engine/lookup/moves/rook.cpp
         tests/engine/bitboard.cpp
         tests/engine/bitset.cpp
         tests/engine/board.cpp

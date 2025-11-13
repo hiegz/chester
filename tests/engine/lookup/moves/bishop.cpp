@@ -15,7 +15,7 @@ using chester::engine::bitboard;
 using chester::engine::piece;
 using chester::engine::square;
 
-TEST_CASE("chester::engine::lookup<piece::bishop>()", "[.][engine][lookup][bishop]") {
+TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup][bishop]") {
     square   square;
     bitboard blockers;
     bitboard expected;
@@ -271,7 +271,7 @@ TEST_CASE("chester::engine::lookup<piece::bishop>()", "[.][engine][lookup][bisho
                 square::c3),
         }));
 
-    const bitboard found = chester::engine::lookup<piece::bishop>(square, blockers);
+    const bitboard found = chester::engine::lookup::moves<piece::bishop>(square, blockers);
 
     INFO("square: " << square);
     INFO("");

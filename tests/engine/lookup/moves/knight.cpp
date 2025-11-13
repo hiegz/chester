@@ -15,7 +15,7 @@ using chester::engine::bitboard;
 using chester::engine::square;
 using chester::engine::piece;
 
-TEST_CASE("chester::engine::lookup<chester::engine::piece::knight>()",
+TEST_CASE("chester::engine::lookup::moves<chester::engine::piece::knight>()",
           "[.][engine][lookup][knight]") {
     square   square;
     bitboard expected;
@@ -67,7 +67,7 @@ TEST_CASE("chester::engine::lookup<chester::engine::piece::knight>()",
             std::make_tuple(square::c3, square::b1 | square::a2 | square::a4 | square::b5 | square::d5 | square::e4 | square::e2 | square::d1),
         }));
 
-    const bitboard found = chester::engine::lookup<piece::knight>(square);
+    const bitboard found = chester::engine::lookup::moves<piece::knight>(square);
 
     INFO("square: " << square);
     INFO("");

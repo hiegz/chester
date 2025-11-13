@@ -196,14 +196,14 @@ class table {
 } // namespace
 
 template <>
-auto chester::engine::lookup<piece::king>(square square)
+auto chester::engine::lookup::moves<piece::king>(square square)
     -> chester::engine::bitboard {
     static ::king::table table;
     return table.cells[square.value];
 }
 
 template <>
-auto chester::engine::lookup<piece::knight>(square square)
+auto chester::engine::lookup::moves<piece::knight>(square square)
     -> chester::engine::bitboard {
     static ::knight::table table;
     return table.cells[square.value];
