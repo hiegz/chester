@@ -19,4 +19,10 @@ template <enum chester::engine::piece::type>
 auto moves(chester::engine::square square, chester::engine::bitboard blockers)
     -> chester::engine::bitboard;
 
+/**
+ * TODO
+ */
+auto in_between(chester::engine::square a, chester::engine::square b)
+    -> chester::engine::bitboard;
+
 } // namespace chester::engine::lookup
