@@ -34,6 +34,9 @@ class position {
 
     static auto traditional() -> position;
 
+    constexpr auto operator==(position const &) const -> bool = default;
+    constexpr auto operator!=(position const &) const -> bool = default;
+
     chester::engine::board board;
     chester::engine::side turn;
 
