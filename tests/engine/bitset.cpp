@@ -29,15 +29,15 @@ TEST_CASE("chester::engine::bitset::single()", "[engine][bitset]") {
     }
 
     WHEN("bitset is single") {
-        const square square = (enum square::value)GENERATE(range(0, 63));
+        const square square = (class square)GENERATE(range(0, 63));
         const bitset bitset = square;
         CAPTURE(bitset);
         REQUIRE(bitset.single());
     }
 
     WHEN("bitset has two elements") {
-        const square square_i = (enum square::value)GENERATE(range(0, 63));
-        const square square_j = (enum square::value)GENERATE(range(0, 63));
+        const square square_i = (square)GENERATE(range(0, 63));
+        const square square_j = (square)GENERATE(range(0, 63));
 
         if (square_i == square_j) {
             return;
@@ -65,15 +65,15 @@ TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
     }
 
     WHEN("bitset is single") {
-        const square square = (enum square::value)GENERATE(range(0, 63));
+        const square square = (class square)GENERATE(range(0, 63));
         const bitset bitset = square;
         CAPTURE(bitset);
         REQUIRE(1 == bitset.cardinality());
     }
 
     WHEN("bitset has two elements") {
-        const square square_i = (enum square::value)GENERATE(range(0, 63));
-        const square square_j = (enum square::value)GENERATE(range(0, 63));
+        const square square_i = (square)GENERATE(range(0, 63));
+        const square square_j = (square)GENERATE(range(0, 63));
 
         if (square_i == square_j) {
             return;
@@ -95,7 +95,7 @@ TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
 
 TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
     WHEN("bitset is single") {
-        const square square = (enum square::value)GENERATE(range(0, 63));
+        const square square = (class square)GENERATE(range(0, 63));
         bitset bitset = square;
 
         CAPTURE(bitset);
@@ -116,7 +116,7 @@ TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
 
 TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
     WHEN("bitset is single") {
-        const auto square = (enum square::value)GENERATE(range(0, 63));
+        const auto square = (class square)GENERATE(range(0, 63));
         bitset bitset = square;
 
         CAPTURE(bitset);

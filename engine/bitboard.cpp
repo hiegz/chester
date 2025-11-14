@@ -91,7 +91,7 @@ auto chester::engine::operator<<(std::ostream &os,
 
         while (bitset != bitset::empty()) {
             const square square = bitset.pop_front();
-            const int    index  = square.value;
+            const char   index  = square.raw;
 
 #ifdef DEBUG
             if (not square_empty[index]) {
@@ -107,7 +107,7 @@ auto chester::engine::operator<<(std::ostream &os,
     for (rank rank = rank::eight; rank > rank::low; --rank) {
         for (file file = file::a; file < file::high; ++file) {
             const square square(file, rank);
-            const int index = square.value;
+            const char   index = square.raw;
 
             os << (square_empty[index] ? '.' : ::format(square_piece[index]));
 

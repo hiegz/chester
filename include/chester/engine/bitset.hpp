@@ -25,11 +25,20 @@ class bitset {
     uint64_t raw;
 
     constexpr bitset() = default;
+    constexpr bitset(chester::engine::square sq) {
+#ifdef DEBUG
+        if (sq.invalid()) {
+            throw std::runtime_error("unable to construct a bitboard from invalid square");
+        }
+#endif // DEBUG
 
-    constexpr bitset(chester::engine::square square)
-        : raw(1UL << square.value) {}
-    constexpr bitset(enum chester::engine::square::value square)
-        : raw(1UL << square) {}
+        // clang-analyzer incorrectly reports the following shift as a
+        // potential integer overflow even though the prior validation
+        // ensures the square index is always within [0, 63].
+
+        // NOLINTNEXTLINE
+        raw = (1UL << static_cast<unsigned char>(sq.raw));
+    }
 
     constexpr auto operator==(bitset other) const -> bool   { return  raw == other.raw; }
     constexpr auto operator!=(bitset other) const -> bool   { return  raw != other.raw; }
@@ -83,7 +92,7 @@ class bitset {
             throw std::runtime_error("bitset is empty");
         }
 #endif
-        return (enum square::value)std::countr_zero(raw);
+        return square(std::countr_zero(raw));
     }
 
     /**
@@ -98,7 +107,7 @@ class bitset {
             throw std::runtime_error("bitset is empty");
         }
 #endif
-        return (enum square::value)(63 - std::countl_zero(raw));
+        return square(63 - std::countl_zero(raw));
     }
 
     /**
@@ -164,7 +173,7 @@ class bitset {
      */
     [[nodiscard]]
     constexpr auto mirror() const -> bitset {
-        std::uint64_t raw = this->raw;
+        std::uint64_t ret = this->raw;
 
         // . 1 . 1 . 1 . 1
         // . 1 . 1 . 1 . 1
@@ -198,11 +207,11 @@ class bitset {
 
         //
 
-        raw = ((raw >> 1U) & K1) | ((raw & K1) << 1U);
-        raw = ((raw >> 2U) & K2) | ((raw & K2) << 2U);
-        raw = ((raw >> 4U) & K4) | ((raw & K4) << 4U);
+        ret = ((ret >> 1U) & K1) | ((ret & K1) << 1U);
+        ret = ((ret >> 2U) & K2) | ((ret & K2) << 2U);
+        ret = ((ret >> 4U) & K4) | ((ret & K4) << 4U);
 
-        return {raw};
+        return {ret};
     }
 
   private:
@@ -210,42 +219,26 @@ class bitset {
     constexpr bitset(std::uint64_t value) : raw(value) {}
 };
 
-constexpr auto operator&(square lhs, square rhs) -> bitset {
-    return bitset(lhs) & bitset(rhs);
+constexpr auto operator&(square a, square b) -> bitset {
+    return bitset(a) & bitset(b);
 }
 
-constexpr auto operator|(square lhs, square rhs) -> bitset {
-    return bitset(lhs) | bitset(rhs);
+constexpr auto operator|(square a, square b) -> bitset {
+    return bitset(a) | bitset(b);
 }
 
-constexpr auto operator^(square lhs, square rhs) -> bitset {
-    return bitset(lhs) ^ bitset(rhs);
+constexpr auto operator^(square a, square b) -> bitset {
+    return bitset(a) ^ bitset(b);
 }
 
-constexpr auto operator~(square lhs) -> bitset {
-    return ~bitset(lhs);
+constexpr auto operator~(square sq) -> bitset {
+    return ~bitset(sq);
 }
 
-constexpr auto operator&(enum square::value lhs, enum square::value rhs) -> bitset {
-    return square(lhs) & square(rhs);
-};
-
-constexpr auto operator|(enum square::value lhs, enum square::value rhs) -> bitset {
-    return square(lhs) | square(rhs);
-}
-
-constexpr auto operator^(enum square::value lhs, enum square::value rhs) -> bitset {
-    return square(lhs) ^ square(rhs);
-}
-
-constexpr auto operator~(enum square::value lhs) -> bitset {
-    return ~square(lhs);
-}
-
-auto operator<<(std::ostream &os, chester::engine::bitset bitset) -> std::ostream &;
+auto operator<<(std::ostream &os, bitset bitset) -> std::ostream &;
 
 }
 
 namespace std {
-auto to_string(chester::engine::bitset /* bitset */) -> std::string;
+auto to_string(chester::engine::bitset bitset) -> std::string;
 }

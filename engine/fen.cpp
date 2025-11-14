@@ -225,8 +225,8 @@ auto chester::engine::fen_parser::enpassant() -> std::expected<class bitset, std
     ch[1] = *it;
     it = std::next(it);
 
-    f = (enum file::value)(ch[0] - 'a');
-    r = (enum rank::value)(ch[1] - '1');
+    f = file(ch[0] - 'a');
+    r = rank(ch[1] - '1');
 
     if (f < file::low or f > file::high or r < rank::low or r > rank::high) {
         return std::unexpected("invalid FEN");

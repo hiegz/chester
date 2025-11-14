@@ -6,9 +6,9 @@
 #include <string>
 #include <sstream>
 
-auto chester::engine::operator<<(std::ostream &os, enum chester::engine::rank::value const &value)
+auto chester::engine::operator<<(std::ostream &os, rank r)
     -> std::ostream & {
-    switch (value) {
+    switch (r) {
         case rank::one:   return os << "1";
         case rank::two:   return os << "2";
         case rank::three: return os << "3";
@@ -22,17 +22,8 @@ auto chester::engine::operator<<(std::ostream &os, enum chester::engine::rank::v
     }
 }
 
-auto chester::engine::operator<<(std::ostream &os, chester::engine::rank const &rank)
-    -> std::ostream & {
-    return os << rank.value;
-}
-
-auto std::to_string(chester::engine::rank rank) -> std::string {
+auto std::to_string(chester::engine::rank r) -> std::string {
     std::ostringstream ss;
-    ss << rank;
+    ss << r;
     return ss.str();
-}
-
-auto std::to_string(enum chester::engine::rank::value value) -> std::string {
-    return std::to_string(chester::engine::rank(value));
 }

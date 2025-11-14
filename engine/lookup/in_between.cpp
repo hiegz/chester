@@ -138,7 +138,7 @@ class table {
     table() : cells() {
         for (auto i = square::a1; i < square::high; ++i) {
             for (auto j = square::a1; j < square::high; ++j) {
-                cells[((int)i * 64) + (int)j] =
+                cells[(i.raw * 64) + j.raw] =
                     (::ray<  0>(i) & ::ray<  0 + 180>(j)) |
                     (::ray< 45>(i) & ::ray< 45 + 180>(j)) |
                     (::ray< 90>(i) & ::ray< 90 + 180>(j)) |
@@ -156,5 +156,5 @@ class table {
 
 auto chester::engine::lookup::in_between(square a, square b) -> bitset {
     static ::table table;
-    return table.cells[((int)a.value * 64) + (int)b.value];
+    return table.cells[(a.raw * 64) + b.raw];
 }

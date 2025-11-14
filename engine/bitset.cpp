@@ -1,17 +1,16 @@
-// clang-format off
-
 #include <ostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include <chester/engine/bitset.hpp>
-#include <chester/engine/square.hpp>
 #include <chester/engine/file.hpp>
+#include <chester/engine/square.hpp>
 
-auto chester::engine::operator<<(std::ostream &os, chester::engine::bitset bitset)
-    -> std::ostream & {
-    const auto   mirrored = bitset.mirror();
-          square sq       = square::h8;
+// clang-format off
+
+auto chester::engine::operator<<(std::ostream &os, bitset bitset) -> std::ostream & {
+    const auto mirrored = bitset.mirror();
+    square sq = square::h8;
 
     while (true) {
         const auto bit = (mirrored & sq) != bitset::empty();

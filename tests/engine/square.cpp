@@ -1,19 +1,84 @@
-// clang-format off
-
 #include <string>
-#include <tuple>
 
-#include <chester/engine/square.hpp>
-#include <chester/engine/rank.hpp>
 #include <chester/engine/file.hpp>
+#include <chester/engine/rank.hpp>
+#include <chester/engine/square.hpp>
 
 #include <catch2/catch_test_macros.hpp>
-#include <catch2/catch_message.hpp>
-#include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::square;
 using chester::engine::file;
 using chester::engine::rank;
+using chester::engine::square;
+
+// clang-format off
+
+static_assert((square::a1 +   1) == square::b1);
+static_assert((square::a1 >>  1) == square::b1);
+static_assert((square::a1 +   8) == square::a2);
+static_assert((square::a1 >>  8) == square::a2);
+static_assert((square::f5 +   8) == square::f6);
+static_assert((square::f5 >>  8) == square::f6);
+static_assert((square::f5 +   7) == square::e6);
+static_assert((square::f5 >>  7) == square::e6);
+
+static_assert((square::h8      ) <  square::high);
+static_assert((square::h8 +   1) == square::high);
+static_assert((square::h8 >>  1) == square::high);
+static_assert((square::h8 +   2) >  square::high);
+static_assert((square::h8 >>  2) >  square::high);
+static_assert((square::h8 +  10) >  square::high);
+static_assert((square::h8 >> 10) >  square::high);
+
+static_assert((square::h8 +   1).invalid());
+static_assert((square::h8 >>  1).invalid());
+static_assert((square::h8 +   3).invalid());
+static_assert((square::h8 >>  3).invalid());
+static_assert((square::f8 +   3).invalid());
+static_assert((square::f8 >>  3).invalid());
+static_assert((square::f8 +   7).invalid());
+static_assert((square::f8 >>  7).invalid());
+static_assert((square::a1 +  64).invalid());
+static_assert((square::a1 >> 64).invalid());
+static_assert((square::a1 +  66).invalid());
+static_assert((square::a1 >> 66).invalid());
+
+static_assert((square::b1 -   1) == square::a1);
+static_assert((square::b1 <<  1) == square::a1);
+static_assert((square::a2 -   8) == square::a1);
+static_assert((square::a2 <<  8) == square::a1);
+static_assert((square::h8 -   8) == square::h7);
+static_assert((square::h8 <<  8) == square::h7);
+static_assert((square::h8 -   7) == square::a8);
+static_assert((square::h8 <<  7) == square::a8);
+static_assert((square::h8 -   9) == square::g7);
+static_assert((square::h8 <<  9) == square::g7);
+
+static_assert((square::a1      ) >  square::low);
+static_assert((square::a1 -   1) == square::low);
+static_assert((square::a1 <<  1) == square::low);
+static_assert((square::a1 -   2) <  square::low);
+static_assert((square::a1 <<  2) <  square::low);
+static_assert((square::a1 -  10) <  square::low);
+static_assert((square::a1 << 10) <  square::low);
+
+static_assert((square::a1 -   1).invalid());
+static_assert((square::a1 <<  1).invalid());
+static_assert((square::a1 -   3).invalid());
+static_assert((square::a1 <<  3).invalid());
+static_assert((square::b1 -   2).invalid());
+static_assert((square::b1 <<  2).invalid());
+static_assert((square::b1 -   8).invalid());
+static_assert((square::b1 <<  8).invalid());
+static_assert((square::a2 -   9).invalid());
+static_assert((square::a2 <<  9).invalid());
+static_assert((square::h8 -  64).invalid());
+static_assert((square::h8 << 64).invalid());
+
+TEST_CASE("chester::engine::squares validity", "[engine][square]") {
+    for (const auto square : chester::engine::squares) {
+        REQUIRE(square.valid());
+    }
+}
 
 TEST_CASE("chester::engine::square from file and rank", "[engine][square][formatter]") {
     REQUIRE(square::a1 == square(file::a, rank::one));
@@ -89,7 +154,7 @@ TEST_CASE("chester::engine::square from file and rank", "[engine][square][format
     REQUIRE(square::h8 == square(file::h, rank::eight));
 }
 
-TEST_CASE("chester::engine::square formatter", "[engine][square][fmt]") {
+TEST_CASE("std::to_string(chester::engine::square)", "[engine][square][fmt]") {
     REQUIRE("a1" == std::to_string(square::a1));
     REQUIRE("a2" == std::to_string(square::a2));
     REQUIRE("a3" == std::to_string(square::a3));
@@ -162,127 +227,3 @@ TEST_CASE("chester::engine::square formatter", "[engine][square][fmt]") {
     REQUIRE("h7" == std::to_string(square::h7));
     REQUIRE("h8" == std::to_string(square::h8));
 }
-
-TEST_CASE("chester::engine::square left shift", "[engine][square][shift]") {
-    SECTION("valid") {
-        square expected;
-        square lhs;
-        int    rhs = 0;
-
-        std::tie(lhs, rhs, expected) =
-            GENERATE(table<square, int, square>({
-                std::make_tuple(square::b1, 1, square::a1),
-                std::make_tuple(square::a2, 8, square::a1),
-                std::make_tuple(square::h8, 8, square::h7),
-                std::make_tuple(square::h8, 7, square::a8),
-                std::make_tuple(square::h8, 9, square::g7),
-            }));
-
-        CAPTURE(lhs);
-        CAPTURE(rhs);
-        CAPTURE(expected);
-
-        REQUIRE((lhs << rhs) == expected);
-    }
-
-#ifdef DEBUG
-    SECTION("invalid") {
-        square lhs;
-        int    rhs = 0;
-
-        std::tie(lhs, rhs) =
-            GENERATE(table<square, int>({
-                std::make_tuple(square::a1, 1),
-                std::make_tuple(square::a1, 2),
-                std::make_tuple(square::a1, 3),
-                std::make_tuple(square::b1, 2),
-                std::make_tuple(square::b1, 8),
-                std::make_tuple(square::a2, 9),
-                std::make_tuple(square::a2, 10),
-                std::make_tuple(square::h8, 64),
-            }));
-
-        CAPTURE(lhs);
-        CAPTURE(rhs);
-
-        REQUIRE((lhs << rhs) <= square::low);
-    }
-#endif // DEBUG
-}
-
-TEST_CASE("chester::engine::square right shift", "[engine][square][shift]") {
-    SECTION("valid") {
-        square expected;
-        square lhs;
-        int    rhs = 0;
-
-        std::tie(lhs, rhs, expected) =
-            GENERATE(table<square, int, square>({
-                std::make_tuple(square::a1, 1, square::b1),
-                std::make_tuple(square::a1, 8, square::a2),
-                std::make_tuple(square::f5, 8, square::f6),
-                std::make_tuple(square::f5, 9, square::g6),
-                std::make_tuple(square::f5, 7, square::e6),
-                std::make_tuple(square::f5, 26, square::h8),
-            }));
-
-        CAPTURE(lhs);
-        CAPTURE(rhs);
-        CAPTURE(expected);
-
-        REQUIRE((lhs >> rhs) == expected);
-    }
-
-#ifdef DEBUG
-    SECTION("invalid") {
-        square lhs;
-        int    rhs = 0;
-
-        std::tie(lhs, rhs) =
-            GENERATE(table<square, int>({
-                std::make_tuple(square::a1, 64),
-                std::make_tuple(square::a1, 65),
-                std::make_tuple(square::a1, 66),
-                std::make_tuple(square::b1, 63),
-                std::make_tuple(square::a2, 56),
-                std::make_tuple(square::a2, 57),
-                std::make_tuple(square::h8, 1),
-                std::make_tuple(square::h8, 2),
-                std::make_tuple(square::h8, 3),
-            }));
-
-        CAPTURE(lhs);
-        CAPTURE(rhs);
-
-        REQUIRE((lhs >> rhs) >= square::high);
-    }
-#endif // DEBUG
-}
-
-// cppcheck-suppress-begin knownConditionTrueFalse
-
-TEST_CASE("chester::engine::square::low bound", "[engine][square]") {
-    REQUIRE(square::a1      >  square::low);
-    REQUIRE(square::a1 - 1  == square::low);
-    REQUIRE(square::a1 - 2  <  square::low);
-    REQUIRE(square::a1 - 10 <  square::low);
-
-    REQUIRE((square)square::a1      >  (square)square::low);
-    REQUIRE((square)square::a1 - 1  == (square)square::low);
-    REQUIRE((square)square::a1 - 2  <  (square)square::low);
-    REQUIRE((square)square::a1 - 10 <  (square)square::low);
-}
-
-TEST_CASE("chester::engine::square::high bound", "[engine][square]") {
-    REQUIRE(square::h8      <  square::high);
-    REQUIRE(square::h8 + 1  == square::high);
-    REQUIRE(square::h8 + 2  >  square::high);
-    REQUIRE(square::h8 + 10 >  square::high);
-
-    REQUIRE((square)square::h8      <  (square)square::high);
-    REQUIRE((square)square::h8 + 1  == (square)square::high);
-    REQUIRE((square)square::h8 + 2  >  (square)square::high);
-    REQUIRE((square)square::h8 + 10 >  (square)square::high);
-}
-
-// cppcheck-suppress-end knownConditionTrueFalse

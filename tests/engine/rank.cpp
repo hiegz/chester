@@ -1,158 +1,37 @@
-// clang-format off
-
-#include <sstream>
-
-#include <chester/engine/rank.hpp>
-
-#include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
+#include <chester/engine/rank.hpp>
+#include <string>
 
 using chester::engine::rank;
 
-TEST_CASE("chester::engine::rank::value operator << overload for std::ostream", "[engine][rank::value][fmt]") {
-    std::ostringstream ostr;
+// clang-format off
 
-    SECTION("one") {
-        const enum rank::value rank = rank::one;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("1" == ostr.str());
-    }
+static_assert(rank::one        >  rank::low);
+static_assert(rank::one   - 1  == rank::low);
+static_assert(rank::one   - 2  <  rank::low);
+static_assert(rank::one   - 10 <  rank::low);
+static_assert(rank::eight      <  rank::high);
+static_assert(rank::eight + 1  == rank::high);
+static_assert(rank::eight + 2  >  rank::high);
+static_assert(rank::eight + 10 >  rank::high);
 
-    SECTION("two") {
-        const enum rank::value rank = rank::two;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("2" == ostr.str());
-    }
-
-    SECTION("three") {
-        const enum rank::value rank = rank::three;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("3" == ostr.str());
-    }
-
-    SECTION("four") {
-        const enum rank::value rank = rank::four;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("4" == ostr.str());
-    }
-
-    SECTION("five") {
-        const enum rank::value rank = rank::five;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("5" == ostr.str());
-    }
-
-    SECTION("six") {
-        const enum rank::value rank = rank::six;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("6" == ostr.str());
-    }
-
-    SECTION("seven") {
-        const enum rank::value rank = rank::seven;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("7" == ostr.str());
-    }
-
-    SECTION("eight") {
-        const enum rank::value rank = rank::eight;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("8" == ostr.str());
+TEST_CASE("chester::engine::ranks validity", "[engine][rank]") {
+    for (const auto rank : chester::engine::ranks) {
+        REQUIRE(rank.valid());
     }
 }
 
-TEST_CASE("chester::engine::rank operator << overload for std::ostream", "[engine][rank][fmt]") {
-    std::ostringstream ostr;
-
-    SECTION("one") {
-        const rank rank = rank::one;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("1" == ostr.str());
-    }
-
-    SECTION("two") {
-        const rank rank = rank::two;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("2" == ostr.str());
-    }
-
-    SECTION("three") {
-        const rank rank = rank::three;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("3" == ostr.str());
-    }
-
-    SECTION("four") {
-        const rank rank = rank::four;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("4" == ostr.str());
-    }
-
-    SECTION("five") {
-        const rank rank = rank::five;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("5" == ostr.str());
-    }
-
-    SECTION("six") {
-        const rank rank = rank::six;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("6" == ostr.str());
-    }
-
-    SECTION("seven") {
-        const rank rank = rank::seven;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("7" == ostr.str());
-    }
-
-    SECTION("eight") {
-        const rank rank = rank::eight;
-        CAPTURE(rank);
-        ostr << rank;
-        REQUIRE("8" == ostr.str());
-    }
+TEST_CASE("std::to_string(chester::engine::rank)", "[engine][rank][fmt]") {
+    REQUIRE("1" == std::to_string(rank::one));
+    REQUIRE("2" == std::to_string(rank::two));
+    REQUIRE("3" == std::to_string(rank::three));
+    REQUIRE("4" == std::to_string(rank::four));
+    REQUIRE("5" == std::to_string(rank::five));
+    REQUIRE("6" == std::to_string(rank::six));
+    REQUIRE("7" == std::to_string(rank::seven));
+    REQUIRE("8" == std::to_string(rank::eight));
+    REQUIRE("?" == std::to_string(rank::low));
+    REQUIRE("?" == std::to_string(rank::low - 1));
+    REQUIRE("?" == std::to_string(rank::high));
+    REQUIRE("?" == std::to_string(rank::high + 1));
 }
-
-// cppcheck-suppress-begin knownConditionTrueFalse
-
-TEST_CASE("chester::engine::rank::low bound", "[engine][rank]") {
-    REQUIRE(rank::one      >  rank::low);
-    REQUIRE(rank::one - 1  == rank::low);
-    REQUIRE(rank::one - 2  <  rank::low);
-    REQUIRE(rank::one - 10 <  rank::low);
-
-    REQUIRE((rank)rank::one      >  (rank)rank::low);
-    REQUIRE((rank)rank::one - 1  == (rank)rank::low);
-    REQUIRE((rank)rank::one - 2  <  (rank)rank::low);
-    REQUIRE((rank)rank::one - 10 <  (rank)rank::low);
-}
-
-TEST_CASE("chester::engine::rank::high bound", "[engine][rank]") {
-    REQUIRE(rank::eight      <  rank::high);
-    REQUIRE(rank::eight + 1  == rank::high);
-    REQUIRE(rank::eight + 2  >  rank::high);
-    REQUIRE(rank::eight + 10 >  rank::high);
-
-    REQUIRE((rank)rank::eight      <  (rank)rank::high);
-    REQUIRE((rank)rank::eight + 1  == (rank)rank::high);
-    REQUIRE((rank)rank::eight + 2  >  (rank)rank::high);
-    REQUIRE((rank)rank::eight + 10 >  (rank)rank::high);
-}
-
-// cppcheck-suppress-end knownConditionTrueFalse

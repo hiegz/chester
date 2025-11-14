@@ -1,5 +1,3 @@
-// NOLINTBEGIN
-
 #include <array>
 #include <cstddef>
 #include <cstdint>
@@ -30,7 +28,7 @@ class table {
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
-            const auto square = (class square)(enum square::value)i;
+            const auto square = (class square)i;
             const auto file   = square.file();
             const auto rank   = square.rank();
 
@@ -108,7 +106,7 @@ class table {
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
-            const auto square = (class square)(enum square::value)i;
+            const auto square = (class square)i;
             const auto file   = square.file();
             const auto rank   = square.rank();
 
@@ -119,7 +117,7 @@ class table {
             // . . N . .
             // . . . . .
             // . . . . .
-            if (file < file::h and rank <= rank::six) {
+            if (file < file::h and rank <=rank::six) {
                 moves |= square >> 17;
             }
 
@@ -199,14 +197,12 @@ template <>
 auto chester::engine::lookup::moves<piece::king>(square square)
     -> chester::engine::bitset {
     static ::king::table table;
-    return table.cells[square.value];
+    return table.cells[square.raw];
 }
 
 template <>
 auto chester::engine::lookup::moves<piece::knight>(square square)
     -> chester::engine::bitset {
     static ::knight::table table;
-    return table.cells[square.value];
+    return table.cells[square.raw];
 }
-
-// NOLINTEND

@@ -1,4 +1,3 @@
-// NOLINTBEGIN
 // clang-format off
 
 #include <array>
@@ -50,7 +49,13 @@ class table {
     std::array<bitset,      SQUARES * N> cells;
 
     constexpr auto lookup(square square, bitset blockers) -> bitset {
-        const std::size_t i = square.value;
+#ifdef DEBUG
+        if (square.invalid()) {
+            throw std::runtime_error("unable to lookup invalid square");
+        }
+#endif
+
+        const std::size_t i = static_cast<unsigned char>(square.raw);
         const std::size_t j = index(magics[i], blockers & masks[i], cardinalities[i]);
         const std::size_t offset = i * N;
 
@@ -66,7 +71,7 @@ class table {
     {
         for (std::size_t i = 0; i < SQUARES; ++i) {
             const std::size_t offset = i * N;
-            const      square square = (class square)(enum square::value)i;
+            const      square square = (class square)i;
 
             /**
              * Determines if the randomly generated magic number for a trial
