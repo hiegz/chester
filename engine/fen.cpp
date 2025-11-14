@@ -6,7 +6,7 @@
 #include <string>
 
 #include <chester/engine/bitboard.hpp>
-#include <chester/engine/board.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/fen.hpp>
 #include <chester/engine/file.hpp>
@@ -18,9 +18,9 @@
 
 // clang-format off
 
-auto chester::engine::fen_parser::board()
-    -> std::expected<class board, std::string> {
-    auto board = board::empty();
+auto chester::engine::fen_parser::bitboard()
+    -> std::expected<class bitboard, std::string> {
+    auto board = bitboard::empty();
     file f = file::a;
     rank r = rank::eight;
 
@@ -134,7 +134,7 @@ auto chester::engine::fen_parser::board()
     return board;
 }
 
-auto chester::engine::fen_parser::turn() -> std::expected<side, std::string> {
+auto chester::engine::fen_parser::turn() -> std::expected<enum side, std::string> {
     skip_whitespace();
 
     if (it == end) {
@@ -200,7 +200,7 @@ auto chester::engine::fen_parser::castling() -> std::expected<class castling, st
     return castling;
 }
 
-auto chester::engine::fen_parser::enpassant() -> std::expected<bitboard, std::string> {
+auto chester::engine::fen_parser::enpassant() -> std::expected<class bitset, std::string> {
     std::array<char, 2> ch;
     file f;
     rank r;
@@ -215,7 +215,7 @@ auto chester::engine::fen_parser::enpassant() -> std::expected<bitboard, std::st
     it    = std::next(it);
 
     if (ch[0] == '-') {
-        return bitboard::empty();
+        return bitset::empty();
     }
 
     if (it == end) {
@@ -260,7 +260,7 @@ auto chester::engine::fen_parser::moves() -> std::expected<std::size_t, std::str
 }
 
 auto chester::engine::fen_parser::position() -> std::expected<class position, std::string> {
-    const auto lo_board = this->board();
+    const auto lo_board = this->bitboard();
     if (not lo_board) {
         return std::unexpected(lo_board.error());
     }

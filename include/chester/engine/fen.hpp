@@ -11,8 +11,8 @@
 
 namespace chester::engine {
 
+class bitset;
 class bitboard;
-class board;
 class position;
 enum class side : std::uint8_t;
 class castling;
@@ -37,10 +37,10 @@ class fen_parser {
     constexpr fen_parser(std::string_view view)
         : it(view.begin()), end(view.end()) {}
 
-    auto board() -> std::expected<board, std::string>;
+    auto bitboard() -> std::expected<bitboard, std::string>;
     auto turn() -> std::expected<side, std::string>;
     auto castling() -> std::expected<castling, std::string>;
-    auto enpassant() -> std::expected<bitboard, std::string>;
+    auto enpassant() -> std::expected<bitset, std::string>;
     auto moves() -> std::expected<std::size_t, std::string>;
     auto position() -> std::expected<position, std::string>;
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chester/engine/bitboard.hpp>
-#include <chester/engine/board.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
@@ -18,13 +18,13 @@ class position {
   public:
     constexpr position() = default;
     constexpr position(
-        chester::engine::board board,
+        chester::engine::bitboard bitboard,
         chester::engine::side turn,
         chester::engine::castling castling,
-        chester::engine::bitboard enpassant,
+        chester::engine::bitset enpassant,
         std::size_t half_moves,
         std::size_t full_moves)
-          : board(board),
+          : bitboard(bitboard),
             turn(turn),
             castling(castling),
             enpassant(enpassant),
@@ -37,7 +37,7 @@ class position {
     constexpr auto operator==(position const &) const -> bool = default;
     constexpr auto operator!=(position const &) const -> bool = default;
 
-    chester::engine::board board;
+    chester::engine::bitboard bitboard;
     chester::engine::side turn;
 
     /**
@@ -56,7 +56,7 @@ class position {
      * This is recorded regardless of whether there is a
      * pawn in position to capture en passant.
      */
-    chester::engine::bitboard enpassant;
+    chester::engine::bitset enpassant;
 
     /**
      * The number of moves since the last capture or pawn advance used for the

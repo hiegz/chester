@@ -1,7 +1,7 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/board.hpp>
+#include <chester/engine/bitboard.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/position.hpp>
 #include <chester/engine/side.hpp>
@@ -70,8 +70,8 @@ TEST_CASE("chester::engine::position string representation",
             ([]() -> auto {
                  auto position = position::traditional();
 
-                 position.board[side::black + piece::pawn] ^= square::b7;
-                 position.board[side::black + piece::pawn] |= square::b5;
+                 position.bitboard[side::black + piece::pawn] ^= square::b7;
+                 position.bitboard[side::black + piece::pawn] |= square::b5;
                  position.enpassant = square::b6;
 
                  return std::make_tuple(

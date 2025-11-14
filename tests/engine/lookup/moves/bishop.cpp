@@ -2,7 +2,7 @@
 
 #include <tuple>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/lookup.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/square.hpp>
@@ -11,20 +11,20 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::bitset;
 using chester::engine::piece;
 using chester::engine::square;
 
 TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup][bishop]") {
     square   square;
-    bitboard blockers;
-    bitboard expected;
+    bitset blockers;
+    bitset expected;
 
     std::tie(square, blockers, expected) =
-        GENERATE(table<class square, bitboard, bitboard>({
+        GENERATE(table<class square, bitset, bitset>({
             std::make_tuple(
                 square::a1,
-                bitboard::empty(),
+                bitset::empty(),
                 square::b2 |
                 square::c3 |
                 square::d4 |
@@ -68,7 +68,7 @@ TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup
 
             std::make_tuple(
                 square::b2,
-                bitboard::empty(),
+                bitset::empty(),
                 square::a1 |
                 square::c3 |
                 square::d4 |
@@ -235,7 +235,7 @@ TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup
 
             std::make_tuple(
                 square::e3,
-                bitboard::empty(),
+                bitset::empty(),
                 square::c1 |
                 square::d2 |
                 square::g1 |
@@ -271,7 +271,7 @@ TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup
                 square::c3),
         }));
 
-    const bitboard found = chester::engine::lookup::moves<piece::bishop>(square, blockers);
+    const bitset found = chester::engine::lookup::moves<piece::bishop>(square, blockers);
 
     INFO("square: " << square);
     INFO("");

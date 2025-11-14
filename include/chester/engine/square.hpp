@@ -1,5 +1,4 @@
 // clang-format off
-// NOLINTBEGIN
 
 #pragma once
 
@@ -7,16 +6,12 @@
 #include <ostream>
 #include <string>
 
-#ifdef DEBUG
-#include <stdexcept>
-#endif // DEBUG
-
 #include <chester/engine/file.hpp>
 #include <chester/engine/rank.hpp>
 
 namespace chester::engine {
 
-class bitboard;
+class bitset;
 
 class square {
   public:
@@ -34,9 +29,7 @@ class square {
         high = 64,
     };
 
-    constexpr square() {}
-
-    // cppcheck-suppress noExplicitConstructor
+    constexpr square() = default;
     constexpr square(square::value value) : value(value) {}
     constexpr square(chester::engine::file file, chester::engine::rank rank)
         : value((enum square::value)((rank.value * 8) + file.value)) {}
@@ -223,7 +216,7 @@ constexpr auto operator>>=(enum square::value &lhs, int rhs) {
 }
 
 constexpr auto operator<<(square lhs, int rhs) -> square {
-    return square(lhs.value << rhs);
+    return {lhs.value << rhs};
 }
 
 constexpr auto operator<<=(square &lhs, int rhs) {
@@ -231,21 +224,21 @@ constexpr auto operator<<=(square &lhs, int rhs) {
 }
 
 constexpr auto operator>>(square lhs, int rhs) -> square {
-    return square(lhs.value >> rhs);
+    return {lhs.value >> rhs};
 }
 
 constexpr auto operator>>=(square &lhs, int rhs) {
     lhs = lhs >> rhs;
 }
 
-constexpr auto operator&(     square        lhs,      square        rhs) -> bitboard;
-constexpr auto operator|(     square        lhs,      square        rhs) -> bitboard;
-constexpr auto operator^(     square        lhs,      square        rhs) -> bitboard;
-constexpr auto operator~(     square        lhs)                         -> bitboard;
-constexpr auto operator&(enum square::value lhs, enum square::value rhs) -> bitboard;
-constexpr auto operator|(enum square::value lhs, enum square::value rhs) -> bitboard;
-constexpr auto operator^(enum square::value lhs, enum square::value rhs) -> bitboard;
-constexpr auto operator~(enum square::value lhs)                         -> bitboard;
+constexpr auto operator&(     square        lhs,      square        rhs) -> bitset;
+constexpr auto operator|(     square        lhs,      square        rhs) -> bitset;
+constexpr auto operator^(     square        lhs,      square        rhs) -> bitset;
+constexpr auto operator~(     square        lhs)                         -> bitset;
+constexpr auto operator&(enum square::value lhs, enum square::value rhs) -> bitset;
+constexpr auto operator|(enum square::value lhs, enum square::value rhs) -> bitset;
+constexpr auto operator^(enum square::value lhs, enum square::value rhs) -> bitset;
+constexpr auto operator~(enum square::value lhs)                         -> bitset;
 
 auto operator<<(std::ostream &os, enum chester::engine::square::value const &value)  -> std::ostream &;
 auto operator<<(std::ostream &os,      chester::engine::square        const &square) -> std::ostream &;
@@ -256,5 +249,3 @@ namespace std {
 auto to_string(     chester::engine::square        square) -> std::string;
 auto to_string(enum chester::engine::square::value value)  -> std::string;
 }
-
-// NOLINTEND

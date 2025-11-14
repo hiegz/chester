@@ -1,12 +1,12 @@
 #include <array>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/lookup.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/square.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::bitset;
 using chester::engine::file;
 using chester::engine::rank;
 using chester::engine::square;
@@ -16,13 +16,13 @@ using chester::engine::square;
 namespace {
 
 template <unsigned int Angle>
-auto ray(square origin) -> bitboard;
+auto ray(square origin) -> bitset;
 
 template <>
-auto ray<0>(square origin) -> bitboard {
+auto ray<0>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
 
     for (auto r = rank + 1; r < rank::high; ++r) {
         result |= square(file, r);
@@ -32,10 +32,10 @@ auto ray<0>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<45>(square origin) -> bitboard {
+auto ray<45>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
     class rank r;
     class file f;
 
@@ -47,10 +47,10 @@ auto ray<45>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<90>(square origin) -> bitboard {
+auto ray<90>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
 
     for (auto f = file + 1; f < file::high; ++f) {
         result |= square(f, rank);
@@ -60,10 +60,10 @@ auto ray<90>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<135>(square origin) -> bitboard {
+auto ray<135>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
     class file f;
     class rank r;
 
@@ -76,10 +76,10 @@ auto ray<135>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<180>(square origin) -> bitboard {
+auto ray<180>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
 
     for (auto r = rank - 1; r > rank::low; --r) {
         result |= square(file, r);
@@ -89,10 +89,10 @@ auto ray<180>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<225>(square origin) -> bitboard {
+auto ray<225>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
     class rank r;
     class file f;
 
@@ -104,10 +104,10 @@ auto ray<225>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<270>(square origin) -> bitboard {
+auto ray<270>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
 
     for (auto f = file - 1; f > file::low; --f) {
         result |= square(f, rank);
@@ -117,10 +117,10 @@ auto ray<270>(square origin) -> bitboard {
 }
 
 template <>
-auto ray<315>(square origin) -> bitboard {
+auto ray<315>(square origin) -> bitset {
     const rank rank = origin.rank();
     const file file = origin.file();
-    bitboard result = bitboard::empty();
+    bitset result = bitset::empty();
     class rank r;
     class file f;
 
@@ -133,7 +133,7 @@ auto ray<315>(square origin) -> bitboard {
 
 class table {
   public:
-    std::array<bitboard, 64UL * 64UL> cells;
+    std::array<bitset, 64UL * 64UL> cells;
 
     table() : cells() {
         for (auto i = square::a1; i < square::high; ++i) {
@@ -154,7 +154,7 @@ class table {
 
 } // namespace
 
-auto chester::engine::lookup::in_between(square a, square b) -> bitboard {
+auto chester::engine::lookup::in_between(square a, square b) -> bitset {
     static ::table table;
     return table.cells[((int)a.value * 64) + (int)b.value];
 }

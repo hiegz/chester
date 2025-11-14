@@ -1,189 +1,251 @@
-// clang-format off
-
 #pragma once
 
 #include <bit>
 #include <cstddef>
 #include <cstdint>
+#include <ostream>
+#include <string>
 
 #ifdef DEBUG
 #include <stdexcept>
 #endif
 
-namespace chester::engine::bitset {
+#include <chester/engine/square.hpp>
 
-/** Returns an empty bitset */
-template <typename T>
-auto constexpr empty() -> T;
+// clang-format off
 
-template <>
-auto constexpr empty() -> std::uint64_t {
-    return 0;
-};
-
-/** Returns a universal bitset */
-template <typename T>
-auto constexpr universal() -> T;
-
-template <>
-auto constexpr universal() -> std::uint64_t {
-    // NOLINTNEXTLINE
-    return 0xFFFFFFFFFFFFFFFF;
-};
-
-/** Checks if a bitset is empty */
-template <typename T>
-auto constexpr is_empty(T bitset) -> bool;
-
-template <>
-auto constexpr is_empty(std::uint64_t bitset) -> bool {
-    return bitset == chester::engine::bitset::empty<std::uint64_t>();
-};
-
-/** Checks if a bitset is universal */
-template <typename T>
-auto constexpr is_universal(T bitset) -> bool;
-
-template <>
-auto constexpr is_universal(std::uint64_t bitset) -> bool {
-    return bitset == chester::engine::bitset::universal<std::uint64_t>();
-}
-
-/** Checks if a bitset is single populated */
-template <typename T>
-auto constexpr is_single(T bitset) -> bool;
-
-template <>
-auto constexpr is_single(std::uint64_t bitset) -> bool {
-    return bitset != 0 and (bitset & (bitset - 1)) == 0;
-}
-
-/** Returns the cardinality of a bitset */
-template <typename T>
-auto constexpr cardinality(T bitset) -> std::size_t;
-
-template <>
-auto constexpr cardinality(std::uint64_t bitset) -> std::size_t {
-    std::size_t count = 0;
-    while (bitset != 0) {
-        count += 1;
-        bitset &= bitset - 1;
-    }
-    return count;
-}
+namespace chester::engine {
 
 /**
- * Returns the position of the first least significant set bit.
- *
- * In debug mode, this function asserts that the bitset is not empty.
+ * This class extends the 64-bit unsigned integer to implement general setwise
+ * operations, population count, bitscan, mirroring, and formatting.
  */
-template <typename T>
-auto constexpr scan_forward(T bitset) -> std::size_t;
+class bitset {
+  public:
+    uint64_t raw;
 
-template <>
-auto constexpr scan_forward(std::uint64_t bitset) -> std::size_t {
-#ifdef DEBUG
-    if (chester::engine::bitset::is_empty(bitset)) {
-        throw std::runtime_error("bitset is empty");
-    }
-#endif
-    return std::countr_zero(bitset);
-}
+    constexpr bitset() = default;
 
-/**
- * Return the position of the first most significant set bit.
- *
- * In debug mode, this function asserts that the bitset is not empty.
- */
-template <typename T>
-auto constexpr scan_backward(T bitset) -> std::size_t;
+    constexpr bitset(chester::engine::square square)
+        : raw(1UL << square.value) {}
+    constexpr bitset(enum chester::engine::square::value square)
+        : raw(1UL << square) {}
 
-template <>
-auto constexpr scan_backward(std::uint64_t bitset) -> std::size_t {
-#ifdef DEBUG
-    if (chester::engine::bitset::is_empty(bitset)) {
-        throw std::runtime_error("bitset is empty");
-    }
-#endif
-    // NOLINTNEXTLINE
-    return 63 - std::countl_zero(bitset);
-}
+    constexpr auto operator==(bitset other) const -> bool   { return  raw == other.raw; }
+    constexpr auto operator!=(bitset other) const -> bool   { return  raw != other.raw; }
+    constexpr auto operator& (bitset other) const -> bitset { return  raw &  other.raw; }
+    constexpr auto operator| (bitset other) const -> bitset { return  raw |  other.raw; }
+    constexpr auto operator^ (bitset other) const -> bitset { return  raw ^  other.raw; }
+    constexpr auto operator~()              const -> bitset { return ~raw;                }
+    constexpr auto operator&=(bitset other)                 {         raw &= other.raw; }
+    constexpr auto operator|=(bitset other)                 {         raw |= other.raw; }
+    constexpr auto operator^=(bitset other)                 {         raw ^= other.raw; }
 
-/**
- * Removes the first least significant bit and returns its position.
- *
- * In debug mode, this function asserts that the bitset is not empty.
- */
-template <typename T>
-auto constexpr pop_front(T bitset) -> std::size_t;
+    // Bitwise operations
 
-template <>
-auto constexpr pop_front(std::uint64_t *bitset) -> std::size_t {
-#ifdef DEBUG
-    if (chester::engine::bitset::is_empty(*bitset)) {
-        throw std::runtime_error("bitset is empty");
-    }
-#endif
-    const std::size_t index = chester::engine::bitset::scan_forward(*bitset);
-    *bitset = *bitset ^ (1UL << index);
-    return index;
-}
-
-/**
- * Removes the first most significant bit and returns its position.
- *
- * In debug mode, this function asserts that the bitset is not empty.
- */
-template <typename T>
-auto constexpr pop_back(T bitset) -> std::size_t;
-
-template <>
-auto constexpr pop_back(std::uint64_t *bitset) -> std::size_t {
-#ifdef DEBUG
-    if (chester::engine::bitset::is_empty(*bitset)) {
-        throw std::runtime_error("bitset is empty");
-    }
-#endif
-    const std::size_t index = chester::engine::bitset::scan_backward(*bitset);
-    *bitset = *bitset ^ (1UL << index);
-    return index;
-}
-
-/**
- * Returns the n-th subset of the given bitset.
- *
- * For performance, the bitset's cardinality is provided by the caller so
- * it is not recomputed for every subset. It goes without saying that providing
- * an incorrect cardinality results in undefined behavior.
- *
- * The `index` specifies which subset to return and must be within the range [0, 1 << cardinality).
- */
-template <typename T>
-auto constexpr subset(T bitset, std::size_t cardinality, std::size_t index) -> T;
-
-template<>
-auto constexpr subset(std::uint64_t bitset, std::size_t cardinality, std::size_t index) -> std::uint64_t {
-#ifdef DEBUG
-    if (cardinality != chester::engine::bitset::cardinality(bitset)) {
-        throw std::runtime_error("provided bitset cardinality does not match its real cardinality");
+    /** Returns an empty bitset */
+    constexpr static auto empty() -> bitset {
+        return {0};
     }
 
-    if (index >= (1UL << cardinality)) {
-        throw std::runtime_error("index is out of bounds");
+    /** Returns a universal bitset */
+    constexpr static auto universal() -> bitset {
+        return {0xFFFFFFFFFFFFFFFF};
     }
-#endif
 
-    std::uint64_t mask   = bitset;
-    std::uint64_t result = 0;
+    /** Checks if a bitset is single populated */
+    [[nodiscard]]
+    constexpr auto single() const -> bool {
+        return raw != 0 and (raw & (raw - 1)) == 0;
+    }
 
-    for (std::size_t i = 0; i < cardinality; ++i) {
-        const std::size_t j = chester::engine::bitset::pop_front(&mask);
-        if ((index & (1UL << i)) != 0) {
-            result |= 1UL << j;
+    /** Returns the cardinality of a bitset */
+    [[nodiscard]]
+    constexpr auto cardinality() const -> std::size_t {
+        std::size_t count = 0;
+        std::uint64_t value = this->raw;
+        while (value != 0) {
+            count += 1;
+            value &= value - 1;
         }
+        return count;
     }
 
-    return result;
+    /**
+     * Returns the position of the first least significant set bit.
+     *
+     * This function assumes the bitset is not empty.
+     */
+    [[nodiscard]]
+    constexpr auto scan_forward() const -> square {
+#ifdef DEBUG
+        if (*this == bitset::empty()) {
+            throw std::runtime_error("bitset is empty");
+        }
+#endif
+        return (enum square::value)std::countr_zero(raw);
+    }
+
+    /**
+     * Return the position of the first most significant set bit.
+     *
+     * This function assumes the bitset is not empty.
+     */
+    [[nodiscard]]
+    constexpr auto scan_backward() const -> square {
+#ifdef DEBUG
+        if (*this == bitset::empty()) {
+            throw std::runtime_error("bitset is empty");
+        }
+#endif
+        return (enum square::value)(63 - std::countl_zero(raw));
+    }
+
+    /**
+     * Removes the first least significant bit and returns its position.
+     *
+     * This function assumes the bitset is not empty.
+     */
+    constexpr auto pop_front() -> square {
+        const square sq = scan_forward();
+        *this ^= sq;
+        return sq;
+    }
+
+    /**
+     * Removes the first most significant bit and returns its position.
+     *
+     * This function assumes the bitset is not empty.
+     */
+    constexpr auto pop_back() -> square {
+        const square sq = scan_backward();
+        *this ^= sq;
+        return sq;
+    }
+
+    /**
+     * Returns the n-th subset of the given bitset.
+     *
+     * For performance, the bitset's cardinality is provided by the caller so
+     * it is not recomputed for every subset. It goes without saying that providing
+     * an incorrect cardinality results in undefined behavior.
+     *
+     * The `index` specifies which subset to return and must be within the range [0, 1 << cardinality).
+     */
+    [[nodiscard]]
+    constexpr auto subset(std::size_t cardinality, std::size_t index) const -> bitset {
+#ifdef DEBUG
+        if (cardinality != this->cardinality()) {
+            throw std::runtime_error("provided bitset cardinality does not match its real cardinality");
+        }
+
+        if (index >= (1UL << cardinality)) {
+            throw std::runtime_error("index is out of bounds");
+        }
+#endif
+
+        bitset mask = raw;
+        bitset result = 0;
+
+        for (std::size_t i = 0; i < cardinality; ++i) {
+            const square j = mask.pop_front();
+            if ((index & (1UL << i)) != 0) {
+                result |= j;
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Mirror a bitset horizontally about the center files.
+     *
+     * File a is mapped to file h and vice versa.
+     */
+    [[nodiscard]]
+    constexpr auto mirror() const -> bitset {
+        std::uint64_t raw = this->raw;
+
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        // . 1 . 1 . 1 . 1
+        constexpr std::uint64_t K1 = 0x5555555555555555UL;
+
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        // . . 1 1 . . 1 1
+        constexpr std::uint64_t K2 = 0x3333333333333333UL;
+
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        // . . . . 1 1 1 1
+        constexpr std::uint64_t K4 = 0x0f0f0f0f0f0f0f0fUL;
+
+        //
+
+        raw = ((raw >> 1U) & K1) | ((raw & K1) << 1U);
+        raw = ((raw >> 2U) & K2) | ((raw & K2) << 2U);
+        raw = ((raw >> 4U) & K4) | ((raw & K4) << 4U);
+
+        return {raw};
+    }
+
+  private:
+    // cppcheck-suppress noExplicitConstructor
+    constexpr bitset(std::uint64_t value) : raw(value) {}
+};
+
+constexpr auto operator&(square lhs, square rhs) -> bitset {
+    return bitset(lhs) & bitset(rhs);
 }
 
-} // namespace chester::engine::bitset
+constexpr auto operator|(square lhs, square rhs) -> bitset {
+    return bitset(lhs) | bitset(rhs);
+}
+
+constexpr auto operator^(square lhs, square rhs) -> bitset {
+    return bitset(lhs) ^ bitset(rhs);
+}
+
+constexpr auto operator~(square lhs) -> bitset {
+    return ~bitset(lhs);
+}
+
+constexpr auto operator&(enum square::value lhs, enum square::value rhs) -> bitset {
+    return square(lhs) & square(rhs);
+};
+
+constexpr auto operator|(enum square::value lhs, enum square::value rhs) -> bitset {
+    return square(lhs) | square(rhs);
+}
+
+constexpr auto operator^(enum square::value lhs, enum square::value rhs) -> bitset {
+    return square(lhs) ^ square(rhs);
+}
+
+constexpr auto operator~(enum square::value lhs) -> bitset {
+    return ~square(lhs);
+}
+
+auto operator<<(std::ostream &os, chester::engine::bitset bitset) -> std::ostream &;
+
+}
+
+namespace std {
+auto to_string(chester::engine::bitset) -> std::string;
+}

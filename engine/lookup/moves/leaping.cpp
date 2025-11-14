@@ -4,14 +4,14 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/lookup.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/square.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::bitset;
 using chester::engine::file;
 using chester::engine::piece;
 using chester::engine::rank;
@@ -26,7 +26,7 @@ namespace king {
 /** lookup table for pseudo-legal moves of a kin*/
 class table {
   public:
-    std::array<chester::engine::bitboard, SQUARES> cells;
+    std::array<chester::engine::bitset, SQUARES> cells;
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
@@ -34,7 +34,7 @@ class table {
             const auto file   = square.file();
             const auto rank   = square.rank();
 
-            auto moves = bitboard::empty();
+            auto moves = bitset::empty();
 
             // . x .
             // . K .
@@ -104,7 +104,7 @@ namespace knight {
 /** lookup table for pseudo-legal moves of a knight */
 class table {
   public:
-    std::array<chester::engine::bitboard, SQUARES> cells;
+    std::array<chester::engine::bitset, SQUARES> cells;
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
@@ -112,7 +112,7 @@ class table {
             const auto file   = square.file();
             const auto rank   = square.rank();
 
-            auto moves = bitboard::empty();
+            auto moves = bitset::empty();
 
             // . . . x .
             // . . . . .
@@ -197,14 +197,14 @@ class table {
 
 template <>
 auto chester::engine::lookup::moves<piece::king>(square square)
-    -> chester::engine::bitboard {
+    -> chester::engine::bitset {
     static ::king::table table;
     return table.cells[square.value];
 }
 
 template <>
 auto chester::engine::lookup::moves<piece::knight>(square square)
-    -> chester::engine::bitboard {
+    -> chester::engine::bitset {
     static ::knight::table table;
     return table.cells[square.value];
 }

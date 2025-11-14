@@ -2,7 +2,7 @@
 
 #include <tuple>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/lookup.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/square.hpp>
@@ -11,17 +11,17 @@
 #include <catch2/catch_message.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::bitset;
 using chester::engine::square;
 using chester::engine::piece;
 
 TEST_CASE("chester::engine::lookup::moves<chester::engine::piece::king>()",
           "[.][engine][lookup][king]") {
     square   square;
-    bitboard expected;
+    bitset expected;
 
     std::tie(square, expected) =
-        GENERATE(table<class square, class bitboard>({
+        GENERATE(table<class square, class bitset>({
             // 1st rank
             std::make_tuple(square::a1, square::b1 | square::a2 | square::b2),
             std::make_tuple(square::b1, square::a1 | square::c1 | square::a2 | square::b2 | square::c2),
@@ -55,7 +55,7 @@ TEST_CASE("chester::engine::lookup::moves<chester::engine::piece::king>()",
             std::make_tuple(square::h8, square::g8 | square::h7 | square::g7),
         }));
 
-    const bitboard found = chester::engine::lookup::moves<piece::king>(square);
+    const bitset found = chester::engine::lookup::moves<piece::king>(square);
 
     INFO("square: " << square);
     INFO("");

@@ -1,5 +1,10 @@
 // clang-format off
 
+#include <string>
+
+#include <chester/engine/bitset.hpp>
+#include <chester/engine/square.hpp>
+
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
@@ -7,178 +12,169 @@
 #include <catch2/generators/catch_generators_adapters.hpp>
 #include <catch2/generators/catch_generators_random.hpp>
 
-#include <chester/engine/bitset.hpp>
-
-#include <cstddef>
-#include <cstdint>
-#include <limits>
+using chester::engine::bitset;
+using chester::engine::square;
 
 TEST_CASE("chester::engine::bitset::empty()", "[engine][bitset]") {
-    REQUIRE( 0LL == chester::engine::bitset::empty<std::uint64_t>());
+    REQUIRE(0LL == bitset::empty().raw);
 }
 
 TEST_CASE("chester::engine::bitset::universal()", "[engine][bitset]") {
-    REQUIRE(~0UL == chester::engine::bitset::universal<std::uint64_t>());
+    REQUIRE(~0UL == bitset::universal().raw);
 }
 
-TEST_CASE("chester::engine::bitset::is_empty()", "[engine][bitset]") {
+TEST_CASE("chester::engine::bitset::single()", "[engine][bitset]") {
     WHEN("bitset is empty") {
-        const auto bitset = chester::engine::bitset::empty<std::uint64_t>();
+        const bitset bitset = bitset::empty();
         CAPTURE(bitset);
-        REQUIRE(chester::engine::bitset::is_empty(bitset));
-    }
-
-    WHEN("bitset is universal") {
-        const auto bitset = chester::engine::bitset::universal<std::uint64_t>();
-        CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_empty(bitset));
-    }
-
-    WHEN("bitset is not empty") {
-        const auto bitset = GENERATE(take(8, random(1UL, std::numeric_limits<std::uint64_t>::max())));
-        CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_empty(bitset));
-    }
-}
-
-TEST_CASE("chester::engine::bitset::is_universal()", "[engine][bitset]") {
-    WHEN("bitset is universal") {
-        const auto bitset = chester::engine::bitset::universal<std::uint64_t>();
-        CAPTURE(bitset);
-        REQUIRE(chester::engine::bitset::is_universal(bitset));
-    }
-
-    WHEN("bitset is empty") {
-        const auto bitset = chester::engine::bitset::empty<std::uint64_t>();
-        CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_universal(bitset));
-    }
-
-    WHEN("bitset is not universal") {
-        const auto bitset = GENERATE(take(9, random(0UL, std::numeric_limits<std::uint64_t>::max() - 1)));
-        CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_universal(bitset));
-    }
-}
-
-TEST_CASE("chester::engine::bitset::is_single()", "[engine][bitset]") {
-    WHEN("bitset is empty") {
-        const auto bitset = chester::engine::bitset::empty<std::uint64_t>();
-        CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_single(bitset));
+        REQUIRE(not bitset.single());
     }
 
     WHEN("bitset is single") {
-        const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << (std::size_t)square;
+        const square square = (enum square::value)GENERATE(range(0, 63));
+        const bitset bitset = square;
         CAPTURE(bitset);
-        REQUIRE(chester::engine::bitset::is_single(bitset));
+        REQUIRE(bitset.single());
     }
 
     WHEN("bitset has two elements") {
-        const auto square_i = GENERATE(range(0, 63));
-        const auto square_j = GENERATE(range(0, 63));
+        const square square_i = (enum square::value)GENERATE(range(0, 63));
+        const square square_j = (enum square::value)GENERATE(range(0, 63));
 
         if (square_i == square_j) {
             return;
         }
 
-        const auto bitset = (1UL << square_i) | (1UL << square_j); // NOLINT
+        const bitset bitset = square_i | square_j;
 
         CAPTURE(bitset);
 
-        REQUIRE(not chester::engine::bitset::is_single(bitset));
+        REQUIRE(not bitset.single());
     }
 
     WHEN("bitset is universal") {
-        const auto bitset = chester::engine::bitset::universal<std::uint64_t>();
+        const bitset bitset = bitset::universal();
         CAPTURE(bitset);
-        REQUIRE(not chester::engine::bitset::is_single(bitset));
+        REQUIRE(not bitset.single());
     }
 }
 
 TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
     WHEN("bitset is empty") {
-        const auto bitset = chester::engine::bitset::empty<std::uint64_t>();
+        const bitset bitset = bitset::empty();
         CAPTURE(bitset);
-        REQUIRE(0 == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(0 == bitset.cardinality());
     }
 
     WHEN("bitset is single") {
-        const auto square = GENERATE(range(0, 63));
-        const auto bitset = 1UL << square; // NOLINT
+        const square square = (enum square::value)GENERATE(range(0, 63));
+        const bitset bitset = square;
         CAPTURE(bitset);
-        REQUIRE(1 == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(1 == bitset.cardinality());
     }
 
     WHEN("bitset has two elements") {
-        const auto square_i = GENERATE(range(0, 63));
-        const auto square_j = GENERATE(range(0, 63));
+        const square square_i = (enum square::value)GENERATE(range(0, 63));
+        const square square_j = (enum square::value)GENERATE(range(0, 63));
 
         if (square_i == square_j) {
             return;
         }
 
-        const auto bitset = (1UL << square_i) | (1UL << square_j); // NOLINT
+        const bitset bitset = square_i | square_j;
 
         CAPTURE(bitset);
 
-        REQUIRE(2 == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(2 == bitset.cardinality());
     }
 
     WHEN("bitset is universal") {
-        const auto bitset = chester::engine::bitset::universal<std::uint64_t>();
+        const bitset bitset = bitset::universal();
         CAPTURE(bitset);
-        REQUIRE(64 == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(64 == bitset.cardinality());
     }
 }
 
 TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
     WHEN("bitset is single") {
-        const auto square = GENERATE(range(0, 63));
-        const auto index  = (std::uint64_t)square;
-              auto bitset = 1UL << square; // NOLINT
+        const square square = (enum square::value)GENERATE(range(0, 63));
+        bitset bitset = square;
 
         CAPTURE(bitset);
-        CAPTURE(index);
 
-        REQUIRE(index == chester::engine::bitset::pop_front(&bitset));
-        REQUIRE(chester::engine::bitset::is_empty(bitset));
+        REQUIRE(square == bitset.pop_front());
+        REQUIRE(bitset == bitset::empty());
     }
 
     WHEN("bitset is universal") {
-        const auto index  = 0UL;
-              auto bitset = chester::engine::bitset::universal<std::uint64_t>();
+        bitset bitset = bitset::universal();
 
         CAPTURE(bitset);
-        CAPTURE(index);
 
-        REQUIRE(index == chester::engine::bitset::pop_front(&bitset));
-        REQUIRE(63    == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(square::a1 == bitset.pop_front());
+        REQUIRE(63 == bitset.cardinality());
     }
 }
 
 TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
     WHEN("bitset is single") {
-        const auto square = GENERATE(range(0, 63));
-        const auto index  = (std::uint64_t)square;
-              auto bitset = 1UL << square; // NOLINT
+        const auto square = (enum square::value)GENERATE(range(0, 63));
+        bitset bitset = square;
 
         CAPTURE(bitset);
-        CAPTURE(index);
 
-        REQUIRE(index == chester::engine::bitset::pop_back(&bitset));
-        REQUIRE(chester::engine::bitset::is_empty(bitset));
+        REQUIRE(square == bitset.pop_back());
+        REQUIRE(bitset == bitset::empty());
     }
 
     WHEN("bitset is universal") {
-        const auto index  = 63;
-              auto bitset = chester::engine::bitset::universal<std::uint64_t>();
+        bitset bitset = bitset::universal();
 
-        CAPTURE(bitset);
-        CAPTURE(index);
+        INFO("bitset:\n" << bitset);
 
-        REQUIRE(index == chester::engine::bitset::pop_back(&bitset));
-        REQUIRE(63    == chester::engine::bitset::cardinality(bitset));
+        REQUIRE(square::h8 == bitset.pop_back());
+        REQUIRE(63 == bitset.cardinality());
+    }
+}
+
+TEST_CASE("std::to_string(chester::engine::bitset)", "[engine][bitset][fmt]") {
+    WHEN("bitset is empty") {
+        constexpr auto expected =
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .\n"
+            ". . . . . . . .";
+
+        const auto found = std::to_string(bitset::empty());
+
+        INFO("expected:\n" << expected);
+        INFO("");
+        INFO("found:\n" << found);
+
+        REQUIRE((found == expected));
+    }
+
+    WHEN("bitset is universal") {
+        constexpr auto expected =
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1\n"
+            "1 1 1 1 1 1 1 1";
+
+        const auto found = std::to_string(bitset::universal());
+
+        INFO("expected:\n" << expected);
+        INFO("");
+        INFO("found:\n" << found);
+
+        REQUIRE((found == expected));
     }
 }

@@ -15,14 +15,14 @@
 #include <stdexcept>
 #endif // DEBUG
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/lookup.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/square.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::bitset;
 using chester::engine::file;
 using chester::engine::piece;
 using chester::engine::rank;
@@ -46,10 +46,10 @@ class table {
   public:
     std::array<std::uint64_t, SQUARES>     magics;
     std::array<std::size_t,   SQUARES>     cardinalities;
-    std::array<bitboard,      SQUARES>     masks;
-    std::array<bitboard,      SQUARES * N> cells;
+    std::array<bitset,      SQUARES>     masks;
+    std::array<bitset,      SQUARES * N> cells;
 
-    constexpr auto lookup(square square, bitboard blockers) -> bitboard {
+    constexpr auto lookup(square square, bitset blockers) -> bitset {
         const std::size_t i = square.value;
         const std::size_t j = index(magics[i], blockers & masks[i], cardinalities[i]);
         const std::size_t offset = i * N;
@@ -87,15 +87,15 @@ class table {
                 magics[i] = (rand64() & rand64() & rand64()); // NOLINT
 
                 for (std::size_t j = offset; j < offset + N; ++j) {
-                    cells[j] = bitboard::empty();
+                    cells[j] = bitset::empty();
                 }
 
                 for (std::size_t j = 0; j < (1UL << cardinalities[i]); ++j) {
-                    const    bitboard blockers = bitboard::subset(masks[i], cardinalities[i], j);
-                    const    bitboard moves = Impl::moves(square, blockers);
+                    const    bitset blockers = masks[i].subset(cardinalities[i], j);
+                    const    bitset moves = Impl::moves(square, blockers);
                     const std::size_t k = index(magics[i], blockers, cardinalities[i]);
 
-                    if (cells[offset + k] != bitboard::empty()) {
+                    if (cells[offset + k] != bitset::empty()) {
                         has_collisions = true;
                         break;
                     }
@@ -116,8 +116,8 @@ class table {
         }
     }
 
-    static constexpr auto index(std::uint64_t magic, bitboard blockers, std::size_t cardinality) -> std::size_t {
-        return (blockers.value * magic) >> (SQUARES - cardinality);
+    static constexpr auto index(std::uint64_t magic, bitset blockers, std::size_t cardinality) -> std::size_t {
+        return (blockers.raw * magic) >> (SQUARES - cardinality);
     }
 
     static auto rand64() -> std::uint64_t {
@@ -142,11 +142,11 @@ class table : public ::table<::bishop::table, N> {
   public:
     table() = default;
 
-    static auto mask(square square) -> bitboard {
+    static auto mask(square square) -> bitset {
         const rank rk = square.rank();
         const file fl = square.file();
 
-        auto result = bitboard::empty();
+        auto result = bitset::empty();
         rank r;
         file f;
 
@@ -169,18 +169,18 @@ class table : public ::table<::bishop::table, N> {
         return result;
     }
 
-    static constexpr auto moves(square square, bitboard blockers) -> bitboard {
+    static constexpr auto moves(square square, bitset blockers) -> bitset {
         const rank rk = square.rank();
         const file fl = square.file();
 
-        auto result = bitboard::empty();
+        auto result = bitset::empty();
         rank r;
         file f;
 
         for (r = rk + 1, f = fl + 1; r < rank::high and f < file::high; ++r, ++f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -188,7 +188,7 @@ class table : public ::table<::bishop::table, N> {
         for (r = rk + 1, f = fl - 1; r < rank::high and f > file::low; ++r, --f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -196,7 +196,7 @@ class table : public ::table<::bishop::table, N> {
         for (r = rk - 1, f = fl + 1; r > rank::low and f < file::high; --r, ++f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -204,7 +204,7 @@ class table : public ::table<::bishop::table, N> {
         for (r = rk - 1, f = fl - 1; r > rank::low and f > file::low; --r, --f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -224,11 +224,11 @@ class table : public ::table<::rook::table, N> {
   public:
     table() = default;
 
-    static auto mask(square square) -> bitboard {
+    static auto mask(square square) -> bitset {
         const rank rk = square.rank();
         const file fl = square.file();
 
-        auto result = bitboard::empty();
+        auto result = bitset::empty();
         rank r;
         file f;
 
@@ -251,18 +251,18 @@ class table : public ::table<::rook::table, N> {
         return result;
     }
 
-    static constexpr auto moves(square square, bitboard blockers) -> bitboard {
+    static constexpr auto moves(square square, bitset blockers) -> bitset {
         const rank rk = square.rank();
         const file fl = square.file();
 
-        auto result = bitboard::empty();
+        auto result = bitset::empty();
         rank r;
         file f;
 
         for (r = rk + 1, f = fl; r < rank::high; ++r) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -270,7 +270,7 @@ class table : public ::table<::rook::table, N> {
         for (r = rk - 1, f = fl; r > rank::low; --r) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -278,7 +278,7 @@ class table : public ::table<::rook::table, N> {
         for (f = fl + 1, r = rk; f < file::high; ++f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -286,7 +286,7 @@ class table : public ::table<::rook::table, N> {
         for (f = fl - 1, r = rk; f > file::low; --f) {
             auto sq = chester::engine::square(f, r);
             result |= sq;
-            if ((blockers & sq) != bitboard::empty()) {
+            if ((blockers & sq) != bitset::empty()) {
                 break;
             }
         }
@@ -300,20 +300,20 @@ class table : public ::table<::rook::table, N> {
 } // namespace
 
 template <>
-auto chester::engine::lookup::moves<piece::bishop>(square square, bitboard blockers) -> bitboard {
+auto chester::engine::lookup::moves<piece::bishop>(square square, bitset blockers) -> bitset {
     static ::bishop::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece::rook>(square square, bitboard blockers) -> bitboard {
+auto chester::engine::lookup::moves<piece::rook>(square square, bitset blockers) -> bitset {
     static ::rook::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece::queen>(square square, bitboard blockers) -> bitboard {
+auto chester::engine::lookup::moves<piece::queen>(square square, bitset blockers) -> bitset {
     return lookup::moves<piece::bishop>(square, blockers) | lookup::moves<piece::rook>(square, blockers);
 }
