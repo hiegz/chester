@@ -55,6 +55,7 @@ namespace {
 
 constexpr auto format(enum piece::type type) -> char {
     switch (type) {
+        case piece::none:   return '?';
         case piece::king:   return 'k';
         case piece::queen:  return 'q';
         case piece::rook:   return 'r';

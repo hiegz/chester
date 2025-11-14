@@ -11,6 +11,7 @@
 auto chester::engine::operator<<(std::ostream &os, enum chester::engine::piece::type type)
     -> std::ostream & {
     switch (type) {
+        case piece::none:   return os << "none";
         case piece::king:   return os << "king";
         case piece::queen:  return os << "queen";
         case piece::rook:   return os << "rook";

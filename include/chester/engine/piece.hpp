@@ -21,6 +21,7 @@ class piece {
         bishop = 3,
         knight = 4,
         pawn   = 5,
+        none   = 6,
     };
 
     static constexpr std::array<enum piece::type, 6> types =
