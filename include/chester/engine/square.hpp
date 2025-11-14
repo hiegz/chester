@@ -92,11 +92,11 @@ constexpr auto operator>=(enum square::value lhs, enum square::value rhs) {
 }
 
 constexpr auto operator+(enum square::value lhs, int rhs) -> enum square::value {
-    return (enum square::value)((std::int8_t)lhs + rhs);
+    return (enum square::value)(static_cast<std::uint8_t>(static_cast<std::int8_t>(lhs) + rhs));
 }
 
 constexpr auto operator-(enum square::value lhs, int rhs) -> enum square::value {
-    return (enum square::value)((std::int8_t)lhs - rhs);
+    return (enum square::value)(static_cast<std::uint8_t>(static_cast<std::int8_t>(lhs) - rhs));
 }
 
 constexpr auto operator+=(enum square::value &lhs, int rhs) {
