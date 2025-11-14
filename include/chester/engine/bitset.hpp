@@ -247,5 +247,5 @@ auto operator<<(std::ostream &os, chester::engine::bitset bitset) -> std::ostrea
 }
 
 namespace std {
-auto to_string(chester::engine::bitset) -> std::string;
+auto to_string(chester::engine::bitset /* bitset */) -> std::string;
 }
