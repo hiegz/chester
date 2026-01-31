@@ -32,6 +32,7 @@ add_library(
     engine/lookup/in_between.cpp
     engine/bitboard.cpp
     engine/bitset.cpp
+    engine/board.cpp
     engine/castling.cpp
     engine/castling_type.cpp
     engine/fen.cpp

@@ -1,24 +1,17 @@
 #include <chester/engine/bitboard.hpp>
 #include <chester/engine/bitset.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/piece.hpp>
-#include <chester/engine/piece_type.hpp>
 #include <chester/engine/rank.hpp>
-#include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
 
-#include <algorithm>
-#include <array>
-#include <cctype>
 #include <ostream>
 #include <sstream>
-#include <stdexcept>
 #include <string>
 
 using chester::engine::bitboard;
-using chester::engine::piece;
-using chester::engine::piece_type;
-using chester::engine::side;
+using chester::engine::board;
 using chester::engine::square;
 
 // clang-format off
@@ -53,76 +46,9 @@ auto bitboard::traditional() -> bitboard {
     return bitboard;
 }
 
-namespace {
-
-constexpr auto format(enum piece_type type) -> char {
-    switch (type) {
-        case piece_type::king:   return 'k';
-        case piece_type::queen:  return 'q';
-        case piece_type::rook:   return 'r';
-        case piece_type::bishop: return 'b';
-        case piece_type::knight: return 'n';
-        case piece_type::pawn:   return 'p';
-    }
-
-    throw std::runtime_error("unreachable");
-}
-
-constexpr auto format(piece piece) -> char {
-    char chr = ::format(piece.type);
-    chr = (piece.side == side::white ? static_cast<char>(std::toupper(static_cast<unsigned char>(chr))) : chr);
-
-    return chr;
-}
-
-}
-
 auto chester::engine::operator<<(std::ostream &os,
                                  bitboard const  &bitboard) -> std::ostream & {
-    constexpr int SQUARES = 64;
-
-    std::array<bool,  SQUARES> square_empty; // NOLINT
-    std::array<piece, SQUARES> square_piece; // NOLINT
-
-    std::ranges::fill(square_empty, true);
-
-    // flatten out
-    for (auto piece : chester::engine::pieces) {
-        bitset bitset = bitboard[piece];
-
-        while (bitset != bitset::empty()) {
-            const square square = bitset.pop_front();
-            const char   index  = square.raw;
-
-#ifdef DEBUG
-            if (not square_empty[index]) {
-                throw std::runtime_error("piece collision");
-            }
-#endif
-
-            square_empty[index] = false;
-            square_piece[index] = piece;
-        }
-    }
-
-    for (rank rank = rank::eight; rank > rank::low; --rank) {
-        for (file file = file::a; file < file::high; ++file) {
-            const square square(file, rank);
-            const char   index = square.raw;
-
-            os << (square_empty[index] ? '.' : ::format(square_piece[index]));
-
-            if (file + 1 < file::high) {
-                os << ' ';
-            }
-        }
-
-        if (rank - 1 > rank::low) {
-            os << '\n';
-        }
-    }
-
-    return os;
+    return os << (board)bitboard;
 }
 
 auto std::to_string(chester::engine::bitboard const &bitboard) -> std::string {

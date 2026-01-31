@@ -13,8 +13,14 @@ namespace chester::engine {
 
 // clang-format off
 
+class board;
+
 class bitboard {
   public:
+    bitboard(board const &board);
+
+    constexpr bitboard() = default;
+
     constexpr static auto empty() -> bitboard {
         bitboard b;
         std::ranges::fill(b.pieces, bitset::empty());
