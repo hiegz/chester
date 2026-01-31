@@ -171,19 +171,19 @@ auto chester::engine::fen_parser::castling() -> std::expected<class castling, st
 
         switch (ch) {
             case 'K':
-                castling |= (side::white + piece::king);
+                castling |= castling::white_kingside;
                 continue;
 
             case 'Q':
-                castling |= (side::white + piece::queen);
+                castling |= castling::white_queenside;
                 continue;
 
             case 'k':
-                castling |= (side::black + piece::king);
+                castling |= castling::black_kingside;
                 continue;
 
             case 'q':
-                castling |= (side::black + piece::queen);
+                castling |= castling::black_queenside;
                 continue;
 
             case '-':

@@ -1,41 +1,36 @@
 #pragma once
 
-#include <chester/engine/piece.hpp>
+#include <chester/engine/castling_type.hpp>
 #include <chester/engine/side.hpp>
 
 #include <ostream>
 #include <string>
 
-#ifdef DEBUG
-#include <stdexcept>
-#endif // DEBUG
-
-       // clang-format off
-
 namespace chester::engine {
 
+// clang-format off
+
 /*
- * Compile-time checks to ensure side and piece values remain
- * consistent with castling logic.
+ * Compile-time checks to ensure side and castling type values remain
+ * consistent with the castling logic.
  */
 static_assert((int)side::white  == 0);
 static_assert((int)side::black  == 1);
-static_assert((int)piece::king  == 0);
-static_assert((int)piece::queen == 1);
+static_assert((int)castling_type::kingside == 0);
+static_assert((int)castling_type::queenside == 1);
 
 class castling {
   public:
-    castling() = default;
-    castling(piece piece) {
-#ifdef DEBUG
-        if (piece.type != piece::king and piece.type != piece::queen) {
-            throw std::runtime_error(
-                "unable to convert the provided piece to a castling");
-        }
-#endif // DEBUG
-        value = 1UL << (static_cast<unsigned int>(piece.type) +
-                       (static_cast<unsigned int>(piece.side) * 2));
-    }
+    static const castling white_kingside;
+    static const castling white_queenside;
+    static const castling black_kingside;
+    static const castling black_queenside;
+
+    constexpr castling() = default;
+    constexpr castling(side side, castling_type type)
+        : value(1UL << (static_cast<unsigned int>(type) +
+                       (static_cast<unsigned int>(side) * 2)))
+    {}
 
     static constexpr auto none() -> castling {
         castling castling;
@@ -98,6 +93,12 @@ class castling {
      */
     unsigned int value : 4;
 };
+
+constexpr castling castling::white_kingside  = castling(side::white, castling_type::kingside);
+constexpr castling castling::white_queenside = castling(side::white, castling_type::queenside);
+constexpr castling castling::black_kingside  = castling(side::black, castling_type::kingside);
+constexpr castling castling::black_queenside = castling(side::black, castling_type::queenside);
+
 auto operator<<(std::ostream &os, castling castling) -> std::ostream &;
 
 } // namespace chester::engine

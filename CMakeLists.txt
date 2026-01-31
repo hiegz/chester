@@ -33,6 +33,7 @@ add_library(
     engine/bitboard.cpp
     engine/bitset.cpp
     engine/castling.cpp
+    engine/castling_type.cpp
     engine/fen.cpp
     engine/file.cpp
     engine/piece.cpp
