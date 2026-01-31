@@ -37,6 +37,7 @@ add_library(
     engine/fen.cpp
     engine/file.cpp
     engine/piece.cpp
+    engine/piece_type.cpp
     engine/position.cpp
     engine/rank.cpp
     engine/side.cpp

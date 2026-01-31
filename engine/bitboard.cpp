@@ -2,6 +2,7 @@
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
@@ -16,6 +17,7 @@
 
 using chester::engine::bitboard;
 using chester::engine::piece;
+using chester::engine::piece_type;
 using chester::engine::side;
 using chester::engine::square;
 
@@ -26,26 +28,26 @@ auto bitboard::traditional() -> bitboard {
 
     // white
 
-    bitboard[side::white + piece::rook]   |= (square::a1 | square::h1);
-    bitboard[side::white + piece::knight] |= (square::b1 | square::g1);
-    bitboard[side::white + piece::bishop] |= (square::c1 | square::f1);
-    bitboard[side::white + piece::king]   |=  square::e1;
-    bitboard[side::white + piece::queen]  |=  square::d1;
+    bitboard[piece::white_rook]   |= (square::a1 | square::h1);
+    bitboard[piece::white_knight] |= (square::b1 | square::g1);
+    bitboard[piece::white_bishop] |= (square::c1 | square::f1);
+    bitboard[piece::white_king]   |=  square::e1;
+    bitboard[piece::white_queen]  |=  square::d1;
 
     for (file f = file::a; f < file::high; ++f) {
-        bitboard[side::white + piece::pawn] |= square(f, rank::two);
+        bitboard[piece::white_pawn] |= square(f, rank::two);
     }
 
     // black
 
-    bitboard[side::black + piece::rook]   |= (square::a8 | square::h8);
-    bitboard[side::black + piece::knight] |= (square::b8 | square::g8);
-    bitboard[side::black + piece::bishop] |= (square::c8 | square::f8);
-    bitboard[side::black + piece::king]   |=  square::e8;
-    bitboard[side::black + piece::queen]  |=  square::d8;
+    bitboard[piece::black_rook]   |= (square::a8 | square::h8);
+    bitboard[piece::black_knight] |= (square::b8 | square::g8);
+    bitboard[piece::black_bishop] |= (square::c8 | square::f8);
+    bitboard[piece::black_king]   |=  square::e8;
+    bitboard[piece::black_queen]  |=  square::d8;
 
     for (file f = file::a; f < file::high; ++f) {
-        bitboard[side::black + piece::pawn] |= square(f, rank::seven);
+        bitboard[piece::black_pawn] |= square(f, rank::seven);
     }
 
     return bitboard;
@@ -53,15 +55,14 @@ auto bitboard::traditional() -> bitboard {
 
 namespace {
 
-constexpr auto format(enum piece::type type) -> char {
+constexpr auto format(enum piece_type type) -> char {
     switch (type) {
-        case piece::none:   return '?';
-        case piece::king:   return 'k';
-        case piece::queen:  return 'q';
-        case piece::rook:   return 'r';
-        case piece::bishop: return 'b';
-        case piece::knight: return 'n';
-        case piece::pawn:   return 'p';
+        case piece_type::king:   return 'k';
+        case piece_type::queen:  return 'q';
+        case piece_type::rook:   return 'r';
+        case piece_type::bishop: return 'b';
+        case piece_type::knight: return 'n';
+        case piece_type::pawn:   return 'p';
     }
 
     throw std::runtime_error("unreachable");

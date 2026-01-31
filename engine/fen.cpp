@@ -65,62 +65,62 @@ auto chester::engine::fen_parser::bitboard()
                 continue;
 
             case 'K':
-                board[side::white + piece::king] |= square(f, r);
+                board[piece::white_king] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'Q':
-                board[side::white + piece::queen] |= square(f, r);
+                board[piece::white_queen] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'R':
-                board[side::white + piece::rook] |= square(f, r);
+                board[piece::white_rook] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'B':
-                board[side::white + piece::bishop] |= square(f, r);
+                board[piece::white_bishop] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'N':
-                board[side::white + piece::knight] |= square(f, r);
+                board[piece::white_knight] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'P':
-                board[side::white + piece::pawn] |= square(f, r);
+                board[piece::white_pawn] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'k':
-                board[side::black + piece::king] |= square(f, r);
+                board[piece::black_king] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'q':
-                board[side::black + piece::queen] |= square(f, r);
+                board[piece::black_queen] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'r':
-                board[side::black + piece::rook] |= square(f, r);
+                board[piece::black_rook] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'b':
-                board[side::black + piece::bishop] |= square(f, r);
+                board[piece::black_bishop] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'n':
-                board[side::black + piece::knight] |= square(f, r);
+                board[piece::black_knight] |= square(f, r);
                 f += 1;
                 continue;
 
             case 'p':
-                board[side::black + piece::pawn] |= square(f, r);
+                board[piece::black_pawn] |= square(f, r);
                 f += 1;
                 continue;
 

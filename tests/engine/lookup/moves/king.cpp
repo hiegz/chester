@@ -4,7 +4,7 @@
 
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/lookup.hpp>
-#include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/square.hpp>
 
 #include <catch2/catch_test_macros.hpp>
@@ -13,7 +13,7 @@
 
 using chester::engine::bitset;
 using chester::engine::square;
-using chester::engine::piece;
+using chester::engine::piece_type;
 
 TEST_CASE("chester::engine::lookup::moves<chester::engine::piece::king>()",
           "[.][engine][lookup][king]") {
@@ -55,7 +55,7 @@ TEST_CASE("chester::engine::lookup::moves<chester::engine::piece::king>()",
             std::make_tuple(square::h8, square::g8 | square::h7 | square::g7),
         }));
 
-    const bitset found = chester::engine::lookup::moves<piece::king>(square);
+    const bitset found = chester::engine::lookup::moves<piece_type::king>(square);
 
     INFO("square: " << square);
     INFO("");

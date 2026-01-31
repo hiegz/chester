@@ -3,7 +3,6 @@
 
 #include <chester/engine/bitboard.hpp>
 #include <chester/engine/piece.hpp>
-#include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
 
 #include <catch2/catch_message.hpp>
@@ -12,7 +11,6 @@
 
 using chester::engine::bitboard;
 using chester::engine::piece;
-using chester::engine::side;
 using chester::engine::square;
 
 // clang-format off
@@ -39,8 +37,8 @@ TEST_CASE("std::to_string(chester::engine::bitboard)",
             ([]() -> auto {
                 auto board = bitboard::empty();
 
-                board[side::white + piece::king] |= square::e1;
-                board[side::black + piece::king] |= square::e8;
+                board[piece::white_king] |= square::e1;
+                board[piece::black_king] |= square::e8;
 
                 return std::make_tuple(
                     board,
@@ -58,8 +56,8 @@ TEST_CASE("std::to_string(chester::engine::bitboard)",
             ([]() -> auto {
                 auto board = bitboard::empty();
 
-                board[side::white + piece::queen] |= square::d1;
-                board[side::black + piece::queen] |= square::d8;
+                board[piece::white_queen] |= square::d1;
+                board[piece::black_queen] |= square::d8;
 
                 return std::make_tuple(
                     board,
@@ -77,9 +75,9 @@ TEST_CASE("std::to_string(chester::engine::bitboard)",
             ([]() -> auto {
                 auto board = bitboard::empty();
 
-                board[side::white + piece::rook]   |= square::f7;
-                board[side::black + piece::pawn]   |= square::a1;
-                board[side::black + piece::bishop] |= square::b5;
+                board[piece::white_rook]   |= square::f7;
+                board[piece::black_pawn]   |= square::a1;
+                board[piece::black_bishop] |= square::b5;
 
                 return std::make_tuple(
                     board,
@@ -97,9 +95,9 @@ TEST_CASE("std::to_string(chester::engine::bitboard)",
             ([]() -> auto {
                 auto board = bitboard::empty();
 
-                board[side::white + piece::pawn]   |= square::e4;
-                board[side::white + piece::knight] |= square::b1;
-                board[side::black + piece::rook]   |= square::c6;
+                board[piece::white_pawn]   |= square::e4;
+                board[piece::white_knight] |= square::b1;
+                board[piece::black_rook]   |= square::c6;
 
                 return std::make_tuple(
                     board,

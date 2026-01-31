@@ -1,7 +1,7 @@
 #pragma once
 
 #include <chester/engine/bitset.hpp>
-#include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/square.hpp>
 
 namespace chester::engine::lookup {
@@ -9,13 +9,13 @@ namespace chester::engine::lookup {
 /**
  * TODO
  */
-template <enum chester::engine::piece::type>
+template <enum chester::engine::piece_type>
 auto moves(chester::engine::square square) -> chester::engine::bitset;
 
 /**
  * TODO
  */
-template <enum chester::engine::piece::type>
+template <enum chester::engine::piece_type>
 auto moves(chester::engine::square square, chester::engine::bitset blockers)
     -> chester::engine::bitset;
 

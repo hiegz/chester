@@ -4,7 +4,7 @@
 
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/lookup.hpp>
-#include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/square.hpp>
 
 #include <catch2/catch_message.hpp>
@@ -12,7 +12,7 @@
 #include <catch2/generators/catch_generators.hpp>
 
 using chester::engine::bitset;
-using chester::engine::piece;
+using chester::engine::piece_type;
 using chester::engine::square;
 
 TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup][bishop]") {
@@ -271,7 +271,7 @@ TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup
                 square::c3),
         }));
 
-    const bitset found = chester::engine::lookup::moves<piece::bishop>(square, blockers);
+    const bitset found = chester::engine::lookup::moves<piece_type::bishop>(square, blockers);
 
     INFO("square: " << square);
     INFO("");

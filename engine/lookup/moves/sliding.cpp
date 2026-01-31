@@ -17,13 +17,13 @@
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/lookup.hpp>
-#include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/square.hpp>
 
 using chester::engine::bitset;
 using chester::engine::file;
-using chester::engine::piece;
+using chester::engine::piece_type;
 using chester::engine::rank;
 using chester::engine::square;
 
@@ -305,20 +305,20 @@ class table : public ::table<::rook::table, N> {
 } // namespace
 
 template <>
-auto chester::engine::lookup::moves<piece::bishop>(square square, bitset blockers) -> bitset {
+auto chester::engine::lookup::moves<piece_type::bishop>(square square, bitset blockers) -> bitset {
     static ::bishop::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece::rook>(square square, bitset blockers) -> bitset {
+auto chester::engine::lookup::moves<piece_type::rook>(square square, bitset blockers) -> bitset {
     static ::rook::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece::queen>(square square, bitset blockers) -> bitset {
-    return lookup::moves<piece::bishop>(square, blockers) | lookup::moves<piece::rook>(square, blockers);
+auto chester::engine::lookup::moves<piece_type::queen>(square square, bitset blockers) -> bitset {
+    return lookup::moves<piece_type::bishop>(square, blockers) | lookup::moves<piece_type::rook>(square, blockers);
 }

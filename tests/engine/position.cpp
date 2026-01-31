@@ -70,8 +70,8 @@ TEST_CASE("chester::engine::position string representation",
             ([]() -> auto {
                  auto position = position::traditional();
 
-                 position.bitboard[side::black + piece::pawn] ^= square::b7;
-                 position.bitboard[side::black + piece::pawn] |= square::b5;
+                 position.bitboard[piece::black_pawn] ^= square::b7;
+                 position.bitboard[piece::black_pawn] |= square::b5;
                  position.enpassant = square::b6;
 
                  return std::make_tuple(

@@ -5,13 +5,13 @@
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/file.hpp>
 #include <chester/engine/lookup.hpp>
-#include <chester/engine/piece.hpp>
+#include <chester/engine/piece_type.hpp>
 #include <chester/engine/rank.hpp>
 #include <chester/engine/square.hpp>
 
 using chester::engine::bitset;
 using chester::engine::file;
-using chester::engine::piece;
+using chester::engine::piece_type;
 using chester::engine::rank;
 using chester::engine::square;
 
@@ -117,7 +117,7 @@ class table {
             // . . N . .
             // . . . . .
             // . . . . .
-            if (file < file::h and rank <=rank::six) {
+            if (file < file::h and rank <= rank::six) {
                 moves |= square >> 17;
             }
 
@@ -194,14 +194,14 @@ class table {
 } // namespace
 
 template <>
-auto chester::engine::lookup::moves<piece::king>(square square)
+auto chester::engine::lookup::moves<piece_type::king>(square square)
     -> chester::engine::bitset {
     static ::king::table table;
     return table.cells[square.raw];
 }
 
 template <>
-auto chester::engine::lookup::moves<piece::knight>(square square)
+auto chester::engine::lookup::moves<piece_type::knight>(square square)
     -> chester::engine::bitset {
     static ::knight::table table;
     return table.cells[square.raw];
