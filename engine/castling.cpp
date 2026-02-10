@@ -16,7 +16,7 @@ auto chester::engine::operator<<(std::ostream &os, castling castling)
 
     bool prev = false;
     for (unsigned int i = 0; i < 4; ++i) {
-        if ((castling.value & (1UL << i)) != 0) {
+        if ((castling.raw & (1UL << i)) != 0) {
             if (prev) {
                 os << ", ";
             }

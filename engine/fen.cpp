@@ -159,7 +159,7 @@ auto chester::engine::fen_parser::turn() -> std::expected<side, std::string> {
 auto chester::engine::fen_parser::castling() -> std::expected<class castling, std::string> {
     skip_whitespace();
 
-    auto castling = castling::none();
+    auto castling = castling::none;
 
     while (true) {
         if (it == end) {

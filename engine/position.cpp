@@ -13,7 +13,7 @@ auto chester::engine::position::traditional() -> position {
 
     position.bitboard   = bitboard::traditional();
     position.turn       = side::white;
-    position.castling   = castling::all();
+    position.castling   = castling::all;
     position.enpassant  = bitset::empty();
     position.half_moves = 0;
     position.full_moves = 1;

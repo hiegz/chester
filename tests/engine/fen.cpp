@@ -35,7 +35,7 @@ TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fe
 
             std::make_tuple(
                 "8/8/8/8/8/8/8/8 b - a5 5 15",
-                position(bitboard::empty(), side::black, castling::none(), square::a5, 5, 15)
+                position(bitboard::empty(), side::black, castling::none, square::a5, 5, 15)
             ),
 
             std::make_tuple(

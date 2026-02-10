@@ -21,59 +21,52 @@ static_assert((int)castling_type::queenside == 1);
 
 class castling {
   public:
+    static const castling none;
+    static const castling all;
     static const castling white_kingside;
     static const castling white_queenside;
     static const castling black_kingside;
     static const castling black_queenside;
 
     constexpr castling() = default;
+    template <typename T>
+    constexpr explicit castling(T raw) : raw(static_cast<unsigned int>(raw)) {}
+    constexpr operator unsigned int() const { return raw; }
     constexpr castling(side side, castling_type type)
-        : value(1UL << (static_cast<unsigned int>(type) +
-                       (static_cast<unsigned int>(side) * 2)))
+        : raw(1UL << (static_cast<unsigned int>(type) +
+                     (static_cast<unsigned int>(side) * 2)))
     {}
 
-    static constexpr auto none() -> castling {
-        castling castling;
-        castling.value = 0;
-        return castling;
-    }
-
-    static constexpr auto all() -> castling {
-        castling castling;
-        castling.value = 0b1111;
-        return castling;
-    }
-
     constexpr auto operator==(castling other) const -> bool {
-        return value == other.value;
+        return raw == other.raw;
     }
 
     constexpr auto operator!=(castling other) const -> bool {
-        return value != other.value;
+        return raw != other.raw;
     }
 
     constexpr auto operator~() const -> castling {
         castling castling;
-        castling.value = ~this->value;
+        castling.raw = ~this->raw;
         return castling;
     }
 
-    constexpr auto operator^=(castling other) { value ^= other.value; }
-    constexpr auto operator^(castling other) const -> castling {
+    constexpr auto operator^=(castling other) { raw ^= other.raw; }
+    constexpr auto operator^ (castling other) const -> castling {
         castling castling = *this;
         castling ^= other;
         return castling;
     }
 
-    constexpr auto operator&=(castling other) { value &= other.value; }
-    constexpr auto operator&(castling other) const -> castling {
+    constexpr auto operator&=(castling other) { raw &= other.raw; }
+    constexpr auto operator& (castling other) const -> castling {
         castling castling = *this;
         castling &= other;
         return castling;
     }
 
-    constexpr auto operator|=(castling other) { value |= other.value; }
-    constexpr auto operator|(castling other) const -> castling {
+    constexpr auto operator|=(castling other) { raw |= other.raw; }
+    constexpr auto operator| (castling other) const -> castling {
         castling castling = *this;
         castling |= other;
         return castling;
@@ -91,9 +84,11 @@ class castling {
      * 3rd bit represents black kingside castling
      * 4th bit represents black queenside
      */
-    unsigned int value : 4;
+    unsigned int raw : 4;
 };
 
+constexpr castling castling::none            = castling(0);
+constexpr castling castling::all             = castling(0b1111);
 constexpr castling castling::white_kingside  = castling(side::white, castling_type::kingside);
 constexpr castling castling::white_queenside = castling(side::white, castling_type::queenside);
 constexpr castling castling::black_kingside  = castling(side::black, castling_type::kingside);
