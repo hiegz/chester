@@ -33,11 +33,11 @@ class bitboard {
     constexpr auto operator!=(bitboard const &) const -> bool = default;
 
     constexpr auto operator[](chester::engine::piece const &piece) const -> bitset const & {
-        return pieces[(6 * static_cast<unsigned int>(piece.side)) + static_cast<unsigned int>(piece.type)];
+        return pieces[piece.raw];
     }
 
     constexpr auto operator[](chester::engine::piece const &piece) -> bitset & {
-        return pieces[(6 * static_cast<unsigned int>(piece.side)) + static_cast<unsigned int>(piece.type)];
+        return pieces[piece.raw];
     }
 
     // auto operator==(board const &other) const {

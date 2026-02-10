@@ -134,7 +134,7 @@ auto chester::engine::fen_parser::bitboard()
     return board;
 }
 
-auto chester::engine::fen_parser::turn() -> std::expected<enum side, std::string> {
+auto chester::engine::fen_parser::turn() -> std::expected<side, std::string> {
     skip_whitespace();
 
     if (it == end) {

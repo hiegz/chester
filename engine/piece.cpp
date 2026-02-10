@@ -7,7 +7,7 @@
 #include <sstream>
 
 auto chester::engine::operator<<(std::ostream &os, chester::engine::piece piece) -> std::ostream & {
-    return (os << piece.side << " " << piece.type);
+    return (os << piece.side() << " " << piece.type());
 }
 
 auto std::to_string(chester::engine::piece piece) -> std::string {

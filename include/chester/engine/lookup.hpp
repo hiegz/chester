@@ -9,13 +9,13 @@ namespace chester::engine::lookup {
 /**
  * TODO
  */
-template <enum chester::engine::piece_type>
+template <chester::engine::piece_type>
 auto moves(chester::engine::square square) -> chester::engine::bitset;
 
 /**
  * TODO
  */
-template <enum chester::engine::piece_type>
+template <chester::engine::piece_type>
 auto moves(chester::engine::square square, chester::engine::bitset blockers)
     -> chester::engine::bitset;
 

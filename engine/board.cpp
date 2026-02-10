@@ -29,7 +29,7 @@ using chester::engine::square;
 
 namespace {
 
-constexpr auto format(enum piece_type type) -> char {
+constexpr auto format(piece_type type) -> char {
     switch (type) {
         case piece_type::king:   return 'k';
         case piece_type::queen:  return 'q';
@@ -37,15 +37,16 @@ constexpr auto format(enum piece_type type) -> char {
         case piece_type::bishop: return 'b';
         case piece_type::knight: return 'n';
         case piece_type::pawn:   return 'p';
-    }
 
-    throw std::runtime_error("unreachable");
+        default:
+            throw std::runtime_error("unreachable");
+    }
 }
 
 constexpr auto format(piece piece) -> char {
-    char chr = ::format(piece.type);
+    char chr = ::format(piece.type());
     chr =
-        (piece.side == side::white
+        (piece.side() == side::white
              ? static_cast<char>(std::toupper(static_cast<unsigned char>(chr)))
              : chr);
 

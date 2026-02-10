@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstddef>
-#include <cstdint>
 #include <expected>
 #include <string>
 #include <string_view>
@@ -14,7 +13,7 @@ namespace chester::engine {
 class bitset;
 class bitboard;
 class position;
-enum class side : std::uint8_t;
+class side;
 class castling;
 
 class fen : public std::string {
