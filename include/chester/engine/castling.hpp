@@ -6,6 +6,10 @@
 #include <ostream>
 #include <string>
 
+#ifdef DEBUG
+#include <stdexcept>
+#endif // DEBUG
+
 namespace chester::engine {
 
 // clang-format off
@@ -34,7 +38,17 @@ class castling {
     constexpr operator unsigned int() const { return raw; }
     constexpr castling(side side, castling_type type)
         : raw(1UL << static_cast<unsigned int>((2 * side) + type))
-    {}
+    {
+#ifdef DEBUG
+        if (side.invalid()) {
+            throw std::runtime_error("invalid side");
+        }
+
+        if (type.invalid()) {
+            throw std::runtime_error("invalid castling type");
+        }
+#endif // DEBUG
+    }
 
     constexpr auto operator==(castling other) const -> bool {
         return raw == other.raw;
