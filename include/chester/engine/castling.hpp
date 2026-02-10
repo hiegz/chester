@@ -33,8 +33,7 @@ class castling {
     constexpr explicit castling(T raw) : raw(static_cast<unsigned int>(raw)) {}
     constexpr operator unsigned int() const { return raw; }
     constexpr castling(side side, castling_type type)
-        : raw(1UL << (static_cast<unsigned int>(type) +
-                     (static_cast<unsigned int>(side) * 2)))
+        : raw(1UL << static_cast<unsigned int>((2 * side) + type))
     {}
 
     constexpr auto operator==(castling other) const -> bool {
