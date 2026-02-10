@@ -8,7 +8,6 @@
 
 #include <algorithm>
 #include <array>
-#include <optional>
 #include <ostream>
 #include <string>
 
@@ -26,7 +25,7 @@ class board {
 
     constexpr static auto empty() -> board {
         board b;
-        std::ranges::fill(b.squares, std::nullopt);
+        std::ranges::fill(b.squares, piece::none);
         return b;
     }
 
@@ -64,11 +63,11 @@ class board {
         return board;
     }
 
-    constexpr auto operator[](chester::engine::square sq) const -> std::optional<piece> const & {
+    constexpr auto operator[](chester::engine::square sq) const -> piece const & {
         return this->squares[sq.raw];
     }
 
-    constexpr auto operator[](chester::engine::square sq) -> std::optional<piece> & {
+    constexpr auto operator[](chester::engine::square sq) -> piece & {
         return this->squares[sq.raw];
     }
 
@@ -88,7 +87,7 @@ class board {
      *    .
      * [[63]] = h8;
      */
-    std::array<std::optional<piece>, 64> squares;
+    std::array<piece, 64> squares;
 };
 
 auto operator<<(std::ostream &os, chester::engine::board const &board)

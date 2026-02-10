@@ -9,7 +9,6 @@
 #include <chester/engine/square.hpp>
 
 #include <cctype>
-#include <optional>
 #include <ostream>
 #include <sstream>
 #include <string>
@@ -65,7 +64,7 @@ chester::engine::board::board(chester::engine::bitboard const &bitboard)
             const char   index  = square.raw;
 
 #ifdef DEBUG
-            if (squares[index] != std::nullopt) {
+            if (squares[index] != piece::none) {
                 throw std::runtime_error("piece collision");
             }
 #endif
@@ -81,7 +80,7 @@ auto chester::engine::operator<<(std::ostream &os, chester::engine::board const 
         for (file file = file::a; file < file::high; ++file) {
             const square square(file, rank);
             const auto   piece = board[square];
-            os << (piece.has_value() ? ::format(*piece) : '.');
+            os << (piece != piece::none ? ::format(piece) : '.');
             if (file + 1 < file::high) {
                 os << ' ';
             }
