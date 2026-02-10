@@ -32,6 +32,7 @@ class file {
     static const file f;
     static const file g;
     static const file h;
+    static const file none;
     static const file low;
     static const file high;
 };
@@ -44,6 +45,7 @@ constexpr file file::e    = file(4);
 constexpr file file::f    = file(5);
 constexpr file file::g    = file(6);
 constexpr file file::h    = file(7);
+constexpr file file::none = file(-1);
 constexpr file file::low  = file(-1);
 constexpr file file::high = file(8);
 

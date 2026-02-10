@@ -125,6 +125,7 @@ class square {
     static const square h6;
     static const square h7;
     static const square h8;
+    static const square none;
     static const square low;
     static const square high;
 };
@@ -193,6 +194,7 @@ constexpr square square::h5   = square(39);
 constexpr square square::h6   = square(47);
 constexpr square square::h7   = square(55);
 constexpr square square::h8   = square(63);
+constexpr square square::none = square(-1);
 constexpr square square::low  = square(-1);
 constexpr square square::high = square(64);
 

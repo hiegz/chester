@@ -32,6 +32,7 @@ class rank {
     static const rank six;
     static const rank seven;
     static const rank eight;
+    static const rank none;
     static const rank low;
     static const rank high;
 };
@@ -44,6 +45,7 @@ constexpr rank rank::five  = rank(4);
 constexpr rank rank::six   = rank(5);
 constexpr rank rank::seven = rank(6);
 constexpr rank rank::eight = rank(7);
+constexpr rank rank::none  = rank(-1);
 constexpr rank rank::low   = rank(-1);
 constexpr rank rank::high  = rank(8);
 
