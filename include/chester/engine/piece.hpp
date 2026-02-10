@@ -30,11 +30,11 @@ class piece {
     {
 #ifdef DEBUG
         if (side.invalid()) {
-            throw new std::runtime_error("invalid side");
+            throw std::runtime_error("invalid side");
         }
 
         if (type.invalid()) {
-            throw new std::runtime_error("invalid piece type");
+            throw std::runtime_error("invalid piece type");
         }
 #endif // DEBUG
     }
