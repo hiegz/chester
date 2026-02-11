@@ -1,7 +1,7 @@
 #pragma once
 
-#include <chester/engine/bitboard.hpp>
 #include <chester/engine/bitset.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
@@ -18,13 +18,13 @@ class position {
   public:
     constexpr position() = default;
     constexpr position(
-        chester::engine::bitboard bitboard,
+        chester::engine::board const &board,
         chester::engine::side turn,
         chester::engine::castling castling,
         chester::engine::bitset enpassant,
         std::size_t half_moves,
         std::size_t full_moves)
-          : bitboard(bitboard),
+          : board(board),
             turn(turn),
             castling(castling),
             enpassant(enpassant),
@@ -37,7 +37,14 @@ class position {
     constexpr auto operator==(position const &) const -> bool = default;
     constexpr auto operator!=(position const &) const -> bool = default;
 
-    chester::engine::bitboard bitboard;
+    /**
+     * Current piece placement on the board.
+     */
+    chester::engine::board board;
+
+    /**
+     * Side to move.
+     */
     chester::engine::side turn;
 
     /**

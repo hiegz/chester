@@ -1,5 +1,5 @@
-#include <chester/engine/bitboard.hpp>
 #include <chester/engine/bitset.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/position.hpp>
 #include <chester/engine/side.hpp>
@@ -11,7 +11,7 @@
 auto chester::engine::position::traditional() -> position {
     position position;
 
-    position.bitboard   = bitboard::traditional();
+    position.board      = board::traditional();
     position.turn       = side::white;
     position.castling   = castling::all;
     position.enpassant  = bitset::empty();
@@ -26,7 +26,7 @@ auto chester::engine::operator<<(std::ostream                    &os,
     -> std::ostream & {
 
     os << "board:\n";
-    os << position.bitboard;
+    os << position.board;
     os << "\n";
     os << "turn: " << position.turn << "\n";
     os << "castling: " << position.castling << "\n";
