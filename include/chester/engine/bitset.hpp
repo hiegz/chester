@@ -26,6 +26,11 @@ class bitset {
 
     constexpr bitset() = default;
     constexpr bitset(chester::engine::square sq) {
+        if (sq == square::none) {
+            raw = 0;
+            return;
+        }
+
 #ifdef DEBUG
         if (sq.invalid()) {
             throw std::runtime_error("unable to construct a bitboard from invalid square");
