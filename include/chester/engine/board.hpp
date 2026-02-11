@@ -71,6 +71,14 @@ class board {
         return this->squares[sq.raw];
     }
 
+    constexpr auto operator==(chester::engine::board const &other) const -> bool {
+        return squares == other.squares;
+    }
+
+    constexpr auto operator!=(chester::engine::board const &other) const -> bool {
+        return squares != other.squares;
+    }
+
   private:
     /**
      * State of each square on the board.
