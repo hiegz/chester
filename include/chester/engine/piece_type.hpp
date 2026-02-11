@@ -35,23 +35,23 @@ class piece_type {
     static const piece_type high;
 };
 
-constexpr piece_type piece_type::king   = piece_type(0);
-constexpr piece_type piece_type::queen  = piece_type(1);
-constexpr piece_type piece_type::rook   = piece_type(2);
-constexpr piece_type piece_type::bishop = piece_type(3);
-constexpr piece_type piece_type::knight = piece_type(4);
-constexpr piece_type piece_type::pawn   = piece_type(5);
+constexpr piece_type piece_type::queen  = piece_type(0);
+constexpr piece_type piece_type::rook   = piece_type(1);
+constexpr piece_type piece_type::bishop = piece_type(2);
+constexpr piece_type piece_type::knight = piece_type(3);
+constexpr piece_type piece_type::pawn   = piece_type(4);
+constexpr piece_type piece_type::king   = piece_type(5);
 constexpr piece_type piece_type::none   = piece_type(-1);
 constexpr piece_type piece_type::low    = piece_type(-1);
 constexpr piece_type piece_type::high   = piece_type(6);
 
 static constexpr std::array<piece_type, 6> piece_types =
-    {piece_type::king,
-     piece_type::queen,
+    {piece_type::queen,
      piece_type::rook,
      piece_type::bishop,
      piece_type::knight,
-     piece_type::pawn};
+     piece_type::pawn,
+     piece_type::king};
 
 constexpr auto piece_type::valid() const -> bool {
     return raw > piece_type::low && raw < piece_type::high;
