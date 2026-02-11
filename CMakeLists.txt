@@ -37,6 +37,8 @@ add_library(
     engine/castling_type.cpp
     engine/fen.cpp
     engine/file.cpp
+    engine/move.cpp
+    engine/move_type.cpp
     engine/piece.cpp
     engine/piece_type.cpp
     engine/position.cpp
@@ -92,6 +94,7 @@ if (Catch2_FOUND)
         tests/engine/castling.cpp
         tests/engine/fen.cpp
         tests/engine/file.cpp
+        tests/engine/move.cpp
         tests/engine/piece.cpp
         tests/engine/position.cpp
         tests/engine/rank.cpp
