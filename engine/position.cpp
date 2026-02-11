@@ -3,6 +3,7 @@
 #include <chester/engine/castling.hpp>
 #include <chester/engine/position.hpp>
 #include <chester/engine/side.hpp>
+#include <chester/engine/square.hpp>
 
 #include <ostream>
 #include <sstream>
@@ -14,7 +15,7 @@ auto chester::engine::position::traditional() -> position {
     position.board      = board::traditional();
     position.turn       = side::white;
     position.castling   = castling::all;
-    position.enpassant  = bitset::empty();
+    position.enpassant  = square::none;
     position.half_moves = 0;
     position.full_moves = 1;
 
@@ -31,9 +32,9 @@ auto chester::engine::operator<<(std::ostream                    &os,
     os << "turn: " << position.turn << "\n";
     os << "castling: " << position.castling << "\n";
     os << "en passant: "
-       << (position.enpassant == bitset::empty()
+       << (position.enpassant == square::none
                ? "none"
-               : std::to_string(position.enpassant.scan_forward()))
+               : std::to_string(bitset(position.enpassant).scan_forward()))
        << "\n";
     os << "half moves: " << position.half_moves << "\n";
     os << "full moves: " << position.full_moves;

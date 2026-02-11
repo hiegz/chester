@@ -6,7 +6,6 @@
 #include <string>
 
 #include <chester/engine/bitboard.hpp>
-#include <chester/engine/bitset.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/fen.hpp>
 #include <chester/engine/file.hpp>
@@ -200,7 +199,7 @@ auto chester::engine::fen_parser::castling() -> std::expected<class castling, st
     return castling;
 }
 
-auto chester::engine::fen_parser::enpassant() -> std::expected<class bitset, std::string> {
+auto chester::engine::fen_parser::enpassant() -> std::expected<class square, std::string> {
     std::array<char, 2> ch;
     file f;
     rank r;
@@ -215,7 +214,7 @@ auto chester::engine::fen_parser::enpassant() -> std::expected<class bitset, std
     it    = std::next(it);
 
     if (ch[0] == '-') {
-        return bitset::empty();
+        return square::none;
     }
 
     if (it == end) {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <chester/engine/bitset.hpp>
 #include <chester/engine/board.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/side.hpp>
@@ -21,7 +20,7 @@ class position {
         chester::engine::board const &board,
         chester::engine::side turn,
         chester::engine::castling castling,
-        chester::engine::bitset enpassant,
+        chester::engine::square enpassant,
         std::size_t half_moves,
         std::size_t full_moves)
           : board(board),
@@ -63,7 +62,7 @@ class position {
      * This is recorded regardless of whether there is a
      * pawn in position to capture en passant.
      */
-    chester::engine::bitset enpassant;
+    chester::engine::square enpassant;
 
     /**
      * The number of moves since the last capture or pawn advance used for the

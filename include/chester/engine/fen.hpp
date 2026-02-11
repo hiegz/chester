@@ -10,7 +10,7 @@
 
 namespace chester::engine {
 
-class bitset;
+class square;
 class bitboard;
 class position;
 class side;
@@ -39,7 +39,7 @@ class fen_parser {
     auto bitboard() -> std::expected<bitboard, std::string>;
     auto turn() -> std::expected<side, std::string>;
     auto castling() -> std::expected<castling, std::string>;
-    auto enpassant() -> std::expected<bitset, std::string>;
+    auto enpassant() -> std::expected<square, std::string>;
     auto moves() -> std::expected<std::size_t, std::string>;
     auto position() -> std::expected<position, std::string>;
 
