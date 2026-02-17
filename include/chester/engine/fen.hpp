@@ -13,6 +13,7 @@ namespace chester::engine {
 class square;
 template <typename Index>
 class board;
+template <typename Index>
 class position;
 class side;
 class castling;
@@ -43,7 +44,8 @@ class fen_parser {
     auto castling() -> std::expected<castling, std::string>;
     auto enpassant() -> std::expected<square, std::string>;
     auto moves() -> std::expected<std::size_t, std::string>;
-    auto position() -> std::expected<position, std::string>;
+    template <typename Index>
+    auto position() -> std::expected<position<Index>, std::string>;
 
     fen_view::iterator it;
     fen_view::iterator end;

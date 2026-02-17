@@ -13,11 +13,12 @@
 
 namespace chester::engine {
 
+template <typename Index>
 class position {
   public:
     constexpr position() = default;
     constexpr position(
-        chester::engine::board<square> const &board,
+        chester::engine::board<Index> const &board,
         chester::engine::side turn,
         chester::engine::castling castling,
         chester::engine::square enpassant,
@@ -39,7 +40,7 @@ class position {
     /**
      * Current piece placement on the board.
      */
-    chester::engine::board<square> board;
+    chester::engine::board<Index> board;
 
     /**
      * Side to move.
@@ -80,10 +81,12 @@ class position {
     std::size_t full_moves;
 };
 
-auto operator<<(std::ostream &os, position const &position) -> std::ostream &;
+template <typename Index>
+auto operator<<(std::ostream &os, position<Index> const &position) -> std::ostream &;
 
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::position const &position) -> std::string;
+template<typename Index>
+auto to_string(chester::engine::position<Index> const &position) -> std::string;
 }

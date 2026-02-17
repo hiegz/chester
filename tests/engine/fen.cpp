@@ -11,32 +11,34 @@
 #include <chester/engine/square.hpp>
 
 #include <catch2/catch_message.hpp>
+#include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
 using chester::engine::board;
 using chester::engine::castling;
 using chester::engine::fen_parser;
+using chester::engine::piece;
 using chester::engine::position;
 using chester::engine::side;
 using chester::engine::square;
 
 // clang-format off
 
-TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fen]") {
+TEMPLATE_TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fen]", piece, square) {
     std::string fen;
-    std::expected<position, std::string> expected;
+    std::expected<position<TestType>, std::string> expected;
 
     std::tie(fen, expected) =
-        GENERATE(table<std::string, std::expected<position, std::string>>({
+        GENERATE(table<std::string, std::expected<position<TestType>, std::string>>({
             std::make_tuple(
                 "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
-                position::traditional()
+                position<TestType>::traditional()
             ),
 
             std::make_tuple(
                 "8/8/8/8/8/8/8/8 b - a5 5 15",
-                position(::board<square>::empty(), side::black, castling::none, square::a5, 5, 15)
+                position<TestType>(board<TestType>::empty(), side::black, castling::none, square::a5, 5, 15)
             ),
 
             std::make_tuple(
@@ -276,7 +278,7 @@ TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fe
         }));
 
 
-    std::expected<position, std::string> found = fen_parser(fen).position();
+    std::expected<position<TestType>, std::string> found = fen_parser(fen).position<TestType>();
 
     INFO("expected " << (expected ? std::to_string(*expected) : expected.error()));
     INFO("");

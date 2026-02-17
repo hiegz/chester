@@ -17,6 +17,7 @@
 
 using chester::engine::board;
 using chester::engine::piece;
+using chester::engine::position;
 using chester::engine::square;
 
 // clang-format off
@@ -380,8 +381,9 @@ auto chester::engine::fen_parser::moves() -> std::expected<std::size_t, std::str
     }
 }
 
-auto chester::engine::fen_parser::position() -> std::expected<class position, std::string> {
-    const auto lo_board = this->board<square>();
+template <typename Index>
+auto chester::engine::fen_parser::position() -> std::expected<::position<Index>, std::string> {
+    const auto lo_board = this->board<Index>();
     if (not lo_board) {
         return std::unexpected(lo_board.error());
     }
@@ -417,6 +419,9 @@ auto chester::engine::fen_parser::position() -> std::expected<class position, st
 
     return chester::engine::position(*lo_board, *lo_turn, *lo_castling, *lo_enpassant, *lo_half_moves, *lo_full_moves);
 }
+
+template auto chester::engine::fen_parser::position<piece>()  -> std::expected<::position<piece>, std::string>;
+template auto chester::engine::fen_parser::position<square>() -> std::expected<::position<square>, std::string>;
 
 auto chester::engine::fen_parser::skip_whitespace() -> void {
     while (it != end and *it == ' ') {
