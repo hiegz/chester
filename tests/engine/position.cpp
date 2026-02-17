@@ -1,7 +1,7 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/piece.hpp>
 #include <chester/engine/position.hpp>
 #include <chester/engine/side.hpp>

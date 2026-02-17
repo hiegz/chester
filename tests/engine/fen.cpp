@@ -2,9 +2,10 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/fen.hpp>
+#include <chester/engine/piece.hpp>
 #include <chester/engine/position.hpp>
 #include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
@@ -13,7 +14,7 @@
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::bitboard;
+using chester::engine::board;
 using chester::engine::castling;
 using chester::engine::fen_parser;
 using chester::engine::position;
@@ -35,7 +36,7 @@ TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fe
 
             std::make_tuple(
                 "8/8/8/8/8/8/8/8 b - a5 5 15",
-                position(bitboard::empty(), side::black, castling::none, square::a5, 5, 15)
+                position(::board<square>::empty(), side::black, castling::none, square::a5, 5, 15)
             ),
 
             std::make_tuple(

@@ -11,7 +11,8 @@
 namespace chester::engine {
 
 class square;
-class bitboard;
+template <typename Index>
+class board;
 class position;
 class side;
 class castling;
@@ -36,7 +37,8 @@ class fen_parser {
     constexpr fen_parser(std::string_view view)
         : it(view.begin()), end(view.end()) {}
 
-    auto bitboard() -> std::expected<bitboard, std::string>;
+    template <typename Index>
+    auto board() -> std::expected<board<Index>, std::string>;
     auto turn() -> std::expected<side, std::string>;
     auto castling() -> std::expected<castling, std::string>;
     auto enpassant() -> std::expected<square, std::string>;

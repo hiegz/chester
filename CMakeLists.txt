@@ -30,7 +30,6 @@ add_library(
     engine/lookup/moves/leaping.cpp
     engine/lookup/moves/sliding.cpp
     engine/lookup/in_between.cpp
-    engine/bitboard.cpp
     engine/bitset.cpp
     engine/board.cpp
     engine/castling.cpp
@@ -90,7 +89,6 @@ if (Catch2_FOUND)
         tests/engine/lookup/moves/knight.cpp
         tests/engine/lookup/moves/rook.cpp
         tests/engine/lookup/in_between.cpp
-        tests/engine/bitboard.cpp
         tests/engine/bitset.cpp
         tests/engine/castling.cpp
         tests/engine/fen.cpp

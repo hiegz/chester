@@ -5,7 +5,7 @@
 #include <iterator>
 #include <string>
 
-#include <chester/engine/bitboard.hpp>
+#include <chester/engine/board.hpp>
 #include <chester/engine/castling.hpp>
 #include <chester/engine/fen.hpp>
 #include <chester/engine/file.hpp>
@@ -15,13 +15,18 @@
 #include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
 
+using chester::engine::board;
+using chester::engine::piece;
+using chester::engine::square;
+
 // clang-format off
 
-auto chester::engine::fen_parser::bitboard()
-    -> std::expected<class bitboard, std::string> {
-    auto board = bitboard::empty();
-    file f = file::a;
-    rank r = rank::eight;
+template <>
+auto chester::engine::fen_parser::board<piece>()
+    -> std::expected<::board<piece>, std::string> {
+    auto board = ::board<piece>::empty();
+    auto f     = file::a;
+    auto r     = rank::eight;
 
     skip_whitespace();
 
@@ -120,6 +125,123 @@ auto chester::engine::fen_parser::bitboard()
 
             case 'p':
                 board[piece::black_pawn] |= square(f, r);
+                f += 1;
+                continue;
+
+            default:
+                return std::unexpected("invalid FEN");
+        }
+
+        break;
+    }
+
+    return board;
+}
+
+template <>
+auto chester::engine::fen_parser::board<square>()
+    -> std::expected<::board<square>, std::string> {
+    auto board = ::board<square>::empty();
+    auto f     = file::a;
+    auto r     = rank::eight;
+
+    skip_whitespace();
+
+    if (it == end) {
+        return std::unexpected("invalid FEN");
+    }
+
+    while (true) {
+        if (it == end) {
+            return std::unexpected("invalid FEN");
+        }
+
+        const char ch = *it;
+        it = std::next(it);
+
+        switch (ch) {
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+                f += (ch - '0');
+                continue;
+
+            case ' ':
+                if (f != file::high) {
+                    return std::unexpected("invalid FEN");
+                }
+                break;
+
+            case '/':
+                if (f != file::high) {
+                    return std::unexpected("invalid FEN");
+                }
+                f = file::a;
+                r -= 1;
+                continue;
+
+            case 'K':
+                board[square(f, r)] = piece::white_king;
+                f += 1;
+                continue;
+
+            case 'Q':
+                board[square(f, r)] = piece::white_queen;
+                f += 1;
+                continue;
+
+            case 'R':
+                board[square(f, r)] = piece::white_rook;
+                f += 1;
+                continue;
+
+            case 'B':
+                board[square(f, r)] = piece::white_bishop;
+                f += 1;
+                continue;
+
+            case 'N':
+                board[square(f, r)] = piece::white_knight;
+                f += 1;
+                continue;
+
+            case 'P':
+                board[square(f, r)] = piece::white_pawn;
+                f += 1;
+                continue;
+
+            case 'k':
+                board[square(f, r)] = piece::black_king;
+                f += 1;
+                continue;
+
+            case 'q':
+                board[square(f, r)] = piece::black_queen;
+                f += 1;
+                continue;
+
+            case 'r':
+                board[square(f, r)] = piece::black_rook;
+                f += 1;
+                continue;
+
+            case 'b':
+                board[square(f, r)] = piece::black_bishop;
+                f += 1;
+                continue;
+
+            case 'n':
+                board[square(f, r)] = piece::black_knight;
+                f += 1;
+                continue;
+
+            case 'p':
+                board[square(f, r)] = piece::black_pawn;
                 f += 1;
                 continue;
 
@@ -259,7 +381,7 @@ auto chester::engine::fen_parser::moves() -> std::expected<std::size_t, std::str
 }
 
 auto chester::engine::fen_parser::position() -> std::expected<class position, std::string> {
-    const auto lo_board = this->bitboard();
+    const auto lo_board = this->board<square>();
     if (not lo_board) {
         return std::unexpected(lo_board.error());
     }

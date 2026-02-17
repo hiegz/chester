@@ -12,7 +12,7 @@
 auto chester::engine::position::traditional() -> position {
     position position;
 
-    position.board      = board::traditional();
+    position.board      = chester::engine::board<square>::traditional();
     position.turn       = side::white;
     position.castling   = castling::all;
     position.enpassant  = square::none;

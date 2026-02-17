@@ -17,7 +17,7 @@ class position {
   public:
     constexpr position() = default;
     constexpr position(
-        chester::engine::board const &board,
+        chester::engine::board<square> const &board,
         chester::engine::side turn,
         chester::engine::castling castling,
         chester::engine::square enpassant,
@@ -39,7 +39,7 @@ class position {
     /**
      * Current piece placement on the board.
      */
-    chester::engine::board board;
+    chester::engine::board<square> board;
 
     /**
      * Side to move.
