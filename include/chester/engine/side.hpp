@@ -5,9 +5,13 @@
 #include <ostream>
 #include <string>
 
-// clang-format off
+#ifdef DEBUG
+#include <stdexcept>
+#endif // DEBUG
 
 namespace chester::engine {
+
+// clang-format off
 
 class side {
   public:
@@ -45,6 +49,16 @@ constexpr auto side::valid() const -> bool {
 
 constexpr auto side::invalid() const -> bool {
     return not valid();
+}
+
+constexpr auto operator!(side side) -> class side {
+#ifdef DEBUG
+    if (side.invalid()) {
+        throw std::runtime_error("side is invalid");
+    }
+#endif // DEBUG
+
+    return chester::engine::side(!static_cast<bool>(side.raw));
 }
 
 auto operator<<(std::ostream &os, side side) -> std::ostream &;
