@@ -33,7 +33,7 @@ class bitset {
 
 #ifdef DEBUG
         if (sq.invalid()) {
-            throw std::runtime_error("unable to construct a bitboard from invalid square");
+            throw std::runtime_error("unable to construct a bitset from invalid square");
         }
 #endif // DEBUG
 

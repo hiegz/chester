@@ -57,8 +57,7 @@ class position {
 
     /**
      * This is a square over which a pawn has just passed while moving two
-     * squares. Represented as a bitboard with the en passant square set if
-     * applicable, otherwise empty.
+     * squares.
      *
      * This is recorded regardless of whether there is a
      * pawn in position to capture en passant.
