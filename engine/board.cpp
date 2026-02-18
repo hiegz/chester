@@ -104,6 +104,27 @@ chester::engine::board<piece>::board(board<square> const &board)
     }
 }
 
+template<>
+auto chester::engine::board<piece>::occupancy<side::all>() const -> bitset {
+    auto result = bitset::empty();
+    for (const auto piece : chester::engine::pieces) {
+        result |= (*this)[piece];
+    }
+    return result;
+}
+
+template <chester::engine::side Side>
+auto chester::engine::board<piece>::occupancy() const -> bitset {
+    auto result = bitset::empty();
+    for (const auto piece_type : chester::engine::piece_types) {
+        result |= (*this)[piece(Side, piece_type)];
+    }
+    return result;
+}
+
+template auto chester::engine::board<piece>::occupancy<side::white>() const -> bitset;
+template auto chester::engine::board<piece>::occupancy<side::black>() const -> bitset;
+
 auto chester::engine::operator<<(std::ostream &os, board<piece> const &board)
     -> std::ostream &
 {

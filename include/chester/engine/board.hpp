@@ -2,6 +2,7 @@
 
 #include <chester/engine/bitset.hpp>
 #include <chester/engine/piece.hpp>
+#include <chester/engine/side.hpp>
 #include <chester/engine/square.hpp>
 
 #include <array>
@@ -36,6 +37,9 @@ class board<piece> {
     constexpr auto operator!=(board const &other) const -> bool = default;
     constexpr auto operator[](piece        piece) const -> bitset const & { return pieces[piece.raw]; }
     constexpr auto operator[](piece        piece)       -> bitset &       { return pieces[piece.raw]; }
+
+    template <chester::engine::side Side>
+    [[nodiscard]] auto occupancy() const -> bitset;
 };
 
 /** Square-oriented board representation. */
