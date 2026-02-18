@@ -33,6 +33,7 @@ class side {
     static const side none;
     static const side low;
     static const side high;
+    static const side all;
 };
 
 constexpr side side::white = side(0);
@@ -40,6 +41,7 @@ constexpr side side::black = side(1);
 constexpr side side::none  = side(-1);
 constexpr side side::low   = side(-1);
 constexpr side side::high  = side(2);
+constexpr side side::all   = side(2);
 
 constexpr std::array<side, 2> sides = {side::white, side::black};
 
