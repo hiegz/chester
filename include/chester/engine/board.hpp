@@ -38,8 +38,11 @@ class board<piece> {
     constexpr auto operator[](piece        piece) const -> bitset const & { return pieces[piece.raw]; }
     constexpr auto operator[](piece        piece)       -> bitset &       { return pieces[piece.raw]; }
 
-    template <chester::engine::side Side>
-    [[nodiscard]] auto occupancy() const -> bitset;
+    [[nodiscard]]
+    auto occupancy() const -> bitset;
+
+    [[nodiscard]]
+    auto select(side side) const -> bitset;
 };
 
 /** Square-oriented board representation. */
