@@ -1,15 +1,15 @@
-#include <chester/engine/move.hpp>
-#include <chester/engine/move_type.hpp>
+#include <chester/move.hpp>
+#include <chester/move_type.hpp>
 
 #include <ostream>
 #include <sstream>
 #include <string>
 
-using chester::engine::move;
+using chester::move;
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, move move) -> std::ostream & {
+auto chester::operator<<(std::ostream &os, move move) -> std::ostream & {
     auto origin = move.origin();
     auto destination = move.destination();
     auto type = move.type();
@@ -33,7 +33,7 @@ auto chester::engine::operator<<(std::ostream &os, move move) -> std::ostream & 
     return os;
 }
 
-auto std::to_string(chester::engine::move move) -> std::string {
+auto std::to_string(chester::move move) -> std::string {
     std::ostringstream ss;
     ss << move;
     return ss.str();

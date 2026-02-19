@@ -5,25 +5,25 @@
 #include <iterator>
 #include <string>
 
-#include <chester/engine/board.hpp>
-#include <chester/engine/castling.hpp>
-#include <chester/engine/fen.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/position.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/board.hpp>
+#include <chester/castling.hpp>
+#include <chester/fen.hpp>
+#include <chester/file.hpp>
+#include <chester/piece.hpp>
+#include <chester/position.hpp>
+#include <chester/rank.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
-using chester::engine::board;
-using chester::engine::piece;
-using chester::engine::position;
-using chester::engine::square;
+using chester::board;
+using chester::piece;
+using chester::position;
+using chester::square;
 
 // clang-format off
 
 template <>
-auto chester::engine::fen_parser::board<piece>()
+auto chester::fen_parser::board<piece>()
     -> std::expected<::board<piece>, std::string> {
     auto board = ::board<piece>::empty();
     auto f     = file::a;
@@ -140,7 +140,7 @@ auto chester::engine::fen_parser::board<piece>()
 }
 
 template <>
-auto chester::engine::fen_parser::board<square>()
+auto chester::fen_parser::board<square>()
     -> std::expected<::board<square>, std::string> {
     auto board = ::board<square>::empty();
     auto f     = file::a;
@@ -256,7 +256,7 @@ auto chester::engine::fen_parser::board<square>()
     return board;
 }
 
-auto chester::engine::fen_parser::turn() -> std::expected<side, std::string> {
+auto chester::fen_parser::turn() -> std::expected<side, std::string> {
     skip_whitespace();
 
     if (it == end) {
@@ -278,7 +278,7 @@ auto chester::engine::fen_parser::turn() -> std::expected<side, std::string> {
     }
 }
 
-auto chester::engine::fen_parser::castling() -> std::expected<class castling, std::string> {
+auto chester::fen_parser::castling() -> std::expected<class castling, std::string> {
     skip_whitespace();
 
     auto castling = castling::none;
@@ -322,7 +322,7 @@ auto chester::engine::fen_parser::castling() -> std::expected<class castling, st
     return castling;
 }
 
-auto chester::engine::fen_parser::enpassant() -> std::expected<class square, std::string> {
+auto chester::fen_parser::enpassant() -> std::expected<class square, std::string> {
     std::array<char, 2> ch;
     file f;
     rank r;
@@ -357,7 +357,7 @@ auto chester::engine::fen_parser::enpassant() -> std::expected<class square, std
     return square(f, r);
 }
 
-auto chester::engine::fen_parser::moves() -> std::expected<std::size_t, std::string> {
+auto chester::fen_parser::moves() -> std::expected<std::size_t, std::string> {
     std::string str;
 
     skip_whitespace();
@@ -382,7 +382,7 @@ auto chester::engine::fen_parser::moves() -> std::expected<std::size_t, std::str
 }
 
 template <typename Index>
-auto chester::engine::fen_parser::position() -> std::expected<::position<Index>, std::string> {
+auto chester::fen_parser::position() -> std::expected<::position<Index>, std::string> {
     const auto lo_board = this->board<Index>();
     if (not lo_board) {
         return std::unexpected(lo_board.error());
@@ -417,13 +417,13 @@ auto chester::engine::fen_parser::position() -> std::expected<::position<Index>,
         return std::unexpected("invalid FEN");
     }
 
-    return chester::engine::position(*lo_board, *lo_turn, *lo_castling, *lo_enpassant, *lo_half_moves, *lo_full_moves);
+    return chester::position(*lo_board, *lo_turn, *lo_castling, *lo_enpassant, *lo_half_moves, *lo_full_moves);
 }
 
-template auto chester::engine::fen_parser::position<piece>()  -> std::expected<::position<piece>, std::string>;
-template auto chester::engine::fen_parser::position<square>() -> std::expected<::position<square>, std::string>;
+template auto chester::fen_parser::position<piece>()  -> std::expected<::position<piece>, std::string>;
+template auto chester::fen_parser::position<square>() -> std::expected<::position<square>, std::string>;
 
-auto chester::engine::fen_parser::skip_whitespace() -> void {
+auto chester::fen_parser::skip_whitespace() -> void {
     while (it != end and *it == ' ') {
         it = std::next(it);
     }

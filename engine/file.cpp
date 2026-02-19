@@ -1,12 +1,12 @@
 // clang-format off
 
-#include <chester/engine/file.hpp>
+#include <chester/file.hpp>
 
 #include <ostream>
 #include <string>
 #include <sstream>
 
-auto chester::engine::operator<<(std::ostream &os, file f)
+auto chester::operator<<(std::ostream &os, file f)
     -> std::ostream & {
     switch (f) {
         case file::a: return os << "a";
@@ -23,7 +23,7 @@ auto chester::engine::operator<<(std::ostream &os, file f)
     }
 }
 
-auto std::to_string(chester::engine::file file) -> std::string {
+auto std::to_string(chester::file file) -> std::string {
     std::ostringstream ss;
     ss << file;
     return ss.str();

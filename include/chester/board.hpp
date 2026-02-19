@@ -1,9 +1,9 @@
 #pragma once
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/piece.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <array>
 #include <ostream>
@@ -11,7 +11,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 template <typename Index>
 class board;
@@ -30,13 +30,13 @@ class board<piece> {
 
     board(board<square> const &board);
     board() = default;
-    static auto empty() -> board;
-    static auto traditional() -> board;
+    static auto empty()       -> board<piece>;
+    static auto traditional() -> board<piece>;
 
-    constexpr auto operator==(board const &other) const -> bool = default;
-    constexpr auto operator!=(board const &other) const -> bool = default;
-    constexpr auto operator[](piece        piece) const -> bitset const & { return pieces[piece.raw]; }
-    constexpr auto operator[](piece        piece)       -> bitset &       { return pieces[piece.raw]; }
+    constexpr auto operator==(board<piece> const &other) const -> bool = default;
+    constexpr auto operator!=(board<piece> const &other) const -> bool = default;
+    constexpr auto operator[](piece               piece) const -> bitset const & { return pieces[piece.raw]; }
+    constexpr auto operator[](piece               piece)       -> bitset       & { return pieces[piece.raw]; }
 
     [[nodiscard]]
     auto occupancy() const -> bitset;
@@ -53,8 +53,8 @@ class board<square> {
 
     board(board<piece> const &board);
     board() = default;
-    static auto empty() -> board;
-    static auto traditional() -> board;
+    static auto empty()       -> board<square>;
+    static auto traditional() -> board<square>;
 
     constexpr auto operator==(board  const &other) const -> bool = default;
     constexpr auto operator!=(board  const &other) const -> bool = default;
@@ -71,6 +71,6 @@ auto operator<<(std::ostream &os, board<square> const &board)
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::board<chester::engine::piece>  const &board) -> std::string;
-auto to_string(chester::engine::board<chester::engine::square> const &board) -> std::string;
+auto to_string(chester::board<chester::piece>  const &board) -> std::string;
+auto to_string(chester::board<chester::square> const &board) -> std::string;
 }

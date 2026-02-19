@@ -1,21 +1,21 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/board.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/board.hpp>
+#include <chester/piece.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::board;
-using chester::engine::piece;
-using chester::engine::square;
+using chester::board;
+using chester::piece;
+using chester::square;
 
 // clang-format off
 
-TEST_CASE("std::to_string(chester::engine::board<chester::engine::piece>)",
+TEST_CASE("std::to_string(chester::board<chester::piece>)",
           "[engine][board<piece>][fmt]") {
     board<piece> board;
     std::string  expected;
@@ -122,7 +122,7 @@ TEST_CASE("std::to_string(chester::engine::board<chester::engine::piece>)",
     REQUIRE((found == expected));
 }
 
-TEST_CASE("std::to_string(chester::engine::board<chester::engine::square>)",
+TEST_CASE("std::to_string(chester::board<chester::square>)",
           "[engine][board<square>][fmt]") {
     board<square> board;
     std::string  expected;

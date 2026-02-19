@@ -1,15 +1,15 @@
-#include <chester/engine/move_type.hpp>
+#include <chester/move_type.hpp>
 
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
-using chester::engine::move_type;
+using chester::move_type;
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, move_type type) -> std::ostream & {
+auto chester::operator<<(std::ostream &os, move_type type) -> std::ostream & {
     switch (type) {
         case move_type::normal:    return os << "normal";
         case move_type::promotion: return os << "promotion";
@@ -21,7 +21,7 @@ auto chester::engine::operator<<(std::ostream &os, move_type type) -> std::ostre
     }
 }
 
-auto std::to_string(chester::engine::move_type type) -> std::string {
+auto std::to_string(chester::move_type type) -> std::string {
     std::ostringstream ss;
     ss << type;
     return ss.str();

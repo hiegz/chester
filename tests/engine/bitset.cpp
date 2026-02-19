@@ -2,26 +2,26 @@
 
 #include <string>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 #include <catch2/generators/catch_generators_range.hpp>
 
-using chester::engine::bitset;
-using chester::engine::square;
+using chester::bitset;
+using chester::square;
 
-TEST_CASE("chester::engine::bitset::empty()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::empty()", "[engine][bitset]") {
     REQUIRE(0LL == bitset::empty().raw);
 }
 
-TEST_CASE("chester::engine::bitset::universal()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::universal()", "[engine][bitset]") {
     REQUIRE(~0UL == bitset::universal().raw);
 }
 
-TEST_CASE("chester::engine::bitset::single()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::single()", "[engine][bitset]") {
     WHEN("bitset is empty") {
         const bitset bitset = bitset::empty();
         CAPTURE(bitset);
@@ -57,7 +57,7 @@ TEST_CASE("chester::engine::bitset::single()", "[engine][bitset]") {
     }
 }
 
-TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::cardinality()", "[engine][bitset]") {
     WHEN("bitset is empty") {
         const bitset bitset = bitset::empty();
         CAPTURE(bitset);
@@ -93,7 +93,7 @@ TEST_CASE("chester::engine::bitset::cardinality()", "[engine][bitset]") {
     }
 }
 
-TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::pop_front()", "[engine][bitset]") {
     WHEN("bitset is single") {
         const square square = (class square)GENERATE(range(0, 63));
         bitset bitset = square;
@@ -114,7 +114,7 @@ TEST_CASE("chester::engine::bitset::pop_front()", "[engine][bitset]") {
     }
 }
 
-TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
+TEST_CASE("chester::bitset::pop_back()", "[engine][bitset]") {
     WHEN("bitset is single") {
         const auto square = (class square)GENERATE(range(0, 63));
         bitset bitset = square;
@@ -135,7 +135,7 @@ TEST_CASE("chester::engine::bitset::pop_back()", "[engine][bitset]") {
     }
 }
 
-TEST_CASE("std::to_string(chester::engine::bitset)", "[engine][bitset][fmt]") {
+TEST_CASE("std::to_string(chester::bitset)", "[engine][bitset][fmt]") {
     WHEN("bitset is empty") {
         constexpr auto expected =
             ". . . . . . . .\n"

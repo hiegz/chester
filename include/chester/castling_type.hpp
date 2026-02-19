@@ -5,7 +5,7 @@
 #include <ostream>
 #include <string>
 
-namespace chester::engine {
+namespace chester {
 
 // clang-format off
 
@@ -53,5 +53,5 @@ auto operator<<(std::ostream &os, castling_type castling_type) -> std::ostream &
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::castling_type castling_type) -> std::string;
+auto to_string(chester::castling_type castling_type) -> std::string;
 }

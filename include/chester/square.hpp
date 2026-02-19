@@ -9,12 +9,12 @@
 #include <stdexcept>
 #endif // DEBUG
 
-#include <chester/engine/file.hpp>
-#include <chester/engine/rank.hpp>
+#include <chester/file.hpp>
+#include <chester/rank.hpp>
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class bitset;
 
@@ -46,7 +46,7 @@ class square {
             throw std::runtime_error("unable to extract a file from invalid square");
         }
 #endif // DEBUG
-        return chester::engine::file(raw % 8);
+        return chester::file(raw % 8);
     }
 
     [[nodiscard]]
@@ -56,7 +56,7 @@ class square {
             throw std::runtime_error("unable to extract a rank from invalid square");
         }
 #endif // DEBUG
-        return chester::engine::rank(raw / 8);
+        return chester::rank(raw / 8);
     }
 
     //
@@ -311,10 +311,10 @@ constexpr auto operator|(square a, square b) -> bitset;
 constexpr auto operator^(square a, square b) -> bitset;
 constexpr auto operator~(square sq)          -> bitset;
 
-auto operator<<(std::ostream &os, chester::engine::square sq) -> std::ostream &;
+auto operator<<(std::ostream &os, chester::square sq) -> std::ostream &;
 
-} // namespace chester::engine
+} // namespace chester
 
 namespace std {
-auto to_string(chester::engine::square sq) -> std::string;
+auto to_string(chester::square sq) -> std::string;
 } // namespace std

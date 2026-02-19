@@ -7,7 +7,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class piece_type {
   public:
@@ -66,5 +66,5 @@ auto operator<<(std::ostream &os, piece_type type) -> std::ostream &;
 }
 
 namespace std {
-auto to_string(chester::engine::piece_type type) -> std::string;
+auto to_string(chester::piece_type type) -> std::string;
 }

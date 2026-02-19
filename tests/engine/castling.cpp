@@ -1,14 +1,14 @@
 #include <string>
 
-#include <chester/engine/castling.hpp>
+#include <chester/castling.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using chester::engine::castling;
+using chester::castling;
 
 // clang-format off
 
-TEST_CASE("chester::engine::castling operations", "[engine][castling]") {
+TEST_CASE("chester::castling operations", "[engine][castling]") {
     const castling c = castling::none | castling::white_kingside | castling::black_queenside;
 
     REQUIRE(castling::none == ~castling::all);
@@ -20,7 +20,7 @@ TEST_CASE("chester::engine::castling operations", "[engine][castling]") {
     REQUIRE(castling::none != (c & castling::white_kingside));
 }
 
-TEST_CASE("chester::engine::castling string representation",
+TEST_CASE("chester::castling string representation",
           "[engine][castling][fmt]") {
     REQUIRE("" == std::to_string(castling::none)); // NOLINT
     REQUIRE("white kingside, white queenside, black kingside, black queenside" == std::to_string(castling::all));

@@ -1,15 +1,15 @@
-#include <chester/engine/castling.hpp>
+#include <chester/castling.hpp>
 
 #include <array>
 #include <ostream>
 #include <sstream>
 #include <string>
 
-using chester::engine::castling;
+using chester::castling;
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, castling castling)
+auto chester::operator<<(std::ostream &os, castling castling)
     -> std::ostream & {
     static constexpr std::array<std::string, 4> fmt =
         {"white kingside", "white queenside", "black kingside", "black queenside"};

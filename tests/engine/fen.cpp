@@ -2,30 +2,30 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/board.hpp>
-#include <chester/engine/castling.hpp>
-#include <chester/engine/fen.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/position.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/board.hpp>
+#include <chester/castling.hpp>
+#include <chester/fen.hpp>
+#include <chester/piece.hpp>
+#include <chester/position.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::board;
-using chester::engine::castling;
-using chester::engine::fen_parser;
-using chester::engine::piece;
-using chester::engine::position;
-using chester::engine::side;
-using chester::engine::square;
+using chester::board;
+using chester::castling;
+using chester::fen_parser;
+using chester::piece;
+using chester::position;
+using chester::side;
+using chester::square;
 
 // clang-format off
 
-TEMPLATE_TEST_CASE("construct chester::engine::position from FEN", "[engine][position][fen]", piece, square) {
+TEMPLATE_TEST_CASE("construct chester::position from FEN", "[engine][position][fen]", piece, square) {
     std::string fen;
     std::expected<position<TestType>, std::string> expected;
 

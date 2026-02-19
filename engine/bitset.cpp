@@ -2,13 +2,13 @@
 #include <sstream>
 #include <string>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/file.hpp>
+#include <chester/square.hpp>
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, bitset bitset) -> std::ostream & {
+auto chester::operator<<(std::ostream &os, bitset bitset) -> std::ostream & {
     const auto mirrored = bitset.mirror();
     square sq = square::h8;
 
@@ -29,7 +29,7 @@ auto chester::engine::operator<<(std::ostream &os, bitset bitset) -> std::ostrea
     return os;
 }
 
-auto std::to_string(chester::engine::bitset bitset) -> std::string {
+auto std::to_string(chester::bitset bitset) -> std::string {
     std::ostringstream ss;
     ss << bitset;
     return ss.str();

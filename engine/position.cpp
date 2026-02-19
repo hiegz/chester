@@ -1,25 +1,25 @@
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/board.hpp>
-#include <chester/engine/castling.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/position.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/board.hpp>
+#include <chester/castling.hpp>
+#include <chester/piece.hpp>
+#include <chester/position.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <ostream>
 #include <sstream>
 #include <string>
 
-using chester::engine::piece;
-using chester::engine::square;
+using chester::piece;
+using chester::square;
 
 // clang-format off
 
 template <typename Index>
-auto chester::engine::position<Index>::traditional() -> position {
+auto chester::position<Index>::traditional() -> position {
     position position;
 
-    position.board      = chester::engine::board<Index>::traditional();
+    position.board      = chester::board<Index>::traditional();
     position.turn       = side::white;
     position.castling   = castling::all;
     position.enpassant  = square::none;
@@ -29,11 +29,11 @@ auto chester::engine::position<Index>::traditional() -> position {
     return position;
 }
 
-template auto chester::engine::position <piece>::traditional() -> position;
-template auto chester::engine::position<square>::traditional() -> position;
+template auto chester::position <piece>::traditional() -> position;
+template auto chester::position<square>::traditional() -> position;
 
 template <typename Index>
-auto chester::engine::operator<<(std::ostream &os, position<Index> const &position)
+auto chester::operator<<(std::ostream &os, position<Index> const &position)
     -> std::ostream & {
 
     os << "board:\n";
@@ -52,15 +52,15 @@ auto chester::engine::operator<<(std::ostream &os, position<Index> const &positi
     return os;
 }
 
-template auto chester::engine::operator<<<piece> (std::ostream &os, position<piece>  const &position) -> std::ostream &;
-template auto chester::engine::operator<<<square>(std::ostream &os, position<square> const &position) -> std::ostream &;
+template auto chester::operator<<<piece> (std::ostream &os, position<piece>  const &position) -> std::ostream &;
+template auto chester::operator<<<square>(std::ostream &os, position<square> const &position) -> std::ostream &;
 
 template <typename Index>
-auto std::to_string(chester::engine::position<Index> const &position) -> std::string {
+auto std::to_string(chester::position<Index> const &position) -> std::string {
     std::ostringstream ss;
     ss << position;
     return ss.str();
 }
 
-template auto std::to_string<piece> (chester::engine::position<piece>  const &position) -> std::string;
-template auto std::to_string<square>(chester::engine::position<square> const &position) -> std::string;
+template auto std::to_string<piece> (chester::position<piece>  const &position) -> std::string;
+template auto std::to_string<square>(chester::position<square> const &position) -> std::string;

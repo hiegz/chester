@@ -8,14 +8,14 @@
 #include <ostream>
 #include <string>
 
-#include <chester/engine/side.hpp>
-#include <chester/engine/piece_type.hpp>
+#include <chester/side.hpp>
+#include <chester/piece_type.hpp>
 
 #ifdef DEBUG
 #include <stdexcept>
 #endif // DEBUG
 
-namespace chester::engine {
+namespace chester {
 
 class piece {
   public:
@@ -116,7 +116,7 @@ auto operator<<(std::ostream &os, piece piece) -> std::ostream &;
 }
 
 namespace std {
-auto to_string(chester::engine::piece piece) -> std::string;
+auto to_string(chester::piece piece) -> std::string;
 }
 
 // NOLINTEND

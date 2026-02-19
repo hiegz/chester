@@ -1,11 +1,11 @@
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/board.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/piece_type.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/board.hpp>
+#include <chester/file.hpp>
+#include <chester/piece.hpp>
+#include <chester/piece_type.hpp>
+#include <chester/rank.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <algorithm>
 #include <cctype>
@@ -17,11 +17,11 @@
 #include <stdexcept>
 #endif
 
-using chester::engine::file;
-using chester::engine::piece;
-using chester::engine::piece_type;
-using chester::engine::side;
-using chester::engine::square;
+using chester::file;
+using chester::piece;
+using chester::piece_type;
+using chester::side;
+using chester::square;
 
 // clang-format off
 
@@ -59,13 +59,13 @@ constexpr auto format(piece piece) -> char {
 //
 // ***
 
-auto chester::engine::board<piece>::empty() -> board {
+auto chester::board<piece>::empty() -> board {
     board b;
     std::ranges::fill(b.pieces, bitset::empty());
     return b;
 }
 
-auto chester::engine::board<piece>::traditional() -> board {
+auto chester::board<piece>::traditional() -> board {
     auto board = board::empty();
 
     // white
@@ -96,37 +96,37 @@ auto chester::engine::board<piece>::traditional() -> board {
 }
 
 
-chester::engine::board<piece>::board(board<square> const &board)
-    : chester::engine::board<piece>::board(board::empty())
+chester::board<piece>::board(board<square> const &board)
+    : chester::board<piece>::board(board::empty())
 {
     for (const auto sq : squares) {
         (*this)[board[sq]] |= sq;
     }
 }
 
-auto chester::engine::board<piece>::occupancy() const -> bitset {
+auto chester::board<piece>::occupancy() const -> bitset {
     auto result = bitset::empty();
-    for (const auto piece : chester::engine::pieces) {
+    for (const auto piece : chester::pieces) {
         result |= (*this)[piece];
     }
     return result;
 }
 
-auto chester::engine::board<piece>::select(side side) const -> bitset {
+auto chester::board<piece>::select(side side) const -> bitset {
     auto result = bitset::empty();
-    for (const auto piece_type : chester::engine::piece_types) {
+    for (const auto piece_type : chester::piece_types) {
         result |= (*this)[piece(side, piece_type)];
     }
     return result;
 }
 
-auto chester::engine::operator<<(std::ostream &os, board<piece> const &board)
+auto chester::operator<<(std::ostream &os, board<piece> const &board)
     -> std::ostream &
 {
-    return os << (chester::engine::board<square>)board;
+    return os << (chester::board<square>)board;
 }
 
-auto std::to_string(chester::engine::board<piece> const &board) -> std::string {
+auto std::to_string(chester::board<piece> const &board) -> std::string {
     std::ostringstream ss;
     ss << board;
     return ss.str();
@@ -138,13 +138,13 @@ auto std::to_string(chester::engine::board<piece> const &board) -> std::string {
 //
 // ***
 
-auto chester::engine::board<square>::empty() -> board {
+auto chester::board<square>::empty() -> board {
     board b;
     std::ranges::fill(b.squares, piece::none);
     return b;
 }
 
-auto chester::engine::board<square>::traditional() -> board {
+auto chester::board<square>::traditional() -> board {
     auto board = board::empty();
 
     board[square::a1] = piece::white_rook;
@@ -176,10 +176,10 @@ auto chester::engine::board<square>::traditional() -> board {
     return board;
 }
 
-chester::engine::board<square>::board(board<piece> const &board)
-    : chester::engine::board<square>::board(board::empty())
+chester::board<square>::board(board<piece> const &board)
+    : chester::board<square>::board(board::empty())
 {
-    for (auto piece : chester::engine::pieces) {
+    for (auto piece : chester::pieces) {
         auto bitset = board[piece];
 
         while (bitset != bitset::empty()) {
@@ -197,7 +197,7 @@ chester::engine::board<square>::board(board<piece> const &board)
     }
 }
 
-auto chester::engine::operator<<(std::ostream &os, board<square> const &board)
+auto chester::operator<<(std::ostream &os, board<square> const &board)
     -> std::ostream &
 {
     for (auto rank = rank::eight; rank > rank::low; --rank) {
@@ -218,7 +218,7 @@ auto chester::engine::operator<<(std::ostream &os, board<square> const &board)
     return os;
 }
 
-auto std::to_string(chester::engine::board<square> const &board) -> std::string {
+auto std::to_string(chester::board<square> const &board) -> std::string {
     std::ostringstream ss;
     ss << board;
     return ss.str();

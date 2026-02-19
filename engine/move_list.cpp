@@ -1,5 +1,5 @@
-#include <chester/engine/move.hpp>
-#include <chester/engine/move_list.hpp>
+#include <chester/move.hpp>
+#include <chester/move_list.hpp>
 
 #include <cstddef>
 
@@ -7,7 +7,7 @@
 #include <stdexcept>
 #endif // DEBUG
 
-using chester::engine::move;
+using chester::move;
 
 // clang-format off
 
@@ -23,7 +23,7 @@ constexpr auto left(size_t index) -> size_t {
 
 } // namespace
 
-void chester::engine::move_list::push(move move, size_t priority) {
+void chester::move_list::push(move move, size_t priority) {
 #ifdef DEBUG
     if (item_count == MAX_SIZE) {
         throw std::runtime_error("unreachable");
@@ -59,7 +59,7 @@ void chester::engine::move_list::push(move move, size_t priority) {
     }
 }
 
-auto chester::engine::move_list::pop() -> move {
+auto chester::move_list::pop() -> move {
 #ifdef DEBUG
     if (item_count == 0) {
         throw std::runtime_error("unreachable");

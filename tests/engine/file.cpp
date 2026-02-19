@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chester/engine/file.hpp>
+#include <chester/file.hpp>
 #include <string>
 
-using chester::engine::file;
+using chester::file;
 
 // clang-format off
 
@@ -15,13 +15,13 @@ static_assert(file::h + 1  == file::high);
 static_assert(file::h + 2  > file::high);
 static_assert(file::h + 10 > file::high);
 
-TEST_CASE("chester::engine::files validity", "[engine][file]") {
-    for (const auto file : chester::engine::files) {
+TEST_CASE("chester::files validity", "[engine][file]") {
+    for (const auto file : chester::files) {
         REQUIRE(file.valid());
     }
 }
 
-TEST_CASE("std::to_string(chester::engine::file)", "[engine][file][fmt]") {
+TEST_CASE("std::to_string(chester::file)", "[engine][file][fmt]") {
     REQUIRE("a" == std::to_string(file::a));
     REQUIRE("b" == std::to_string(file::b));
     REQUIRE("c" == std::to_string(file::c));

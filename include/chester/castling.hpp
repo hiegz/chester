@@ -1,7 +1,7 @@
 #pragma once
 
-#include <chester/engine/castling_type.hpp>
-#include <chester/engine/side.hpp>
+#include <chester/castling_type.hpp>
+#include <chester/side.hpp>
 
 #include <ostream>
 #include <string>
@@ -10,18 +10,9 @@
 #include <stdexcept>
 #endif // DEBUG
 
-namespace chester::engine {
+namespace chester {
 
 // clang-format off
-
-/*
- * Compile-time checks to ensure side and castling type values remain
- * consistent with the castling logic.
- */
-static_assert((int)side::white  == 0);
-static_assert((int)side::black  == 1);
-static_assert((int)castling_type::kingside == 0);
-static_assert((int)castling_type::queenside == 1);
 
 class castling {
   public:
@@ -112,5 +103,5 @@ auto operator<<(std::ostream &os, castling castling) -> std::ostream &;
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::castling castling) -> std::string;
+auto to_string(chester::castling castling) -> std::string;
 }

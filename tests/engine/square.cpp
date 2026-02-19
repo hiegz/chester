@@ -1,14 +1,14 @@
 #include <string>
 
-#include <chester/engine/file.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/file.hpp>
+#include <chester/rank.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using chester::engine::file;
-using chester::engine::rank;
-using chester::engine::square;
+using chester::file;
+using chester::rank;
+using chester::square;
 
 // clang-format off
 
@@ -74,13 +74,13 @@ static_assert((square::a2 <<  9).invalid());
 static_assert((square::h8 -  64).invalid());
 static_assert((square::h8 << 64).invalid());
 
-TEST_CASE("chester::engine::squares validity", "[engine][square]") {
-    for (const auto square : chester::engine::squares) {
+TEST_CASE("chester::squares validity", "[engine][square]") {
+    for (const auto square : chester::squares) {
         REQUIRE(square.valid());
     }
 }
 
-TEST_CASE("chester::engine::square from file and rank", "[engine][square][formatter]") {
+TEST_CASE("chester::square from file and rank", "[engine][square][formatter]") {
     REQUIRE(square::a1 == square(file::a, rank::one));
     REQUIRE(square::a2 == square(file::a, rank::two));
     REQUIRE(square::a3 == square(file::a, rank::three));
@@ -154,7 +154,7 @@ TEST_CASE("chester::engine::square from file and rank", "[engine][square][format
     REQUIRE(square::h8 == square(file::h, rank::eight));
 }
 
-TEST_CASE("std::to_string(chester::engine::square)", "[engine][square][fmt]") {
+TEST_CASE("std::to_string(chester::square)", "[engine][square][fmt]") {
     REQUIRE("a1" == std::to_string(square::a1));
     REQUIRE("a2" == std::to_string(square::a2));
     REQUIRE("a3" == std::to_string(square::a3));

@@ -1,25 +1,25 @@
 #include <string>
 #include <tuple>
 
-#include <chester/engine/board.hpp>
-#include <chester/engine/piece.hpp>
-#include <chester/engine/position.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/board.hpp>
+#include <chester/piece.hpp>
+#include <chester/position.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_template_test_macros.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::piece;
-using chester::engine::position;
-using chester::engine::side;
-using chester::engine::square;
+using chester::piece;
+using chester::position;
+using chester::side;
+using chester::square;
 
 // clang-format off
 
-TEMPLATE_TEST_CASE("chester::engine::position string representation", "[engine][position][fmt]", piece, square) {
+TEMPLATE_TEST_CASE("chester::position string representation", "[engine][position][fmt]", piece, square) {
     position<TestType> position;
     std::string        expected;
 
@@ -77,7 +77,7 @@ TEMPLATE_TEST_CASE("chester::engine::position string representation", "[engine][
     REQUIRE((found == expected));
 }
 
-TEST_CASE("chester::engine::position<piece> string representation", "[engine][position<piece>][fmt]") {
+TEST_CASE("chester::position<piece> string representation", "[engine][position<piece>][fmt]") {
     auto position = ::position<piece>::traditional();
 
     position.board[piece::black_pawn] ^= square::b7;
@@ -109,7 +109,7 @@ TEST_CASE("chester::engine::position<piece> string representation", "[engine][po
     REQUIRE((found == expected));
 }
 
-TEST_CASE("chester::engine::position<square> string representation", "[engine][position<square>][fmt]") {
+TEST_CASE("chester::position<square> string representation", "[engine][position<square>][fmt]") {
     auto position = ::position<square>::traditional();
 
     position.board[square::b7] = piece::none;

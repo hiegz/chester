@@ -1,15 +1,15 @@
-#include <chester/engine/castling_type.hpp>
+#include <chester/castling_type.hpp>
 
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
 #include <string>
 
-using chester::engine::castling_type;
+using chester::castling_type;
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, castling_type castling_type)
+auto chester::operator<<(std::ostream &os, castling_type castling_type)
     -> std::ostream & {
     switch (castling_type) {
         case castling_type::kingside:  os << "kingside"; break;

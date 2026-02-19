@@ -10,11 +10,11 @@
 #include <stdexcept>
 #endif
 
-#include <chester/engine/square.hpp>
+#include <chester/square.hpp>
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 /**
  * This class extends the 64-bit unsigned integer to implement general setwise
@@ -25,14 +25,14 @@ class bitset {
     uint64_t raw;
 
     constexpr bitset() = default;
-    constexpr bitset(chester::engine::square sq) {
-        if (sq == square::none) {
+    constexpr bitset(square square) {
+        if (square == square::none) {
             raw = 0;
             return;
         }
 
 #ifdef DEBUG
-        if (sq.invalid()) {
+        if (square.invalid()) {
             throw std::runtime_error("unable to construct a bitset from invalid square");
         }
 #endif // DEBUG
@@ -42,7 +42,7 @@ class bitset {
         // ensures the square index is always within [0, 63].
 
         // NOLINTNEXTLINE
-        raw = (1UL << static_cast<unsigned char>(sq.raw));
+        raw = (1UL << static_cast<unsigned char>(square.raw));
     }
 
     constexpr auto operator==(bitset other) const -> bool   { return  raw == other.raw; }
@@ -50,7 +50,7 @@ class bitset {
     constexpr auto operator& (bitset other) const -> bitset { return  raw &  other.raw; }
     constexpr auto operator| (bitset other) const -> bitset { return  raw |  other.raw; }
     constexpr auto operator^ (bitset other) const -> bitset { return  raw ^  other.raw; }
-    constexpr auto operator~()              const -> bitset { return ~raw;                }
+    constexpr auto operator~()              const -> bitset { return ~raw;              }
     constexpr auto operator&=(bitset other)                 {         raw &= other.raw; }
     constexpr auto operator|=(bitset other)                 {         raw |= other.raw; }
     constexpr auto operator^=(bitset other)                 {         raw ^= other.raw; }
@@ -75,9 +75,9 @@ class bitset {
 
     /** Returns the cardinality of a bitset */
     [[nodiscard]]
-    constexpr auto cardinality() const -> std::size_t {
-        std::size_t count = 0;
-        std::uint64_t value = this->raw;
+    constexpr auto cardinality() const -> size_t {
+        size_t count = 0;
+        uint64_t value = this->raw;
         while (value != 0) {
             count += 1;
             value &= value - 1;
@@ -147,7 +147,7 @@ class bitset {
      * The `index` specifies which subset to return and must be within the range [0, 1 << cardinality).
      */
     [[nodiscard]]
-    constexpr auto subset(std::size_t cardinality, std::size_t index) const -> bitset {
+    constexpr auto subset(size_t cardinality, size_t index) const -> bitset {
 #ifdef DEBUG
         if (cardinality != this->cardinality()) {
             throw std::runtime_error("provided bitset cardinality does not match its real cardinality");
@@ -178,7 +178,7 @@ class bitset {
      */
     [[nodiscard]]
     constexpr auto mirror() const -> bitset {
-        std::uint64_t ret = this->raw;
+        uint64_t ret = this->raw;
 
         // . 1 . 1 . 1 . 1
         // . 1 . 1 . 1 . 1
@@ -188,7 +188,7 @@ class bitset {
         // . 1 . 1 . 1 . 1
         // . 1 . 1 . 1 . 1
         // . 1 . 1 . 1 . 1
-        constexpr std::uint64_t K1 = 0x5555555555555555UL;
+        constexpr uint64_t K1 = 0x5555555555555555UL;
 
         // . . 1 1 . . 1 1
         // . . 1 1 . . 1 1
@@ -198,7 +198,7 @@ class bitset {
         // . . 1 1 . . 1 1
         // . . 1 1 . . 1 1
         // . . 1 1 . . 1 1
-        constexpr std::uint64_t K2 = 0x3333333333333333UL;
+        constexpr uint64_t K2 = 0x3333333333333333UL;
 
         // . . . . 1 1 1 1
         // . . . . 1 1 1 1
@@ -208,7 +208,7 @@ class bitset {
         // . . . . 1 1 1 1
         // . . . . 1 1 1 1
         // . . . . 1 1 1 1
-        constexpr std::uint64_t K4 = 0x0f0f0f0f0f0f0f0fUL;
+        constexpr uint64_t K4 = 0x0f0f0f0f0f0f0f0fUL;
 
         //
 
@@ -221,7 +221,7 @@ class bitset {
 
   private:
     // cppcheck-suppress noExplicitConstructor
-    constexpr bitset(std::uint64_t value) : raw(value) {}
+    constexpr bitset(uint64_t value) : raw(value) {}
 };
 
 constexpr auto operator&(square a, square b) -> bitset {
@@ -245,5 +245,5 @@ auto operator<<(std::ostream &os, bitset bitset) -> std::ostream &;
 }
 
 namespace std {
-auto to_string(chester::engine::bitset bitset) -> std::string;
+auto to_string(chester::bitset bitset) -> std::string;
 }

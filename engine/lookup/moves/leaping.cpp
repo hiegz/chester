@@ -2,18 +2,18 @@
 #include <cstddef>
 #include <cstdint>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/lookup.hpp>
-#include <chester/engine/piece_type.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/file.hpp>
+#include <chester/lookup.hpp>
+#include <chester/piece_type.hpp>
+#include <chester/rank.hpp>
+#include <chester/square.hpp>
 
-using chester::engine::bitset;
-using chester::engine::file;
-using chester::engine::piece_type;
-using chester::engine::rank;
-using chester::engine::square;
+using chester::bitset;
+using chester::file;
+using chester::piece_type;
+using chester::rank;
+using chester::square;
 
 namespace {
 
@@ -24,7 +24,7 @@ namespace king {
 /** lookup table for pseudo-legal moves of a kin*/
 class table {
   public:
-    std::array<chester::engine::bitset, SQUARES> cells;
+    std::array<chester::bitset, SQUARES> cells;
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
@@ -102,7 +102,7 @@ namespace knight {
 /** lookup table for pseudo-legal moves of a knight */
 class table {
   public:
-    std::array<chester::engine::bitset, SQUARES> cells;
+    std::array<chester::bitset, SQUARES> cells;
 
     table() : cells() {
         for (std::uint8_t i = 0; i < SQUARES; ++i) {
@@ -194,15 +194,15 @@ class table {
 } // namespace
 
 template <>
-auto chester::engine::lookup::moves<piece_type::king>(square square)
-    -> chester::engine::bitset {
+auto chester::lookup::moves<piece_type::king>(square square)
+    -> chester::bitset {
     static ::king::table table;
     return table.cells[square.raw];
 }
 
 template <>
-auto chester::engine::lookup::moves<piece_type::knight>(square square)
-    -> chester::engine::bitset {
+auto chester::lookup::moves<piece_type::knight>(square square)
+    -> chester::bitset {
     static ::knight::table table;
     return table.cells[square.raw];
 }

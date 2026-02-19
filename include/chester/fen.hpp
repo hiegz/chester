@@ -8,7 +8,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class square;
 template <typename Index>

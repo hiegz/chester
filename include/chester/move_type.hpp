@@ -4,11 +4,11 @@
 #include <ostream>
 #include <string>
 
-#include <chester/engine/piece_type.hpp>
+#include <chester/piece_type.hpp>
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class move_type {
   public:
@@ -62,5 +62,5 @@ auto operator<<(std::ostream &os, move_type type) -> std::ostream &;
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::move_type type) -> std::string;
+auto to_string(chester::move_type type) -> std::string;
 }

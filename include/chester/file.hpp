@@ -7,7 +7,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class file {
   public:
@@ -133,8 +133,8 @@ constexpr auto file::invalid() const -> bool {
 auto operator<<(std::ostream &os, file f)
     -> std::ostream &;
 
-} // namespace chester::engine
+} // namespace chester
 
 namespace std {
-auto to_string(chester::engine::file file) -> std::string;
+auto to_string(chester::file file) -> std::string;
 } // namespace std

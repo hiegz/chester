@@ -14,18 +14,18 @@
 #include <stdexcept>
 #endif // DEBUG
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/lookup.hpp>
-#include <chester/engine/piece_type.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/file.hpp>
+#include <chester/lookup.hpp>
+#include <chester/piece_type.hpp>
+#include <chester/rank.hpp>
+#include <chester/square.hpp>
 
-using chester::engine::bitset;
-using chester::engine::file;
-using chester::engine::piece_type;
-using chester::engine::rank;
-using chester::engine::square;
+using chester::bitset;
+using chester::file;
+using chester::piece_type;
+using chester::rank;
+using chester::square;
 
 namespace {
 
@@ -156,19 +156,19 @@ class table : public ::table<::bishop::table, N> {
         file f;
 
         for (r = rk + 1, f = fl + 1; r < rank::eight and f < file::h; ++r, ++f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (r = rk + 1, f = fl - 1; r < rank::eight and f > file::a; ++r, --f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (r = rk - 1, f = fl + 1; r > rank::one and f < file::h; --r, ++f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (r = rk - 1, f = fl - 1; r > rank::one and f > file::a; --r, --f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         return result;
@@ -183,7 +183,7 @@ class table : public ::table<::bishop::table, N> {
         file f;
 
         for (r = rk + 1, f = fl + 1; r < rank::high and f < file::high; ++r, ++f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -191,7 +191,7 @@ class table : public ::table<::bishop::table, N> {
         }
 
         for (r = rk + 1, f = fl - 1; r < rank::high and f > file::low; ++r, --f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -199,7 +199,7 @@ class table : public ::table<::bishop::table, N> {
         }
 
         for (r = rk - 1, f = fl + 1; r > rank::low and f < file::high; --r, ++f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -207,7 +207,7 @@ class table : public ::table<::bishop::table, N> {
         }
 
         for (r = rk - 1, f = fl - 1; r > rank::low and f > file::low; --r, --f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -238,19 +238,19 @@ class table : public ::table<::rook::table, N> {
         file f;
 
         for (r = rk + 1, f = fl; r < rank::eight; ++r) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (r = rk - 1, f = fl; r > rank::one; --r) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (f = fl + 1, r = rk; f < file::h; ++f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         for (f = fl - 1, r = rk; f > file::a; --f) {
-            result |= chester::engine::square(f, r);
+            result |= chester::square(f, r);
         }
 
         return result;
@@ -265,7 +265,7 @@ class table : public ::table<::rook::table, N> {
         file f;
 
         for (r = rk + 1, f = fl; r < rank::high; ++r) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -273,7 +273,7 @@ class table : public ::table<::rook::table, N> {
         }
 
         for (r = rk - 1, f = fl; r > rank::low; --r) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -281,7 +281,7 @@ class table : public ::table<::rook::table, N> {
         }
 
         for (f = fl + 1, r = rk; f < file::high; ++f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -289,7 +289,7 @@ class table : public ::table<::rook::table, N> {
         }
 
         for (f = fl - 1, r = rk; f > file::low; --f) {
-            auto sq = chester::engine::square(f, r);
+            auto sq = chester::square(f, r);
             result |= sq;
             if ((blockers & sq) != bitset::empty()) {
                 break;
@@ -305,20 +305,20 @@ class table : public ::table<::rook::table, N> {
 } // namespace
 
 template <>
-auto chester::engine::lookup::moves<piece_type::bishop>(square square, bitset blockers) -> bitset {
+auto chester::lookup::moves<piece_type::bishop>(square square, bitset blockers) -> bitset {
     static ::bishop::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece_type::rook>(square square, bitset blockers) -> bitset {
+auto chester::lookup::moves<piece_type::rook>(square square, bitset blockers) -> bitset {
     static ::rook::table table;
 
     return table.lookup(square, blockers);
 }
 
 template <>
-auto chester::engine::lookup::moves<piece_type::queen>(square square, bitset blockers) -> bitset {
+auto chester::lookup::moves<piece_type::queen>(square square, bitset blockers) -> bitset {
     return lookup::moves<piece_type::bishop>(square, blockers) | lookup::moves<piece_type::rook>(square, blockers);
 }

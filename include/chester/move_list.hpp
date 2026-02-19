@@ -3,11 +3,11 @@
 #include <array>
 #include <cstddef>
 
-#include <chester/engine/move.hpp>
+#include <chester/move.hpp>
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class move_list {
   private:

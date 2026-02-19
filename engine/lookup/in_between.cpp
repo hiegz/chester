@@ -1,15 +1,15 @@
 #include <array>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/file.hpp>
-#include <chester/engine/lookup.hpp>
-#include <chester/engine/rank.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/file.hpp>
+#include <chester/lookup.hpp>
+#include <chester/rank.hpp>
+#include <chester/square.hpp>
 
-using chester::engine::bitset;
-using chester::engine::file;
-using chester::engine::rank;
-using chester::engine::square;
+using chester::bitset;
+using chester::file;
+using chester::rank;
+using chester::square;
 
 // clang-format off
 
@@ -154,7 +154,7 @@ class table {
 
 } // namespace
 
-auto chester::engine::lookup::in_between(square a, square b) -> bitset {
+auto chester::lookup::in_between(square a, square b) -> bitset {
     static ::table table;
     return table.cells[(a.raw * 64) + b.raw];
 }

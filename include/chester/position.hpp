@@ -1,9 +1,9 @@
 #pragma once
 
-#include <chester/engine/board.hpp>
-#include <chester/engine/castling.hpp>
-#include <chester/engine/side.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/board.hpp>
+#include <chester/castling.hpp>
+#include <chester/side.hpp>
+#include <chester/square.hpp>
 
 #include <cstddef>
 #include <ostream>
@@ -11,19 +11,19 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 template <typename Index>
 class position {
   public:
     constexpr position() = default;
     constexpr position(
-        chester::engine::board<Index> const &board,
-        chester::engine::side turn,
-        chester::engine::castling castling,
-        chester::engine::square enpassant,
-        std::size_t half_moves,
-        std::size_t full_moves)
+        chester::board<Index> const &board,
+        chester::side turn,
+        chester::castling castling,
+        chester::square enpassant,
+        size_t half_moves,
+        size_t full_moves)
           : board(board),
             turn(turn),
             castling(castling),
@@ -40,12 +40,12 @@ class position {
     /**
      * Current piece placement on the board.
      */
-    chester::engine::board<Index> board;
+    chester::board<Index> board;
 
     /**
      * Side to move.
      */
-    chester::engine::side turn;
+    chester::side turn;
 
     /**
      * Records each side's ability to castle.
@@ -53,7 +53,7 @@ class position {
      * A situation that temporarily prevents castling does not affect this
      * property.
      */
-    chester::engine::castling castling;
+    chester::castling castling;
 
     /**
      * This is a square over which a pawn has just passed while moving two
@@ -62,7 +62,7 @@ class position {
      * This is recorded regardless of whether there is a
      * pawn in position to capture en passant.
      */
-    chester::engine::square enpassant;
+    chester::square enpassant;
 
     /**
      * The number of moves since the last capture or pawn advance used for the
@@ -71,13 +71,13 @@ class position {
      * move consists of a player completing a turn followed by the opponent
      * completing a turn.
      */
-    std::size_t half_moves;
+    size_t half_moves;
 
     /**
      * The number of the full moves. It starts at 1 and is incremented after
      * black's move.
      */
-    std::size_t full_moves;
+    size_t full_moves;
 };
 
 template <typename Index>
@@ -87,5 +87,5 @@ auto operator<<(std::ostream &os, position<Index> const &position) -> std::ostre
 
 namespace std {
 template<typename Index>
-auto to_string(chester::engine::position<Index> const &position) -> std::string;
+auto to_string(chester::position<Index> const &position) -> std::string;
 }

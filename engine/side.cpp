@@ -3,11 +3,11 @@
 #include <stdexcept>
 #include <string>
 
-#include <chester/engine/side.hpp>
+#include <chester/side.hpp>
 
 // clang-format off
 
-auto chester::engine::operator<<(std::ostream &os, chester::engine::side side)
+auto chester::operator<<(std::ostream &os, chester::side side)
     -> std::ostream & {
     switch (side) {
         case side::white: return os << "white";
@@ -18,7 +18,7 @@ auto chester::engine::operator<<(std::ostream &os, chester::engine::side side)
     }
 }
 
-auto std::to_string(chester::engine::side side) -> std::string {
+auto std::to_string(chester::side side) -> std::string {
     std::ostringstream ss;
     ss << side;
     return ss.str();

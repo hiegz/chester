@@ -7,7 +7,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class rank {
   public:
@@ -15,8 +15,8 @@ class rank {
 
     constexpr rank() = default;
     template <typename T>
-    constexpr explicit rank(T raw) : raw(static_cast<std::int8_t>(raw)) {}
-    constexpr operator std::int8_t() const { return raw; }
+    constexpr explicit rank(T raw) : raw(static_cast<int8_t>(raw)) {}
+    constexpr operator int8_t() const { return raw; }
 
     [[nodiscard]]
     constexpr auto valid() const -> bool;
@@ -136,5 +136,5 @@ auto operator<<(std::ostream &os, rank r)
 }
 
 namespace std {
-auto to_string(chester::engine::rank r)  -> std::string;
+auto to_string(chester::rank r) -> std::string;
 }

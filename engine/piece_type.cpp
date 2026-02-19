@@ -1,13 +1,13 @@
 // clang-format off
 
-#include <chester/engine/piece_type.hpp>
+#include <chester/piece_type.hpp>
 
 #include <ostream>
 #include <string>
 #include <sstream>
 #include <stdexcept>
 
-auto chester::engine::operator<<(std::ostream &os, chester::engine::piece_type type)
+auto chester::operator<<(std::ostream &os, chester::piece_type type)
     -> std::ostream & {
     switch (type) {
         case piece_type::king:   return os << "king";
@@ -22,7 +22,7 @@ auto chester::engine::operator<<(std::ostream &os, chester::engine::piece_type t
     }
 }
 
-auto std::to_string(chester::engine::piece_type type) -> std::string {
+auto std::to_string(chester::piece_type type) -> std::string {
     std::ostringstream ss;
     ss << type;
     return ss.str();

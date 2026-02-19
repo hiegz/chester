@@ -1,8 +1,8 @@
 #include <catch2/catch_test_macros.hpp>
-#include <chester/engine/rank.hpp>
+#include <chester/rank.hpp>
 #include <string>
 
-using chester::engine::rank;
+using chester::rank;
 
 // clang-format off
 
@@ -15,13 +15,13 @@ static_assert(rank::eight + 1  == rank::high);
 static_assert(rank::eight + 2  >  rank::high);
 static_assert(rank::eight + 10 >  rank::high);
 
-TEST_CASE("chester::engine::ranks validity", "[engine][rank]") {
-    for (const auto rank : chester::engine::ranks) {
+TEST_CASE("chester::ranks validity", "[engine][rank]") {
+    for (const auto rank : chester::ranks) {
         REQUIRE(rank.valid());
     }
 }
 
-TEST_CASE("std::to_string(chester::engine::rank)", "[engine][rank][fmt]") {
+TEST_CASE("std::to_string(chester::rank)", "[engine][rank][fmt]") {
     REQUIRE("1" == std::to_string(rank::one));
     REQUIRE("2" == std::to_string(rank::two));
     REQUIRE("3" == std::to_string(rank::three));

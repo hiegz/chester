@@ -2,13 +2,13 @@
 
 #include <string>
 
-#include <chester/engine/piece.hpp>
+#include <chester/piece.hpp>
 
 #include <catch2/catch_test_macros.hpp>
 
-using chester::engine::piece;
+using chester::piece;
 
-TEST_CASE("chester::engine::piece operator << overload for std::ostream", "[engine][piece][fmt]") {
+TEST_CASE("chester::piece operator << overload for std::ostream", "[engine][piece][fmt]") {
     REQUIRE("white king"   == std::to_string(piece::white_king));
     REQUIRE("white queen"  == std::to_string(piece::white_queen));
     REQUIRE("white rook"   == std::to_string(piece::white_rook));

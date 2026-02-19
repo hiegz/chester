@@ -1,18 +1,18 @@
 #include <catch2/catch_test_macros.hpp>
 
-#include <chester/engine/move.hpp>
-#include <chester/engine/move_list.hpp>
-#include <chester/engine/move_type.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/move.hpp>
+#include <chester/move_list.hpp>
+#include <chester/move_type.hpp>
+#include <chester/square.hpp>
 
-using chester::engine::move;
-using chester::engine::move_list;
-using chester::engine::move_type;
-using chester::engine::square;
+using chester::move;
+using chester::move_list;
+using chester::move_type;
+using chester::square;
 
 // clang-format off
 
-TEST_CASE("chester::engine::move_list::pop order", "[engine][move list]") {
+TEST_CASE("chester::move_list::pop order", "[engine][move list]") {
     move a = move(square::a1, square::a2, move_type::normal);
     move b = move(square::b1, square::b2, move_type::normal);
     move c = move(square::c1, square::c2, move_type::normal);
@@ -28,7 +28,7 @@ TEST_CASE("chester::engine::move_list::pop order", "[engine][move list]") {
     REQUIRE(move_list.pop() == b);
 }
 
-TEST_CASE("chester::engine::move_list::size", "[engine][move list]") {
+TEST_CASE("chester::move_list::size", "[engine][move list]") {
     move a = move(square::a1, square::a2, move_type::normal);
     move b = move(square::b1, square::b2, move_type::normal);
     move c = move(square::c1, square::c2, move_type::normal);

@@ -1,18 +1,17 @@
 #include <tuple>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/lookup.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/lookup.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::bitset;
-using chester::engine::square;
+using chester::bitset;
+using chester::square;
 
-TEST_CASE("chester::engine::lookup::in_between()",
-          "[chester][engine][in_between]") {
+TEST_CASE("chester::lookup::in_between()", "[chester][engine][in_between]") {
     square a;
     square b;
     bitset expected;
@@ -55,7 +54,7 @@ TEST_CASE("chester::engine::lookup::in_between()",
         std::make_tuple(square::f3, square::c6, square::d5 | square::e4),
     }));
 
-    const bitset found = chester::engine::lookup::in_between(a, b);
+    const bitset found = chester::lookup::in_between(a, b);
 
     INFO("squares:\n" << (a | b));
     INFO("");

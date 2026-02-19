@@ -1,8 +1,8 @@
 #pragma once
 
-#include <chester/engine/move_type.hpp>
-#include <chester/engine/piece_type.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/move_type.hpp>
+#include <chester/piece_type.hpp>
+#include <chester/square.hpp>
 
 #include <cstdint>
 #include <ostream>
@@ -13,7 +13,7 @@
 
 // clang-format off
 
-namespace chester::engine {
+namespace chester {
 
 class move {
   public:
@@ -94,5 +94,5 @@ auto operator<<(std::ostream &os, move move) -> std::ostream &;
 } // namespace chester::engine
 
 namespace std {
-auto to_string(chester::engine::move move) -> std::string;
+auto to_string(chester::move move) -> std::string;
 }

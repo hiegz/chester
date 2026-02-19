@@ -9,7 +9,7 @@
 #include <stdexcept>
 #endif // DEBUG
 
-namespace chester::engine {
+namespace chester {
 
 // clang-format off
 
@@ -60,13 +60,13 @@ constexpr auto operator!(side side) -> class side {
     }
 #endif // DEBUG
 
-    return chester::engine::side(!static_cast<bool>(side.raw));
+    return chester::side(!static_cast<bool>(side.raw));
 }
 
 auto operator<<(std::ostream &os, side side) -> std::ostream &;
 
-} // namespace chester::engine
+} // namespace chester
 
 namespace std {
-auto to_string(chester::engine::side side) -> std::string;
+auto to_string(chester::side side) -> std::string;
 }

@@ -2,20 +2,20 @@
 
 #include <tuple>
 
-#include <chester/engine/bitset.hpp>
-#include <chester/engine/lookup.hpp>
-#include <chester/engine/piece_type.hpp>
-#include <chester/engine/square.hpp>
+#include <chester/bitset.hpp>
+#include <chester/lookup.hpp>
+#include <chester/piece_type.hpp>
+#include <chester/square.hpp>
 
 #include <catch2/catch_message.hpp>
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/generators/catch_generators.hpp>
 
-using chester::engine::bitset;
-using chester::engine::piece_type;
-using chester::engine::square;
+using chester::bitset;
+using chester::piece_type;
+using chester::square;
 
-TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup][bishop]") {
+TEST_CASE("chester::lookup::moves<piece::bishop>()", "[.][engine][lookup][bishop]") {
     square   square;
     bitset blockers;
     bitset expected;
@@ -271,7 +271,7 @@ TEST_CASE("chester::engine::lookup::moves<piece::bishop>()", "[.][engine][lookup
                 square::c3),
         }));
 
-    const bitset found = chester::engine::lookup::moves<piece_type::bishop>(square, blockers);
+    const bitset found = chester::lookup::moves<piece_type::bishop>(square, blockers);
 
     INFO("square: " << square);
     INFO("");
